@@ -1,13 +1,31 @@
 import { Routes } from '@angular/router';
 import {LoginComponent} from "./authentication/login/login.component";
 import {MainComponent} from "./layout/main/main.component";
-import {AuthenticationGuard} from "./guard/authentication.guard";
 import {RegisterComponent} from "./authentication/register/register.component";
+import {AuthenticationGuard} from "./guard/authentication.guard";
+import {HomeComponent} from "./home/home.component";
 
 export const AppRoutes: Routes = [
-  {path: 'main', component: MainComponent, canActivate: [AuthenticationGuard]},
+  {path: '',
+    component: MainComponent,
+    canActivate: [AuthenticationGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+      },
+      {
+        path: 'home', component: HomeComponent,
+      },
+      {
+        path: 'organization',
+        loadChildren: () => import('./organization/organization.module').then((m) => m.OrganizationModule),
+      }
+    ]
+  },
+
   {path: 'login',component: LoginComponent},
   {path: 'register',component: RegisterComponent},
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
 
 ]

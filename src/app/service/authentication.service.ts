@@ -8,6 +8,8 @@ import {SignUpRequest} from "../model/sign-up-request";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {CustomHttpResponse} from "../model/custom-http-response";
 import {SystemRoleName} from "../enum/system-role-name.enum";
+import {Router} from "@angular/router";
+import {EventNotificationService} from "./event-notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,9 @@ export class AuthenticationService {
   private loggedInUsername: string | null;
   private jwtHelperService = new JwtHelperService();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private router: Router,
+              private eventNotificationService: EventNotificationService) {
     this.token = '';
     this.loggedInUsername = '';
   }
@@ -35,10 +39,17 @@ export class AuthenticationService {
     return this.httpClient.post<CustomHttpResponse>(`${this.host}/auth/change-password`, formData);
   }
 
-  public logOut(): void {
+  public logOut(showNotification: boolean = false): void {
     this.token = null;
     this.loggedInUsername = null;
     localStorage.clear();
+    this.router.navigateByUrl('/login').then(() => {
+      if (showNotification) {
+        this.eventNotificationService.showInfoNotification('Info', 'You have been successfully logged out');
+      }
+
+    });
+
   }
 
   public saveToken(token: string): void {

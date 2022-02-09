@@ -27,9 +27,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/main');
+      this.router.navigateByUrl('/').then(()=> {});
     } else {
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/login').then(()=> {});
       this.loginForm = this.formBuilder.group({
         username: [null, Validators.compose([Validators.required])],
         password: [null, Validators.compose([Validators.required])],
@@ -51,7 +51,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (token && response.body) {
             this.authenticationService.saveToken(token);
             this.authenticationService.addUserToLocalCache(response.body);
-            this.router.navigateByUrl('/main');
+            this.router.navigateByUrl('/').then(()=> {
+
+            });
             this.showLoading = false;
           }
 

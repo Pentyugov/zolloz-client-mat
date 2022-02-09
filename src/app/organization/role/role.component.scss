@@ -1,0 +1,76 @@
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: auto;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+.roles-table {
+  th.mat-header-cell {
+    padding: 15px !important;
+  }
+
+  th.mat-header-cell.action-header {
+    min-width: 100px;
+    padding: 0px !important;
+  }
+  td.mat-cell.data {
+    padding: 0px 15px 0px !important;
+  }
+
+  td.mat-cell.action {
+    min-width: 100px;
+    padding: 0px;
+    margin: 0px;
+  }
+
+  .d-flex {
+    align-items: center;
+  }
+
+  width: 100%;
+  text-align: left;
+}
+
+
