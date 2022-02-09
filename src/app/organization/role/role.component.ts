@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Optional, OnInit, ViewChild} from '@angular/core';
 import {Role} from "../../model/role";
 import {RoleService} from "../../service/role.service";
 import {EventNotificationService} from "../../service/event-notification.service";
@@ -6,9 +6,9 @@ import {HttpErrorResponse} from "@angular/common/http";
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {DatePipe} from "@angular/common";
-import {MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 
+const dialogWidth = '600px'
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
@@ -61,7 +61,20 @@ export class RoleComponent implements OnInit {
   }
 
   public openDialog(action: string, role: any): void {
-
+    role.action = action;
+    const dialogRef = this.dialog.open(RoleContentComponent, {
+      data: role,
+      width: dialogWidth
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.event === 'Add') {
+        // this.addRowData(result.data);
+      } else if (result.event === 'Update') {
+        // this.updateRowData(result.data);
+      } else if (result.event === 'Delete') {
+        // this.deleteRowData(result.data);
+      }
+    });
   }
 
   public applyFilter(value: any) {
@@ -74,4 +87,31 @@ export class RoleComponent implements OnInit {
   public openAddRoleDialog(add: string, param2: {}) {
 
   }
+}
+
+@Component({
+  selector: 'role-content',
+  templateUrl: 'role-content.html',
+  styleUrls: [
+    'role-content.scss'
+  ]
+})
+export class RoleContentComponent {
+  action: string;
+  local_data: any;
+  inputWidth = 'width: ' + dialogWidth;
+  constructor(public dialogRef: MatDialogRef<RoleContentComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: Role,
+  ) {
+    this.local_data = { ...data };
+    this.action = this.local_data.action;
+  }
+
+  doAction(): void {
+    this.dialogRef.close({ event: this.action, data: this.local_data });
+  }
+  closeDialog(): void {
+    this.dialogRef.close({ event: 'Cancel' });
+  }
+
 }
