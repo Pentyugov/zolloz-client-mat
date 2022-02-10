@@ -11,8 +11,8 @@
           </div>
 
           <div fxFlex.gt-md="75" class="text-right">
-            <button mat-raised-button (click)="openAddRoleDialog('Add', {})" color="primary">
-              New Role
+            <button mat-raised-button (click)="openDialog('Add', {})" color="primary">
+              Create role
             </button>
           </div>
 
@@ -26,8 +26,8 @@
     <mat-card>
       <mat-card-content>
         <mat-card-title>User roles</mat-card-title>
-        <div class="responsive-table">
-          <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 roles-table">
+        <div class="table-responsive">
+          <table mat-table matSort [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 roles-table">
 
             <ng-container matColumnDef="number">
               <th mat-header-cell *matHeaderCellDef>#</th>
@@ -35,18 +35,18 @@
             </ng-container>
 
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
               <td mat-cell *matCellDef="let element" class="action-link data">{{element.name}}</td>
             </ng-container>
 
             <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef>Description</th>
-              <td mat-cell *matCellDef="let element" class="action-link data">{{element.description}}</td>
+              <th mat-header-cell *matHeaderCellDef class="wide">Description</th>
+              <td mat-cell *matCellDef="let element" class="action-link data wide">{{element.description}}</td>
             </ng-container>
 
-            <ng-container matColumnDef="permissions">
+            <ng-container matColumnDef="permissions" class="wide">
               <th mat-header-cell *matHeaderCellDef>Permissions</th>
-              <td mat-cell *matCellDef="let element" class="action-link data">{{element.permissions}}</td>
+              <td mat-cell *matCellDef="let element" class="action-link data wide">{{getPermissions(element)}}</td>
             </ng-container>
 
             <ng-container matColumnDef="action">

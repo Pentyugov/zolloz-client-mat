@@ -7,8 +7,10 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
+import {MatSort} from "@angular/material/sort";
+import {RoleConstants} from "./roles-constants";
 
-const dialogWidth = '600px'
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
@@ -23,10 +25,11 @@ const dialogWidth = '600px'
 })
 export class RoleComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   public roles: Role [] = [];
   public refreshing: boolean = false;
   public dataSource: MatTableDataSource<Role> = new MatTableDataSource<Role>([]);
-  columnsToDisplay = ['number', 'name', 'description', 'permissions', 'action', ];
+  columnsToDisplay = RoleConstants.TABLE_COLUMNS;
   expandedElement: Role | null = null;
 
   constructor(private roleService: RoleService,
@@ -46,35 +49,11 @@ export class RoleComponent implements OnInit {
         this.initDataSource(response);
         this.refreshing = false;
         if (showNotification) {
-          this.eventNotificationService.showSuccessNotification('Success',`${this.roles.length} role(s) was successfully loaded`);
+          this.eventNotificationService.showSuccessNotification(EventNotificationCaptionEnum.SUCCESS,`${this.roles.length} role(s) was successfully loaded`);
         }
       },(errorResponse: HttpErrorResponse) => {
-        this.eventNotificationService.showErrorNotification('Error',errorResponse.error.message);
+        this.eventNotificationService.showErrorNotification(EventNotificationCaptionEnum.ERROR,errorResponse.error.message);
       });
-  }
-
-  private initDataSource(roles: Role[]): void {
-    this.dataSource = new MatTableDataSource<Role>(roles);
-    if (this.dataSource) {
-      this.dataSource.paginator = this.paginator;
-    }
-  }
-
-  public openDialog(action: string, role: any): void {
-    role.action = action;
-    const dialogRef = this.dialog.open(RoleContentComponent, {
-      data: role,
-      width: dialogWidth
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result.event === 'Add') {
-        // this.addRowData(result.data);
-      } else if (result.event === 'Update') {
-        // this.updateRowData(result.data);
-      } else if (result.event === 'Delete') {
-        // this.deleteRowData(result.data);
-      }
-    });
   }
 
   public applyFilter(value: any) {
@@ -83,23 +62,86 @@ export class RoleComponent implements OnInit {
     }
   }
 
+  public openDialog(action: string, role: any): void {
+    role.action = action;
+    const dialogRef = this.dialog.open(RoleContentComponent, {
+      data: role,
+      width: RoleConstants.DIALOG_WIDTH
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.event === RoleConstants.DIALOG_ACTION_ADD) {
+        this.onCreateRole(result.data);
+      } else if (result.event === RoleConstants.DIALOG_ACTION_UPDATE) {
+        this.onUpdateRole(result.data);
+      } else if (result.event === RoleConstants.DIALOG_ACTION_DELETE) {
+        // this.deleteRowData(result.data);
+      }
+    });
+  }
 
   public openAddRoleDialog(add: string, param2: {}) {
 
   }
+
+  private onCreateRole(role: Role): void {
+    if (role) {
+      this.roleService.addRole(role).subscribe(
+        (response: Role) => {
+          this.getRoles();
+          this.eventNotificationService
+            .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Role: ${response.name} was updated successfully`);
+        }, (errorResponse: HttpErrorResponse) => {
+          this.eventNotificationService
+            .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+        });
+    }
+  }
+
+  private onUpdateRole(role: Role): void {
+      if (role) {
+        this.roleService.updateRole(role).subscribe((response) => {
+          this.getRoles();
+          this.eventNotificationService
+            .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Role: ${response.name} was updated successfully`);
+        }, (errorResponse: HttpErrorResponse) => {
+            this.eventNotificationService
+              .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message)
+        });
+      }
+  }
+
+  public getPermissions(role: Role): string {
+    let result = '';
+    if (role && role.permissions) {
+      result = role.permissions.map(a => a.name).join('; ')
+    }
+    return result;
+  }
+
+  private initDataSource(roles: Role[]): void {
+    this.dataSource = new MatTableDataSource<Role>(roles);
+    if (this.dataSource) {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
+  }
+
+
+
+
+
+
 }
 
 @Component({
   selector: 'role-content',
   templateUrl: 'role-content.html',
-  styleUrls: [
-    'role-content.scss'
-  ]
+  styleUrls: ['role-content.scss']
 })
 export class RoleContentComponent {
   action: string;
   local_data: any;
-  inputWidth = 'width: ' + dialogWidth;
+  inputWidth = 'width: ' + RoleConstants.DIALOG_WIDTH;
   constructor(public dialogRef: MatDialogRef<RoleContentComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Role,
   ) {
@@ -108,10 +150,15 @@ export class RoleContentComponent {
   }
 
   doAction(): void {
-    this.dialogRef.close({ event: this.action, data: this.local_data });
+    this.dialogRef.close({
+      event: this.action, data: this.local_data
+    });
   }
+
   closeDialog(): void {
-    this.dialogRef.close({ event: 'Cancel' });
+    this.dialogRef.close({
+      event: 'Cancel'
+    });
   }
 
 }
