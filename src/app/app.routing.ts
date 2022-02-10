@@ -19,6 +19,10 @@ export const AppRoutes: Routes = [
         path: 'home', component: HomeComponent,
       },
       {
+        path: 'profile',
+        loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
+      },
+      {
         path: 'organization',
         loadChildren: () => import('./organization/organization.module').then((m) => m.OrganizationModule),
       }

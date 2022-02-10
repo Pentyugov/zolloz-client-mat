@@ -3,6 +3,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { TranslateService } from '@ngx-translate/core';
 import {AuthenticationService} from "../../../service/authentication.service";
 import {User} from "../../../model/user";
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-horizontal-header',
   templateUrl: './horizontal-header.component.html',
@@ -99,7 +100,8 @@ export class HorizontalHeaderComponent {
   public currentUser: User = new User;
 
   constructor(private translate: TranslateService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private router: Router) {
     translate.setDefaultLang('en');
     this.currentUser = this.authenticationService.getUserFromLocalCache();
   }
@@ -114,4 +116,9 @@ export class HorizontalHeaderComponent {
  }
 
 
+  navigate(route: string) {
+    this.router.navigateByUrl(route).then(() => {
+
+    });
+  }
 }
