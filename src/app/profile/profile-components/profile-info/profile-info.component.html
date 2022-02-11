@@ -1,0 +1,41 @@
+<mat-card style="height: 400px">
+
+      <mat-card-content>
+        <mat-card-title>Profile info</mat-card-title>
+
+        <form class="basic-form">
+          <div fxLayout="row wrap">
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <mat-form-field>
+                <input type="text" matInput placeholder="Username" name="username" [(ngModel)]="currentUser.username"/>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <mat-form-field>
+                <input type="text" matInput placeholder="First name" name="firstName" [(ngModel)]="currentUser.firstName"/>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <mat-form-field>
+                <input type="text" matInput placeholder="Last name" name="lastName" [(ngModel)]="currentUser.lastName"/>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <mat-form-field>
+                <input type="email" matInput placeholder="Email" name="email" [(ngModel)]="currentUser.email"/>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex.gt-sm="100" fxFlex="100">
+              <button mat-raised-button color="primary" (click)="openDialog()">Update Profile</button>
+            </div>
+
+          </div>
+        </form>
+      </mat-card-content>
+
+</mat-card>

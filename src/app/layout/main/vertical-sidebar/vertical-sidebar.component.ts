@@ -11,6 +11,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { MenuItems } from '../../../shared/menu-item/menu-items';
 import {AuthenticationService} from "../../../service/authentication.service";
 import {User} from "../../../model/user";
+import {UserService} from "../../../service/user.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-vertical-sidebar',
@@ -52,17 +54,19 @@ export class VerticalSidebarComponent implements OnDestroy {
     });
   }
 
-  public currentUser: User = new User;
-
+  @Input() public currentUser: User = new User;
+  subscription: Subscription;
   constructor(changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
               public menuItems: MenuItems,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private userService: UserService) {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    // tslint:disable-next-line: deprecation
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.currentUser = this.authenticationService.getUserFromLocalCache();
+    this.currentUser = this.userService.getCurrentUser();
+
+    this.subscription = this.userService.currentUser.subscribe(cu => this.currentUser = cu);
   }
 
   ngOnDestroy(): void {

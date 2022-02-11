@@ -4,6 +4,10 @@ import { TranslateService } from '@ngx-translate/core';
 import {AuthenticationService} from "../../../service/authentication.service";
 import {User} from "../../../model/user";
 import {Router} from "@angular/router";
+import {ApplicationService} from "../../../service/application.service";
+import {ApplicationConstants, Locale} from "../../../shared/application-constants";
+import {UserService} from "../../../service/user.service";
+import {Subscription} from "rxjs";
 @Component({
   selector: 'app-horizontal-header',
   templateUrl: './horizontal-header.component.html',
@@ -76,39 +80,27 @@ export class HorizontalHeaderComponent {
     },
   ];
 
-  public selectedLanguage: any = {
-    language: 'English',
-    code: 'en',
-    type: 'US',
-    icon: 'us',
-  };
+  public selectedLocale: Locale;
+  public locales: Locale[] = ApplicationConstants.APP_LOCALES;
 
-  public languages: any[] = [
-    {
-      language: 'English',
-      code: 'en',
-      type: 'US',
-      icon: 'us',
-    },
-    {
-      language: 'Russian',
-      code: 'ru',
-      icon: 'ru',
-    },
-  ];
-
+  private subscription: Subscription;
   public currentUser: User = new User;
-
   constructor(private translate: TranslateService,
               private authenticationService: AuthenticationService,
-              private router: Router) {
-    translate.setDefaultLang('en');
-    this.currentUser = this.authenticationService.getUserFromLocalCache();
+              private userService: UserService,
+              private router: Router,
+              private applicationService: ApplicationService) {
+    this.selectedLocale = this.applicationService.loadApplicationLocale();
+    translate.setDefaultLang(this.selectedLocale.code);
+    this.currentUser = this.userService.getCurrentUser();
+    this.subscription = this.userService.currentUser.subscribe(cu => this.currentUser = cu);
   }
 
-  changeLanguage(lang: any): void {
-    this.translate.use(lang.code);
-    this.selectedLanguage = lang;
+  public changeLanguage(locale: Locale): void {
+    this.translate.use(locale.code);
+    this.selectedLocale = locale;
+    this.applicationService.saveApplicationLocale(locale);
+    window.location.reload();
   }
 
  public onLogout() {

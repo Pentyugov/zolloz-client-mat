@@ -9,7 +9,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
 import {MatSort} from "@angular/material/sort";
-import {RoleConstants} from "./roles-constants";
+import {RoleConstants} from "./role-constants";
 
 @Component({
   selector: 'app-role',
@@ -74,13 +74,9 @@ export class RoleComponent implements OnInit {
       } else if (result.event === RoleConstants.DIALOG_ACTION_UPDATE) {
         this.onUpdateRole(result.data);
       } else if (result.event === RoleConstants.DIALOG_ACTION_DELETE) {
-        // this.deleteRowData(result.data);
+        this.onDeleteRole(result.data);
       }
     });
-  }
-
-  public openAddRoleDialog(add: string, param2: {}) {
-
   }
 
   private onCreateRole(role: Role): void {
@@ -110,6 +106,19 @@ export class RoleComponent implements OnInit {
       }
   }
 
+  private onDeleteRole(role: Role): void {
+    if (role) {
+      this.roleService.deleteRole(role.id).subscribe(() => {
+        this.getRoles();
+        this.eventNotificationService
+          .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Role: ${role.name} was updated successfully`);
+      }, (errorResponse: HttpErrorResponse) => {
+        this.eventNotificationService
+          .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message)
+      });
+    }
+  }
+
   public getPermissions(role: Role): string {
     let result = '';
     if (role && role.permissions) {
@@ -125,11 +134,6 @@ export class RoleComponent implements OnInit {
       this.dataSource.sort = this.sort;
     }
   }
-
-
-
-
-
 
 }
 

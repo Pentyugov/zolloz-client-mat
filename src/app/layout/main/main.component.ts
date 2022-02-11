@@ -4,6 +4,8 @@ import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 
 import { PerfectScrollbarConfigInterface, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import {MenuItems} from "../../shared/menu-item/menu-items";
+import {AuthenticationService} from "../../service/authentication.service";
+import {User} from "../../model/user";
 
 @Component({
   selector: 'app-main',
@@ -29,26 +31,24 @@ export class MainComponent implements OnDestroy {
 
   public showSearch = false;
   public config: PerfectScrollbarConfigInterface = {};
-  // tslint:disable-next-line - Disables all
   private _mobileQueryListener: () => void;
+
+  public currentUser: User;
 
   constructor(public router: Router,
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
-              public menuItems: MenuItems) {
-
+              public menuItems: MenuItems,
+              public authenticationService: AuthenticationService) {
+    this.currentUser = this.authenticationService.getUserFromLocalCache();
     this.mobileQuery = media.matchMedia('(min-width: 1100px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    // tslint:disable-next-line: deprecation
     this.mobileQuery.addListener(this._mobileQueryListener);
-    // this is for dark theme
-    // const body = document.getElementsByTagName('body')[0];
-    // body.classList.toggle('dark');
+
     this.dark = false;
   }
 
   ngOnDestroy(): void {
-    // tslint:disable-next-line: deprecation
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
@@ -57,16 +57,8 @@ export class MainComponent implements OnDestroy {
   }
 
   darkClick() {
-    // const body = document.getElementsByTagName('body')[0];
-    // this.dark = this.dark;
     const body = document.getElementsByTagName('body')[0];
     body.classList.toggle('dark');
-    // if (this.dark)
-    // else
-    // 	body.classList.remove('dark');
-    // this.dark = this.dark;
-    // body.classList.toggle('dark');
-    // this.dark = this.dark;
   }
 
 

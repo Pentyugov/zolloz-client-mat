@@ -1,0 +1,10 @@
+<h2 class="font-medium" mat-dialog-title><strong>Update profile</strong></h2>
+
+<mat-dialog-content style="width: 600px; height: 130px">
+  <p>Sure to update profile?</p>
+  <div mat-dialog-actions align="end" class="pt-3">
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-button (click)="onUpdateProfileInfo()" mat-flat-button color="warn">Update</button>
+  </div>
+</mat-dialog-content>
+

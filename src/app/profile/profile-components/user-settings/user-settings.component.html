@@ -1,0 +1,41 @@
+<mat-card style="height: 400px">
+
+  <mat-card-content>
+    <mat-card-title>Settings</mat-card-title>
+
+    <form class="basic-form">
+      <div fxLayout="row wrap">
+
+        <div fxFlex.gt-sm="100" fxFlex="100">
+          <mat-form-field>
+            <input type="text" matInput placeholder="Username" name="username" />
+          </mat-form-field>
+        </div>
+
+        <div fxFlex.gt-sm="100" fxFlex="100">
+          <mat-form-field>
+            <input type="text" matInput placeholder="First name" name="firstName" />
+          </mat-form-field>
+        </div>
+
+        <div fxFlex.gt-sm="100" fxFlex="100">
+          <mat-form-field>
+            <input type="text" matInput placeholder="Last name" name="lastName"/>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex.gt-sm="100" fxFlex="100">
+          <mat-form-field>
+            <input type="email" matInput placeholder="Email" name="email" />
+          </mat-form-field>
+        </div>
+
+        <div fxFlex.gt-sm="100" fxFlex="100">
+          <button mat-raised-button color="accent">Save settings</button>
+        </div>
+
+      </div>
+    </form>
+  </mat-card-content>
+
+</mat-card>

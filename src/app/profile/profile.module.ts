@@ -7,13 +7,25 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MaterialModule} from "../material-module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { UserInfoComponent } from './profile-components/user-info/user-info.component';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {HttpClient} from "@angular/common/http";
+import {HttpLoaderFactory} from "../app.module";
+import {
+  ProfileInfoComponent,
+  UpdateProfileDialogComponent
+} from './profile-components/profile-info/profile-info.component';
+import { UserSettingsComponent } from './profile-components/user-settings/user-settings.component';
+
 
 
 
 @NgModule({
   declarations: [
     ProfileComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    ProfileInfoComponent,
+    UserSettingsComponent,
+    UpdateProfileDialogComponent
   ],
   imports: [
     CommonModule,
@@ -22,6 +34,13 @@ import { UserInfoComponent } from './profile-components/user-info/user-info.comp
     FlexLayoutModule,
     MaterialModule,
     RouterModule.forChild(ProfileRoutes),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
 
   ]
 })
