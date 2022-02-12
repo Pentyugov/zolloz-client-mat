@@ -6,6 +6,7 @@ import { PerfectScrollbarConfigInterface, PerfectScrollbarDirective } from 'ngx-
 import {MenuItems} from "../../shared/menu-item/menu-items";
 import {AuthenticationService} from "../../service/authentication.service";
 import {User} from "../../model/user";
+import {UserService} from "../../service/user.service";
 
 @Component({
   selector: 'app-main',
@@ -39,8 +40,10 @@ export class MainComponent implements OnDestroy {
               changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
               public menuItems: MenuItems,
-              public authenticationService: AuthenticationService) {
+              public authenticationService: AuthenticationService,
+              public userService: UserService) {
     this.currentUser = this.authenticationService.getUserFromLocalCache();
+    this.userService.changeCurrentUser(this.currentUser);
     this.mobileQuery = media.matchMedia('(min-width: 1100px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

@@ -1,21 +1,4 @@
-<!-- ============================================================== -->
-<!-- sidebar -->
-<!-- ============================================================== -->
 <div class="user-profile" style="background: url(assets/images/background/user-info.jpg) no-repeat">
-  <!-- User profile image -->
-  <div class="profile-img">
-    <img [src]="currentUser.profileImage" alt="user" (click)="handleNotify()" />
-  </div>
-  <!-- User profile text-->
-  <!-- ============================================================== -->
-  <!-- Profile - style you can find in header.scss -->
-  <!-- ============================================================== -->
-  <div class="profile-text">
-    <a [matMenuTriggerFor]="sdprofile" class="d-flex align-items-center">
-      {{getUsername()}}
-      <i class="ti-angle-down font-12 ml-auto"></i>
-    </a>
-  </div>
   <mat-menu #sdprofile="matMenu" class="mymegamenu">
     <button mat-menu-item><mat-icon>settings</mat-icon> Settings</button>
     <button mat-menu-item><mat-icon>account_box</mat-icon> Profile</button>

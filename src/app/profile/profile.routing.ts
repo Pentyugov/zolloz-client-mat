@@ -12,7 +12,11 @@ export const ProfileRoutes: Routes = [
       },
       {
         path: 'my',
-        component: ProfileComponent
+        component: ProfileComponent,
+        data: {
+          title: 'My profile',
+          urls: [{ title: 'Profile', url: '/profile' }, { title: 'My' }],
+        }
       }
     ]
   }

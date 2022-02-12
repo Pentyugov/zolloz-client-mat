@@ -1,4 +1,4 @@
-<mat-card style="height: 400px">
+<mat-card>
 
   <mat-card-content>
     <mat-card-title>Settings</mat-card-title>
@@ -6,28 +6,22 @@
     <form class="basic-form">
       <div fxLayout="row wrap">
 
-        <div fxFlex.gt-sm="100" fxFlex="100">
-          <mat-form-field>
-            <input type="text" matInput placeholder="Username" name="username" />
-          </mat-form-field>
+        <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-10 m-b-10">
+          <mat-checkbox color="primary" class="m-r-10">Enable chat notifications</mat-checkbox>
         </div>
 
-        <div fxFlex.gt-sm="100" fxFlex="100">
-          <mat-form-field>
-            <input type="text" matInput placeholder="First name" name="firstName" />
-          </mat-form-field>
+        <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-5 m-b-20">
+          <mat-label>Theme color</mat-label>
         </div>
+        <div fxFlex.gt-sm="100" fxFlex="100" class="m-b-20">
 
-        <div fxFlex.gt-sm="100" fxFlex="100">
-          <mat-form-field>
-            <input type="text" matInput placeholder="Last name" name="lastName"/>
-          </mat-form-field>
-        </div>
+            <mat-radio-group>
+              <mat-radio-button color="primary" value="green" class="m-r-10 text-megna">Green</mat-radio-button>
+              <mat-radio-button color="primary" value="red" class="m-r-10 text-danger">Red</mat-radio-button>
+              <mat-radio-button color="primary" value="blue" class="m-r-10 text-info">Blue</mat-radio-button>
+              <mat-radio-button color="primary" value="dark" class="m-r-10 text-dark">Dark</mat-radio-button>
+            </mat-radio-group>
 
-        <div fxFlex.gt-sm="100" fxFlex="100">
-          <mat-form-field>
-            <input type="email" matInput placeholder="Email" name="email" />
-          </mat-form-field>
         </div>
 
         <div fxFlex.gt-sm="100" fxFlex="100">

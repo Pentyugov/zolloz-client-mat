@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { TranslateService } from '@ngx-translate/core';
 import {AuthenticationService} from "../../../service/authentication.service";
@@ -13,7 +13,7 @@ import {Subscription} from "rxjs";
   templateUrl: './horizontal-header.component.html',
   styleUrls: [],
 })
-export class HorizontalHeaderComponent {
+export class HorizontalHeaderComponent implements OnDestroy {
   public config: PerfectScrollbarConfigInterface = {
 
   };
@@ -82,8 +82,7 @@ export class HorizontalHeaderComponent {
 
   public selectedLocale: Locale;
   public locales: Locale[] = ApplicationConstants.APP_LOCALES;
-
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
   public currentUser: User = new User;
   constructor(private translate: TranslateService,
               private authenticationService: AuthenticationService,
@@ -93,7 +92,11 @@ export class HorizontalHeaderComponent {
     this.selectedLocale = this.applicationService.loadApplicationLocale();
     translate.setDefaultLang(this.selectedLocale.code);
     this.currentUser = this.userService.getCurrentUser();
-    this.subscription = this.userService.currentUser.subscribe(cu => this.currentUser = cu);
+    this.subscriptions.push(this.userService.currentUser.subscribe(cu => this.currentUser = cu));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   public changeLanguage(locale: Locale): void {

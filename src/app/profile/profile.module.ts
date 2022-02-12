@@ -10,6 +10,7 @@ import { UserInfoComponent } from './profile-components/user-info/user-info.comp
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
 import {HttpLoaderFactory} from "../app.module";
+import { UcWidgetModule } from 'ngx-uploadcare-widget';
 import {
   ProfileInfoComponent,
   UpdateProfileDialogComponent
@@ -33,6 +34,7 @@ import { UserSettingsComponent } from './profile-components/user-settings/user-s
     ReactiveFormsModule,
     FlexLayoutModule,
     MaterialModule,
+    UcWidgetModule,
     RouterModule.forChild(ProfileRoutes),
     TranslateModule.forRoot({
       loader: {

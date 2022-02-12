@@ -1,13 +1,26 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ApplicationConstants, Locale} from "../shared/application-constants";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApplicationService {
 
-  constructor() {
+  private refreshingSource: BehaviorSubject<boolean>;
+  public refreshing: Observable<boolean>;
 
+  constructor() {
+    this.refreshingSource = new BehaviorSubject<boolean>(false);
+    this.refreshing = this.refreshingSource.asObservable();
+  }
+
+  public getRefreshing(): boolean {
+    return this.refreshingSource.value;
+  }
+
+  public changeRefreshing(refreshing: boolean): void {
+    this.refreshingSource.next(refreshing);
   }
 
   public saveApplicationLocale(locale: Locale): void {

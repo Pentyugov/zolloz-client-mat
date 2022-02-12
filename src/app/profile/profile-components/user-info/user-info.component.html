@@ -1,4 +1,5 @@
-<mat-card class="oh text-center little-profile" style="height: 400px">
+<mat-card class="oh text-center little-profile" style="height: 400px" >
+
   <img
     mat-card-image
     src="assets/images/background/user-info-background.jpg"
@@ -12,12 +13,40 @@
     <h3 class="m-b-0">{{userInfo.fullName}}</h3>
     <h6 class="m-t-0 text-muted">{{userInfo.position}}</h6>
     <mat-card-actions>
-      <button mat-raised-button color="accent" (click)="onChangePhotoBtnClick()">Change photo</button>
-      <button mat-button color="warn">Delete</button>
+<!--      <button mat-raised-button-->
+<!--              color="accent"-->
+<!--              (click)="onChangePhotoBtnClick()"-->
+<!--              [disabled]="applicationService.getRefreshing()">Change photo</button>-->
+<!--      <input-->
+<!--        type="hidden"-->
+<!--        role="uploadcare-uploader"-->
+<!--        data-public-key="0023b247fac8f6e0fb7e"-->
+<!--        data-images-only="true"-->
+<!--        (change)="onChangeImage($event)"-->
+<!--        #fileInput-->
+<!--        id="fileInput"-->
+<!--        data-tabs="file camera url gdrive gphotos instagram vk"-->
+<!--      />-->
 
+      <ngx-uploadcare-widget
+        images-only="true"
+        #fileInput
+        public-key="0023b247fac8f6e0fb7e"
+        tabs="file camera url gdrive gphotos instagram vk"
+        (on-progress)="onProgress($event)"
+        (on-upload-complete)="onUploadComplete($event)"
+      >
+      </ngx-uploadcare-widget>
+
+      <button mat-button
+              (click)="deleteProfileImage()"
+              [disabled]="applicationService.getRefreshing()"
+              color="warn">Delete</button>
     </mat-card-actions>
-    <button mat-raised-button color="warn" class="m-l-15 input-file-button">
-      <input type="file" (change)="onChangeImage($event)" #fileInput id="fileInput" style="display:none"/>
-    </button>
+<!--    <button mat-raised-button color="warn" class="m-l-15 input-file-button" style="display:none">-->
+<!--      <input type="file" (change)="onChangeImage($event)" #fileInput id="fileInput" style="display:none"/>-->
+
+<!--    </button>-->
+
   </mat-card-content>
 </mat-card>

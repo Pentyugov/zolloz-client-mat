@@ -55,7 +55,6 @@ export class VerticalSidebarComponent implements OnDestroy {
   }
 
   @Input() public currentUser: User = new User;
-  subscription: Subscription;
   constructor(changeDetectorRef: ChangeDetectorRef,
               media: MediaMatcher,
               public menuItems: MenuItems,
@@ -64,14 +63,12 @@ export class VerticalSidebarComponent implements OnDestroy {
     this.mobileQuery = media.matchMedia('(min-width: 768px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.currentUser = this.userService.getCurrentUser();
-
-    this.subscription = this.userService.currentUser.subscribe(cu => this.currentUser = cu);
   }
 
   ngOnDestroy(): void {
     // tslint:disable-next-line: deprecation
     this.mobileQuery.removeListener(this._mobileQueryListener);
+
   }
 
   handleNotify() {

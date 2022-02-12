@@ -25,6 +25,7 @@ export class UserService {
 
   public changeCurrentUser(user: User): void {
     this.userSource.next(user);
+    this.authenticationService.addUserToLocalCache(user);
   }
 
   public getCurrentUser(): User {
@@ -52,6 +53,10 @@ export class UserService {
 
   public deleteUser(id: string): Observable<CustomHttpResponse> {
     return this.httpClient.delete<CustomHttpResponse>(`${this.host}/user/delete-user/${id}`);
+  }
+
+  public deleteProfileImage(id: string): Observable<User> {
+    return this.httpClient.delete<User>(`${this.host}/user/delete-profile-image/${id}`);
   }
 
   public addUsersToLocalCache(users: User[]): void {

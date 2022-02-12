@@ -1,3 +1,4 @@
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="refreshing"></mat-progress-bar>
 <div fxLayout="row wrap">
   <div fxFlex.gt-lg="25" fxFlex.gt-md="40" fxFlex.gt-xs="100" fxFlex="100">
     <app-user-info></app-user-info>
@@ -9,10 +10,7 @@
 </div>
 
 <div fxLayout="row wrap">
-
-
   <div fxFlex.gt-lg="75" fxFlex.gt-md="60" fxFlex.gt-xs="100" fxFlex="100">
     <app-user-settings></app-user-settings>
   </div>
-
 </div>
