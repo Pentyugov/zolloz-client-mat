@@ -7,7 +7,10 @@
       <div fxLayout="row wrap">
 
         <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-10 m-b-10">
-          <mat-checkbox color="primary" class="m-r-10">Enable chat notifications</mat-checkbox>
+          <mat-checkbox color="primary"
+                        class="m-r-10"
+                        [(ngModel)]="userSettings.enableChatNotificationSound">Enable chat notifications
+          </mat-checkbox>
         </div>
 
         <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-5 m-b-20">
@@ -16,16 +19,41 @@
         <div fxFlex.gt-sm="100" fxFlex="100" class="m-b-20">
 
             <mat-radio-group>
-              <mat-radio-button color="primary" value="green" class="m-r-10 text-megna">Green</mat-radio-button>
-              <mat-radio-button color="primary" value="red" class="m-r-10 text-danger">Red</mat-radio-button>
-              <mat-radio-button color="primary" value="blue" class="m-r-10 text-info">Blue</mat-radio-button>
-              <mat-radio-button color="primary" value="dark" class="m-r-10 text-dark">Dark</mat-radio-button>
+              <mat-radio-button color="primary"
+                                [checked]="userSettings.themeColor === 10"
+                                (change)="changeThemeColor(10)"
+                                value="blue"
+                                class="m-r-10 text-info">Blue
+              </mat-radio-button>
+
+              <mat-radio-button color="primary"
+                                [checked]="userSettings.themeColor === 20"
+                                (change)="changeThemeColor(20)"
+                                value="red"
+                                class="m-r-10 text-danger">Red
+              </mat-radio-button>
+
+              <mat-radio-button color="primary"
+                                [checked]="userSettings.themeColor === 30"
+                                (change)="changeThemeColor(30)"
+                                value="green"
+                                class="m-r-10 text-megna">Green
+              </mat-radio-button>
+
+              <mat-radio-button color="primary"
+                                [checked]="userSettings.themeColor === 40"
+                                (change)="changeThemeColor(40)"
+                                value="dark"
+                                class="m-r-10
+                                text-dark">Dark
+              </mat-radio-button>
+
             </mat-radio-group>
 
         </div>
 
         <div fxFlex.gt-sm="100" fxFlex="100">
-          <button mat-raised-button color="accent">Save settings</button>
+          <button mat-raised-button color="accent" (click)="saveUserSettings()">Save settings</button>
         </div>
 
       </div>

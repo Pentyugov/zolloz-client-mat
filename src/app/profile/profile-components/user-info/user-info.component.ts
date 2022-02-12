@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicationService} from "../../../service/application.service";
 import {User} from "../../../model/user";
