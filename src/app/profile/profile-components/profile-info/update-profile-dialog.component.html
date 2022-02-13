@@ -1,10 +1,10 @@
-<h2 class="font-medium" mat-dialog-title><strong>Update profile</strong></h2>
+<h2 class="font-medium" mat-dialog-title><strong>{{'Update Profile' | translate}}</strong></h2>
 
 <mat-dialog-content style="width: 600px; height: 130px">
-  <p>Sure to update profile?</p>
+  <p>{{'UpdateProfileMessage' | translate}}</p>
   <div mat-dialog-actions align="end" class="pt-3">
-    <button mat-button (click)="closeDialog()">Cancel</button>
-    <button mat-button (click)="onUpdateProfileInfo()" mat-flat-button color="warn">Update</button>
+    <button mat-button (click)="closeDialog()">{{'Cancel' | translate}}</button>
+    <button mat-button (click)="onUpdateProfileInfo()" mat-flat-button color="warn">{{'Update Profile' | translate}}</button>
   </div>
 </mat-dialog-content>
 

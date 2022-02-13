@@ -35,6 +35,8 @@ File: scss
 @import 'dark-sidebar';
 @import 'responsive';
 @import 'rtl';
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+
 
 // Red Theme
 
@@ -68,6 +70,6 @@ File: scss
 }
 
 $custom-typography: mat.define-typography-config(
-  $font-family: 'Poppins',
+  $font-family: 'Raleway',
 );
 @include mat.core($custom-typography);

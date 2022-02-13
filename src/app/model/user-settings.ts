@@ -1,5 +1,6 @@
 export class UserSettings {
   id: string;
+  locale: string;
   enableChatNotificationSound: boolean;
   themeColor: number;
   miniSidebar: boolean;
@@ -7,6 +8,7 @@ export class UserSettings {
 
   constructor() {
     this.id = '';
+    this.locale = 'en';
     this.enableChatNotificationSound = false;
     this.themeColor = 10;
     this.miniSidebar = false;

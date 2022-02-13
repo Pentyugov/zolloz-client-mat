@@ -13,41 +13,31 @@
     <h3 class="m-b-0">{{userInfo.fullName}}</h3>
     <h6 class="m-t-0 text-muted">{{userInfo.position}}</h6>
     <mat-card-actions>
-<!--      <button mat-raised-button-->
-<!--              color="accent"-->
-<!--              (click)="onChangePhotoBtnClick()"-->
-<!--              [disabled]="applicationService.getRefreshing()">Change photo</button>-->
-<!--      <input-->
-<!--        type="hidden"-->
-<!--        role="uploadcare-uploader"-->
-<!--        data-public-key="0023b247fac8f6e0fb7e"-->
-<!--        data-images-only="true"-->
-<!--        (change)="onChangeImage($event)"-->
-<!--        #fileInput-->
-<!--        id="fileInput"-->
-<!--        data-tabs="file camera url gdrive gphotos instagram vk"-->
-<!--      />-->
+
 
       <ngx-uploadcare-widget
+        [hidden]="true"
         images-only="true"
         #fileInput
         public-key="0023b247fac8f6e0fb7e"
         tabs="file camera url gdrive gphotos instagram vk"
+        data-locale="ru"
         effects="crop, rotate, blur"
         (on-progress)="onProgress($event)"
         (on-upload-complete)="onUploadComplete($event)"
       >
       </ngx-uploadcare-widget>
 
+      <button mat-raised-button
+              (click)="openUploadFileDialog()"
+              [disabled]="applicationService.getRefreshing()"
+              color="primary">{{'ChooseImage' | translate}}</button>
+
       <button mat-button
               (click)="deleteProfileImage()"
               [disabled]="applicationService.getRefreshing()"
-              color="warn">Delete</button>
+              color="warn">{{'Delete' | translate}}</button>
     </mat-card-actions>
-<!--    <button mat-raised-button color="warn" class="m-l-15 input-file-button" style="display:none">-->
-<!--      <input type="file" (change)="onChangeImage($event)" #fileInput id="fileInput" style="display:none"/>-->
-
-<!--    </button>-->
 
   </mat-card-content>
 </mat-card>

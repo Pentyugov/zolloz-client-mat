@@ -8,6 +8,7 @@ import {ApplicationService} from "../../../service/application.service";
 import {ApplicationConstants, Locale} from "../../../shared/application-constants";
 import {UserService} from "../../../service/user.service";
 import {Subscription} from "rxjs";
+import {UserSettings} from "../../../model/user-settings";
 @Component({
   selector: 'app-horizontal-header',
   templateUrl: './horizontal-header.component.html',
@@ -80,19 +81,25 @@ export class HorizontalHeaderComponent implements OnDestroy {
     },
   ];
 
-  public selectedLocale: Locale;
+  public selectedLocale: Locale = ApplicationConstants.APP_DEFAULT_LOCALE;
   public locales: Locale[] = ApplicationConstants.APP_LOCALES;
   private subscriptions: Subscription[] = [];
+  private userSettings: UserSettings;
   public currentUser: User = new User;
   constructor(private translate: TranslateService,
               private authenticationService: AuthenticationService,
               private userService: UserService,
               private router: Router,
               private applicationService: ApplicationService) {
-    this.selectedLocale = this.applicationService.loadApplicationLocale();
+    this.userSettings = this.applicationService.getUserSettings();
+    this.setDefaultLocale();
     translate.setDefaultLang(this.selectedLocale.code);
     this.currentUser = this.userService.getCurrentUser();
     this.subscriptions.push(this.userService.currentUser.subscribe(cu => this.currentUser = cu));
+    this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {
+      this.userSettings = us;
+      this.setDefaultLocale();
+    }));
   }
 
   ngOnDestroy(): void {
@@ -100,14 +107,31 @@ export class HorizontalHeaderComponent implements OnDestroy {
   }
 
   public changeLanguage(locale: Locale): void {
+    this.userSettings.locale = locale.code;
     this.translate.use(locale.code);
     this.selectedLocale = locale;
-    this.applicationService.saveApplicationLocale(locale);
-    window.location.reload();
+
+    this.applicationService.saveUserSettings(this.userSettings).subscribe(
+      (response: UserSettings) => {
+        this.applicationService.changeSettings(response);
+        this.userSettings = this.applicationService.getUserSettings();
+      }
+    );
   }
 
  public onLogout() {
+    this.subscriptions.forEach(s => s.unsubscribe());
     this.authenticationService.logOut(true);
+ }
+
+ public setDefaultLocale(): void {
+    this.locales.forEach(locale => {
+      if (locale.code === this.userSettings.locale) {
+        this.selectedLocale = locale;
+        this.translate.use(locale.code);
+        return;
+      }
+    });
  }
 
 

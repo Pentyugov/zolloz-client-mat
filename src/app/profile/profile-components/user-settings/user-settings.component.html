@@ -1,8 +1,8 @@
 <mat-card>
 
   <mat-card-content>
-    <mat-card-title>Settings</mat-card-title>
-
+    <mat-card-title>{{'Settings' | translate}}</mat-card-title>
+    <mat-divider></mat-divider>
     <form class="basic-form">
       <div fxLayout="row wrap">
 
@@ -11,7 +11,7 @@
                         class="m-r-10"
                         [checked]="userSettings.enableChatNotificationSound"
                         (change)="changeChatNotificationSound($event)"
-                        >Enable chat notifications sound
+          >{{'Settings_ChatSound' | translate}}
           </mat-checkbox>
         </div>
 
@@ -19,19 +19,26 @@
           <mat-checkbox color="primary"
                         class="m-r-10"
                         [checked]="userSettings.miniSidebar"
-                        (change)="changeMiniSideBar($event)">Enable mini sidebar
+                        (change)="changeMiniSideBar($event)"
+          >{{'Settings_MiniSidebar' | translate}}
           </mat-checkbox>
         </div>
+
 
         <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-10 m-b-10">
           <mat-checkbox color="primary"
                         class="m-r-10"
-                        [(ngModel)]="userSettings.darkTheme">Dark theme
+                        [(ngModel)]="userSettings.darkTheme"
+          >{{'Settings_DarkTheme' | translate}}
           </mat-checkbox>
         </div>
 
-        <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-5 m-b-20">
-          <mat-label>Theme color</mat-label>
+        <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-10 m-b-10">
+          <mat-divider></mat-divider>
+        </div>
+
+        <div fxFlex.gt-sm="100" fxFlex="100" class="m-b-5">
+          <mat-label>{{'Settings_ThemeColor' | translate}}</mat-label>
         </div>
         <div fxFlex.gt-sm="100" fxFlex="100" class="m-b-20">
 
@@ -40,21 +47,21 @@
                                 [checked]="userSettings.themeColor === 10"
                                 (change)="changeThemeColor(10)"
                                 value="blue"
-                                class="m-r-10 text-info">Blue
+                                class="m-r-10 text-info">{{'Blue' | translate}}
               </mat-radio-button>
 
               <mat-radio-button color="primary"
                                 [checked]="userSettings.themeColor === 20"
                                 (change)="changeThemeColor(20)"
                                 value="red"
-                                class="m-r-10 text-danger">Red
+                                class="m-r-10 text-danger">{{'Red' | translate}}
               </mat-radio-button>
 
               <mat-radio-button color="primary"
                                 [checked]="userSettings.themeColor === 30"
                                 (change)="changeThemeColor(30)"
                                 value="green"
-                                class="m-r-10 text-megna">Green
+                                class="m-r-10 text-megna">{{'Green' | translate}}
               </mat-radio-button>
 
             </mat-radio-group>
@@ -62,7 +69,11 @@
         </div>
 
         <div fxFlex.gt-sm="100" fxFlex="100">
-          <button mat-raised-button color="accent" (click)="saveUserSettings()">Save settings</button>
+          <button mat-raised-button
+                  color="primary"
+                  (click)="saveUserSettings()"
+          >{{'Settings_SaveBtnCapture' | translate}}
+          </button>
         </div>
 
       </div>

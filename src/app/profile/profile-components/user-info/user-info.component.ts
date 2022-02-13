@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicationService} from "../../../service/application.service";
 import {User} from "../../../model/user";
@@ -11,37 +11,51 @@ import {EventNotificationService} from "../../../service/event-notification.serv
 import {EventNotificationCaptionEnum} from "../../../enum/event-notification-caption.enum";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UcWidgetComponent} from "ngx-uploadcare-widget";
+import {UserSettings} from "../../../model/user-settings";
 
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.scss']
 })
-export class UserInfoComponent implements OnInit, OnDestroy {
+export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
   public currentUser: User;
   public userInfo: UserInfo;
-  private subscription: Subscription;
+  private userSettings: UserSettings;
+  private subscriptions: Subscription[] = [];
   @ViewChild(UcWidgetComponent) widget!: UcWidgetComponent;
-  constructor(private translate: TranslateService,
+  constructor(public translate: TranslateService,
               public applicationService: ApplicationService,
               private userService: UserService,
               private eventNotificationService: EventNotificationService) {
-
-    this.translate.setDefaultLang(this.applicationService.loadApplicationLocale().code);
+    this.userSettings = this.applicationService.getUserSettings();
+    this.translate.setDefaultLang(this.userSettings.locale);
     this.currentUser = this.userService.getCurrentUser();
-    this.subscription = this.userService.currentUser.subscribe(cu => {
-      this.currentUser = cu;
-      this.userInfo = new UserInfo(this.currentUser, null);
-    });
+
+
+    this.subscriptions.push(
+      this.userService.currentUser.subscribe(cu => {
+        this.currentUser = cu;
+        this.userInfo = new UserInfo(this.currentUser, null)
+      }));
+
+    this.subscriptions.push(
+      this.applicationService.userSettings.subscribe(us => {
+        this.userSettings = us;
+        this.translate.use(this.userSettings.locale);
+      }));
+
     this.userInfo = new UserInfo(this.currentUser, null);
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
   }
 
   onUploadComplete($event: any) {
@@ -65,8 +79,12 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     this.widget.clearUploads();
   }
 
-  onProgress($event: any) {
+  public onProgress($event: any) {
     this.applicationService.changeRefreshing(true);
+  }
+
+  public openUploadFileDialog(): void {
+    this.widget.openDialog();
   }
 
   public async onChangeImage($event: any) {

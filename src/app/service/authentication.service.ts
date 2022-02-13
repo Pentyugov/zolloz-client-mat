@@ -86,7 +86,7 @@ export class AuthenticationService {
       return true;
 
     } else {
-      this.logOut();
+      // this.logOut();
       return false;
     }
   }

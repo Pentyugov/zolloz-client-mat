@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import {EventNotificationCaptionEnum} from "../../../enum/event-notification-caption.enum";
 import {HttpErrorResponse} from "@angular/common/http";
 import {EventNotificationService} from "../../../service/event-notification.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-user-settings',
@@ -18,14 +19,15 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
 
   public test: boolean = false;
 
-  constructor(private applicationService: ApplicationService,
+  constructor(public translate: TranslateService,
+              private applicationService: ApplicationService,
               private eventNotificationService: EventNotificationService) {
 
     this.userSettings = this.applicationService.getUserSettings();
-    console.log(this.userSettings);
+    this.translate.use(this.userSettings.locale);
     this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {
       this.userSettings = us;
-      console.log('settings subscr constr' + this.userSettings);
+      this.translate.use(this.userSettings.locale);
     }));
   }
 

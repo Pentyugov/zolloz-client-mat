@@ -1,7 +1,7 @@
 <mat-card style="height: 400px">
 
       <mat-card-content>
-        <mat-card-title>Profile info</mat-card-title>
+        <mat-card-title>{{'Profile info' | translate}}</mat-card-title>
 
         <form class="basic-form" #profileForm="ngForm">
           <div fxLayout="row wrap">
@@ -11,7 +11,7 @@
                 <input type="text"
                        required
                        matInput
-                       placeholder="Username"
+                       placeholder="{{'Username' | translate}}"
                        name="username"
                        [(ngModel)]="cloneUser.username"/>
               </mat-form-field>
@@ -21,7 +21,7 @@
               <mat-form-field>
                 <input type="text"
                        matInput
-                       placeholder="First name"
+                       placeholder="{{'First name' | translate}}"
                        name="firstName"
                        [(ngModel)]="cloneUser.firstName"/>
               </mat-form-field>
@@ -31,7 +31,7 @@
               <mat-form-field>
                 <input type="text"
                        matInput
-                       placeholder="Last name"
+                       placeholder="{{'Last name' | translate}}"
                        name="lastName"
                        [(ngModel)]="cloneUser.lastName"/>
               </mat-form-field>
@@ -42,15 +42,22 @@
                 <input type="email"
                        matInput
                        required
-                       placeholder="Email"
+                       #emailInput
+                       placeholder="{{'Email' | translate}}"
                        name="email"
                        [(ngModel)]="cloneUser.email"/>
               </mat-form-field>
             </div>
 
             <div fxFlex.gt-sm="100" fxFlex="100">
-              <button mat-raised-button color="primary" [disabled]="profileForm.invalid" (click)="openDialog()">Update Profile</button>
-              <button mat-raised-button color="warn" (click)="refreshData()" style="margin-left: 15px">Reset form</button>
+              <button mat-raised-button
+                      color="primary"
+                      [disabled]="profileForm.invalid"
+                      (click)="openDialog()">{{'Update Profile' | translate}}</button>
+              <button mat-raised-button
+                      color="warn"
+                      (click)="refreshData()"
+                      style="margin-left: 15px">{{'Reset form' | translate}}</button>
             </div>
 
           </div>
