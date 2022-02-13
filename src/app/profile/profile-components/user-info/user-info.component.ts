@@ -21,7 +21,6 @@ import {UserSettings} from "../../../model/user-settings";
 export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
   public currentUser: User;
   public userInfo: UserInfo;
-  private userSettings: UserSettings;
   private subscriptions: Subscription[] = [];
   private title: string = '';
   private message: string = '';
@@ -30,8 +29,6 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
               public applicationService: ApplicationService,
               private userService: UserService,
               private eventNotificationService: EventNotificationService) {
-    this.userSettings = this.applicationService.getUserSettings();
-    this.translate.setDefaultLang(this.userSettings.locale);
     this.currentUser = this.userService.getCurrentUser();
 
 
@@ -39,12 +36,6 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
       this.userService.currentUser.subscribe(cu => {
         this.currentUser = cu;
         this.userInfo = new UserInfo(this.currentUser, null)
-      }));
-
-    this.subscriptions.push(
-      this.applicationService.userSettings.subscribe(us => {
-        this.userSettings = us;
-        this.translate.use(this.userSettings.locale);
       }));
 
     this.userInfo = new UserInfo(this.currentUser, null);

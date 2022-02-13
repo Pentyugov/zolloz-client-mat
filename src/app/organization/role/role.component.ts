@@ -1,4 +1,4 @@
-import {Component, Inject, Optional, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, Optional, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {Role} from "../../model/role";
 import {RoleService} from "../../service/role.service";
 import {EventNotificationService} from "../../service/event-notification.service";
@@ -27,7 +27,7 @@ import {Subscription} from "rxjs";
     ]),
   ],
 })
-export class RoleComponent implements OnInit {
+export class RoleComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   public roles: Role [] = [];
@@ -48,14 +48,20 @@ export class RoleComponent implements OnInit {
     this.userSettings = this.applicationService.getUserSettings();
     this.translate.use(this.userSettings.locale);
 
-    this.applicationService.userSettings.subscribe(us => {
-      this.userSettings = us;
-      this.translate.use(this.userSettings.locale);
-    })
+    this.subscriptions.push(
+      this.applicationService.userSettings.subscribe(us => {
+        this.userSettings = us;
+        this.translate.use(this.userSettings.locale);
+      }));
+
   }
 
   ngOnInit(): void {
     this.getRoles(true);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   private getRoles(showNotification: boolean = false): void {
@@ -163,7 +169,8 @@ export class RoleContentComponent {
   action: string;
   local_data: any;
   inputWidth = 'width: ' + RoleConstants.DIALOG_WIDTH;
-  constructor(public dialogRef: MatDialogRef<RoleContentComponent>,
+  constructor(private translate: TranslateService,
+              public dialogRef: MatDialogRef<RoleContentComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Role,
   ) {
     this.local_data = { ...data };

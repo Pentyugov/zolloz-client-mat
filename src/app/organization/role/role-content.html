@@ -1,4 +1,5 @@
-<h2 class="font-medium" mat-dialog-title><strong>{{action}}</strong></h2>
+
+<h2 class="font-medium" mat-dialog-title><strong>{{action | translate}}</strong></h2>
 
 <mat-dialog-content  *ngIf="action !== 'Delete'; else elseTemplate">
   <form #userForm="ngForm">
@@ -12,7 +13,7 @@
                    id="name"
                    name="name"
                    [(ngModel)]="local_data.name"
-                   placeholder="Name"/>
+                   placeholder="{{'Name' | translate}}"/>
           </mat-form-field>
         </div>
       <div class="m-r-15 m-l-15" style="width: 600px">
@@ -24,20 +25,20 @@
                     id="description"
                     name="description"
                     [(ngModel)]="local_data.description"
-                    placeholder="Description">
+                    placeholder="{{'Description' | translate}}">
           </textarea>
         </mat-form-field>
       </div>
       </div>
 
-    <button mat-button (click)="doAction()" mat-flat-button color="warn" [disabled]="!userForm.valid">{{action}}</button>
-    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-button (click)="doAction()" mat-flat-button color="warn" [disabled]="!userForm.valid">{{action | translate}}</button>
+    <button mat-button (click)="closeDialog()">{{'Cancel' | translate}}</button>
   </form>
 </mat-dialog-content>
 <ng-template #elseTemplate>
-  <p>Sure to delete role <b>{{local_data.name}}</b> ?</p>
+  <p>{{'DeleteRoleMsg' | translate}} <b>{{local_data.name}}</b> ?</p>
   <div mat-dialog-actions align="end" class="pt-3">
-    <button mat-button (click)="doAction()" mat-flat-button color="warn">{{action}}</button>
-    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-button (click)="doAction()" mat-flat-button color="warn">{{action | translate}}</button>
+    <button mat-button (click)="closeDialog()">{{'Cancel' | translate}}</button>
   </div>
 </ng-template>
