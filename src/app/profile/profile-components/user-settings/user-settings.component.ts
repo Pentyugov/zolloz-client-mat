@@ -17,6 +17,9 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
   public userSettings: UserSettings;
   public subscriptions: Subscription[] = [];
 
+  private title: string = '';
+  private message: string = '';
+
   public test: boolean = false;
 
   constructor(public translate: TranslateService,
@@ -49,11 +52,13 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
         (userSettings: UserSettings) => {
           this.applicationService.changeSettings(userSettings);
           this.applicationService.changeRefreshing(false);
-          this.eventNotificationService.showSuccessNotification(EventNotificationCaptionEnum.SUCCESS,
-            'Settings was saved');
+          this.translate.get(EventNotificationCaptionEnum.SUCCESS).subscribe(m => this.title = m);
+          this.translate.get('SettingsUpdateSuccess').subscribe(m => this.message = m);
+          this.eventNotificationService.showSuccessNotification(this.title, this.message);
         }, (errorResponse: HttpErrorResponse) => {
         this.applicationService.changeRefreshing(false);
-          this.eventNotificationService.showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+        this.translate.get(EventNotificationCaptionEnum.ERROR).subscribe(m => this.title = m);
+          this.eventNotificationService.showErrorNotification(this.title, errorResponse.error.message);
         });
   }
 

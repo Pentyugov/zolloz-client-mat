@@ -20,6 +20,8 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
   public cloneUser: User;
   private subscriptions: Subscription[] = [];
   private userSettings: UserSettings;
+  private title: string = '';
+  private message: string = '';
   constructor(public dialog: MatDialog,
               public userService: UserService,
               public eventNotificationService: EventNotificationService,
@@ -69,12 +71,13 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
         this.currentUser = this.userService.getCurrentUser();
         this.cloneUser = this.userService.cloneUser(this.currentUser);
         this.applicationService.changeRefreshing(false);
-        this.eventNotificationService.showSuccessNotification(EventNotificationCaptionEnum.SUCCESS,
-          'You profile was successfully updated');
+        this.translate.get(EventNotificationCaptionEnum.SUCCESS).subscribe(m => this.title = m);
+        this.translate.get('ProfileUpdatedSuccess').subscribe(m => this.message = m);
+        this.eventNotificationService.showSuccessNotification(this.title, this.message);
       }, (errorResponse: HttpErrorResponse) => {
         this.applicationService.changeRefreshing(false);
-        this.eventNotificationService.showErrorNotification(EventNotificationCaptionEnum.ERROR,
-          errorResponse.error.message);
+        this.translate.get(EventNotificationCaptionEnum.ERROR).subscribe(m => this.title = m);
+        this.eventNotificationService.showErrorNotification(this.title, errorResponse.error.message);
         this.cloneUser = this.userService.cloneUser(this.currentUser);
       });
   }

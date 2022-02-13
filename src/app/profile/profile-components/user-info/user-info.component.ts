@@ -23,6 +23,8 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
   public userInfo: UserInfo;
   private userSettings: UserSettings;
   private subscriptions: Subscription[] = [];
+  private title: string = '';
+  private message: string = '';
   @ViewChild(UcWidgetComponent) widget!: UcWidgetComponent;
   constructor(public translate: TranslateService,
               public applicationService: ApplicationService,
@@ -69,10 +71,12 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.currentUser = response;
         this.userService.changeCurrentUser(this.currentUser);
         this.applicationService.changeRefreshing(false);
-        this.eventNotificationService.showSuccessNotification(EventNotificationCaptionEnum.SUCCESS,
-          'Users image was successfully updated');
+        this.translate.get(EventNotificationCaptionEnum.SUCCESS).subscribe(m => this.title = m);
+        this.translate.get('ImageUpdatedSuccess').subscribe(m => this.message = m);
+        this.eventNotificationService.showSuccessNotification(this.title, this.message);
       }, (errorResponse: HttpErrorResponse) => {
         this.applicationService.changeRefreshing(false);
+        this.translate.get(EventNotificationCaptionEnum.ERROR).subscribe(m => this.title = m);
         this.eventNotificationService.showErrorNotification(EventNotificationCaptionEnum.ERROR,errorResponse.error.message);
       });
 
@@ -105,8 +109,8 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
             this.currentUser = response;
             this.userService.changeCurrentUser(this.currentUser);
             this.applicationService.changeRefreshing(false);
-            this.eventNotificationService.showSuccessNotification(EventNotificationCaptionEnum.SUCCESS,
-              'Users image was successfully updated');
+            this.eventNotificationService.showSuccessNotification(this.title,
+              'Your image was successfully updated');
           }, (errorResponse: HttpErrorResponse) => {
             this.applicationService.changeRefreshing(false);
             this.eventNotificationService.showErrorNotification(EventNotificationCaptionEnum.ERROR,errorResponse.error.message);
@@ -142,6 +146,7 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userService.changeCurrentUser(response);
         this.currentUser = this.userService.getCurrentUser();
         this.applicationService.changeRefreshing(false);
+
         this.eventNotificationService.showSuccessNotification(EventNotificationCaptionEnum.SUCCESS,
           'Your profile image was successfully deleted');
       }, (errorResponse: HttpErrorResponse) => {
@@ -149,6 +154,8 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
       this.eventNotificationService.showErrorNotification(EventNotificationCaptionEnum.ERROR,errorResponse.error.message);
     });
   }
+
+
 }
 
 export class UserInfo {

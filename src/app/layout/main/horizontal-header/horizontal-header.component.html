@@ -86,8 +86,8 @@
   <img [src]="currentUser.profileImage" alt="user" class="profile-pic" />
 </button>
 <mat-menu #profile="matMenu" class="mymegamenu">
-  <button mat-menu-item><mat-icon>settings</mat-icon> Settings</button>
-  <button mat-menu-item (click)="navigate('/profile')"><mat-icon>account_box</mat-icon> Profile</button>
-  <button mat-menu-item><mat-icon>notifications_off</mat-icon> Disable notifications</button>
-  <button mat-menu-item (click)="onLogout()"><mat-icon>exit_to_app</mat-icon> Sign Out</button>
+<!--  <button mat-menu-item><mat-icon>settings</mat-icon> Settings</button>-->
+  <button mat-menu-item (click)="navigate('/profile')"><mat-icon>account_box</mat-icon> {{'ProfileSettings' | translate}}</button>
+<!--  <button mat-menu-item><mat-icon>notifications_off</mat-icon> Disable notifications</button>-->
+  <button mat-menu-item (click)="onLogout()"><mat-icon>exit_to_app</mat-icon> {{'SignOut' | translate}}</button>
 </mat-menu>
