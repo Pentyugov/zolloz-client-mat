@@ -1,14 +1,11 @@
 <div
   class="main-container"
-  [dir]="dir"
   [ngClass]="{
-    minisidebar: minisidebar,
-    boxed: boxed,
-    danger: danger,
-    blue: blue,
-    dark: dark,
-    green: green,
-    horizontal: horizontal
+    minisidebar: userSettings.miniSidebar,
+    blue: userSettings.themeColor === 10,
+    danger: userSettings.themeColor === 20,
+    green: userSettings.themeColor === 30,
+    dark: userSettings.darkTheme
   }">
   <mat-toolbar color="primary" class="topbar relative">
       <div class="navbar-header">
@@ -74,41 +71,44 @@
         <mat-nav-list>
           <h3 mat-subheader class="text-uppercase font-weight-bold">Settings</h3>
 
-          <mat-list-item *ngIf="!minisidebar">
-            <mat-slide-toggle color="warn" [(ngModel)]="horizontal">Horizontal Layout</mat-slide-toggle>
-          </mat-list-item>
-
-          <mat-list-item>
-            <mat-slide-toggle color="warn" (change)="dir = dir == 'rtl' ? 'ltr' : 'rtl'">RTL</mat-slide-toggle>
-          </mat-list-item>
-
-          <mat-list-item>
-            <mat-slide-toggle color="warn" [(ngModel)]="boxed">Boxed Layout</mat-slide-toggle>
+          <mat-list-item *ngIf="!horizontal">
+            <mat-slide-toggle [(ngModel)]="userSettings.miniSidebar" (change)="changeMiniSidebar()">Mini Sidebar</mat-slide-toggle>
           </mat-list-item>
 
           <mat-list-item *ngIf="!horizontal">
-            <mat-slide-toggle [(ngModel)]="minisidebar">Mini Sidebar</mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="userSettings.darkTheme" (change)="changeDarkMode()">Dark mode</mat-slide-toggle>
           </mat-list-item>
 
           <mat-divider></mat-divider>
 
           <h3 mat-subheader class="text-uppercase font-weight-bold">Colors</h3>
 
-          <mat-list-item>
-            <mat-checkbox color="warn"[(ngModel)]="danger" (change)="green = blue = false" class="text-danger">Red</mat-checkbox>
-          </mat-list-item>
-
-          <mat-list-item>
-            <mat-checkbox color="warn" [(ngModel)]="green" (change)="danger = blue = false" class="text-megna">Teal Green</mat-checkbox>
-          </mat-list-item>
-
-          <mat-list-item>
-            <mat-checkbox color="warn"[(ngModel)]="blue" (change)="green = danger = false" class="text-info">Blue</mat-checkbox>
-          </mat-list-item>
-
-          <mat-list-item>
-            <mat-checkbox color="warn" [(ngModel)]="dark" (change)="darkClick()">Dark</mat-checkbox>
-          </mat-list-item>
+          <mat-radio-group>
+            <mat-list-item>
+            <mat-radio-button color="primary"
+                              [checked]="userSettings.themeColor === 10"
+                              (change)="applySettings(10)"
+                              value="blue"
+                              class="m-r-10 text-info">Blue
+            </mat-radio-button>
+            </mat-list-item>
+            <mat-list-item>
+            <mat-radio-button color="primary"
+                              [checked]="userSettings.themeColor === 20"
+                              (change)="applySettings(20)"
+                              value="red"
+                              class="m-r-10 text-danger">Red
+            </mat-radio-button>
+            </mat-list-item>
+            <mat-list-item>
+            <mat-radio-button color="primary"
+                              [checked]="userSettings.themeColor === 30"
+                              (change)="applySettings(30)"
+                              value="green"
+                              class="m-r-10 text-megna">Green
+            </mat-radio-button>
+            </mat-list-item>
+          </mat-radio-group>
 
         </mat-nav-list>
       </div>

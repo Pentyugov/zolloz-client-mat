@@ -18,24 +18,18 @@ import {ApplicationService} from "../../service/application.service";
 export class MainComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
 
-  dir = 'ltr';
   dark = false;
   minisidebar = false;
-  boxed = false;
   horizontal = false;
 
-  green = false;
-  blue = false;
-  danger = false;
   showHide = false;
-  url = '';
   sidebarOpened = false;
   status = false;
 
   public showSearch = false;
   public config: PerfectScrollbarConfigInterface = {};
   private readonly _mobileQueryListener: () => void;
-  private userSettings: UserSettings;
+  public userSettings: UserSettings;
   private subscriptions: Subscription[] = [];
 
   public currentUser: User;
@@ -54,9 +48,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.dark = false;
-
     this.userSettings = this.applicationService.getUserSettings();
-    this.subscriptions.push(this.applicationService.userSettings.subscribe(us => this.userSettings = us));
+    this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {
+      this.userSettings = us;
+    }));
   }
 
   ngOnInit(): void {
@@ -68,13 +63,18 @@ export class MainComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  public clickEvent(): void {
-    this.status = !this.status;
+  public changeDarkMode(): void {
+    const body = document.getElementsByTagName('body')[0];
+    if (this.userSettings.darkTheme) {
+      body.classList.add('dark');
+    } else {
+      body.classList.remove('dark');
+    }
+    this.applySettings(this.userSettings.themeColor);
   }
 
-  public darkClick() {
-    const body = document.getElementsByTagName('body')[0];
-    body.classList.toggle('dark');
+  public changeMiniSidebar(): void {
+    this.applySettings(this.userSettings.themeColor);
   }
 
   public loadUserSettings(): void {
@@ -82,7 +82,16 @@ export class MainComponent implements OnInit, OnDestroy {
       (response: UserSettings) => {
         this.applicationService.changeSettings(response);
         this.userSettings = this.applicationService.getUserSettings();
-        console.log(this.userSettings);
+      }
+    );
+  }
+
+  public applySettings(theme: number = this.userSettings.themeColor): void {
+    this.userSettings.themeColor = theme;
+    this.applicationService.saveUserSettings(this.userSettings).subscribe(
+      (response: UserSettings) => {
+        this.applicationService.changeSettings(response);
+        this.userSettings = this.applicationService.getUserSettings();
       }
     );
   }

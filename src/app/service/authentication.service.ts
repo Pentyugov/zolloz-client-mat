@@ -10,6 +10,7 @@ import {CustomHttpResponse} from "../model/custom-http-response";
 import {SystemRoleName} from "../enum/system-role-name.enum";
 import {Router} from "@angular/router";
 import {EventNotificationService} from "./event-notification.service";
+import {ApplicationService} from "./application.service";
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class AuthenticationService {
 
   constructor(private httpClient: HttpClient,
               private router: Router,
+              private applicationService: ApplicationService,
               private eventNotificationService: EventNotificationService) {
     this.token = '';
     this.loggedInUsername = '';
@@ -43,6 +45,7 @@ export class AuthenticationService {
     this.token = null;
     this.loggedInUsername = null;
     localStorage.clear();
+    this.applicationService.resetUserSettings();
     this.router.navigateByUrl('/login').then(() => {
       if (showNotification) {
         this.eventNotificationService.showInfoNotification('Info', 'You have been successfully logged out');

@@ -4,7 +4,6 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {UserSettings} from "../model/user-settings";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment.prod";
-import {CustomHttpResponse} from "../model/custom-http-response";
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +39,10 @@ export class ApplicationService {
     return this.settingsSource.value;
   }
 
+  public resetUserSettings(): void {
+    this.settingsSource.next(new UserSettings());
+  }
+
   public changeSettings(userSettings: UserSettings): void {
     this.settingsSource.next(userSettings);
   }
@@ -48,8 +51,8 @@ export class ApplicationService {
     return this.httpClient.get<UserSettings>(`${this.host}/app/user-settings/get-user-settings`);
   }
 
-  public saveUserSettings(userSettings: UserSettings): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/app/user-settings/save-user-settings`, userSettings);
+  public saveUserSettings(userSettings: UserSettings): Observable<UserSettings> {
+    return this.httpClient.post<UserSettings>(`${this.host}/app/user-settings/save-user-settings`, userSettings);
   }
 
   public saveApplicationLocale(locale: Locale): void {

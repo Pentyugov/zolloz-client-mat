@@ -9,7 +9,24 @@
         <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-10 m-b-10">
           <mat-checkbox color="primary"
                         class="m-r-10"
-                        [(ngModel)]="userSettings.enableChatNotificationSound">Enable chat notifications
+                        [checked]="userSettings.enableChatNotificationSound"
+                        (change)="changeChatNotificationSound($event)"
+                        >Enable chat notifications sound
+          </mat-checkbox>
+        </div>
+
+        <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-10 m-b-10">
+          <mat-checkbox color="primary"
+                        class="m-r-10"
+                        [checked]="userSettings.miniSidebar"
+                        (change)="changeMiniSideBar($event)">Enable mini sidebar
+          </mat-checkbox>
+        </div>
+
+        <div fxFlex.gt-sm="100" fxFlex="100" class="m-t-10 m-b-10">
+          <mat-checkbox color="primary"
+                        class="m-r-10"
+                        [(ngModel)]="userSettings.darkTheme">Dark theme
           </mat-checkbox>
         </div>
 
@@ -38,14 +55,6 @@
                                 (change)="changeThemeColor(30)"
                                 value="green"
                                 class="m-r-10 text-megna">Green
-              </mat-radio-button>
-
-              <mat-radio-button color="primary"
-                                [checked]="userSettings.themeColor === 40"
-                                (change)="changeThemeColor(40)"
-                                value="dark"
-                                class="m-r-10
-                                text-dark">Dark
               </mat-radio-button>
 
             </mat-radio-group>
