@@ -10,6 +10,10 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
 import {MatSort} from "@angular/material/sort";
 import {RoleConstants} from "./role-constants";
+import {TranslateService} from "@ngx-translate/core";
+import {ApplicationService} from "../../service/application.service";
+import {UserSettings} from "../../model/user-settings";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-role',
@@ -29,12 +33,25 @@ export class RoleComponent implements OnInit {
   public roles: Role [] = [];
   public refreshing: boolean = false;
   public dataSource: MatTableDataSource<Role> = new MatTableDataSource<Role>([]);
-  columnsToDisplay = RoleConstants.TABLE_COLUMNS;
-  expandedElement: Role | null = null;
+  public columnsToDisplay = RoleConstants.TABLE_COLUMNS;
+  public expandedElement: Role | null = null;
+
+  private userSettings: UserSettings;
+  private subscriptions: Subscription[] = [];
 
   constructor(private roleService: RoleService,
+              private applicationService: ApplicationService,
               private eventNotificationService: EventNotificationService,
+              public translate: TranslateService,
               public dialog: MatDialog) {
+
+    this.userSettings = this.applicationService.getUserSettings();
+    this.translate.use(this.userSettings.locale);
+
+    this.applicationService.userSettings.subscribe(us => {
+      this.userSettings = us;
+      this.translate.use(this.userSettings.locale);
+    })
   }
 
   ngOnInit(): void {
