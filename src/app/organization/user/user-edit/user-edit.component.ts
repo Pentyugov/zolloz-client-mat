@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {UserService} from "../../../service/user.service";
 import {User} from "../../../model/user";
 import {Subscription} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Role} from "../../../model/role";
 import {RoleService} from "../../../service/role.service";
 import {MatTableDataSource} from "@angular/material/table";
@@ -41,6 +41,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
               private userService: UserService,
               private applicationService: ApplicationService,
               private translate: TranslateService,
+              private router: Router,
               private eventNotificationService: EventNotificationService) {
     this.id = activatedRouter.snapshot.paramMap.get('id');
     this.rolesDataSource = new MatTableDataSource<Role>();
@@ -95,7 +96,19 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   public onUpdateUser() {
-    console.log(this.editedUser);
+    this.applicationService.changeRefreshing(true);
+    let formData: FormData = this.userService.createUserFormData(this.editedUser, null);
+    this.subscriptions.push(
+      this.userService.updateUser(formData).subscribe(
+        (response: User) => {
+          this.editedUser = response;
+          this.applicationService.changeRefreshing(false);
+          this.router.navigateByUrl('/organization/users').then(() => {
+            this.eventNotificationService.showSuccessNotification('Success', 'User was updated');
+          });
+        }
+      )
+    );
   }
 
 
@@ -140,6 +153,21 @@ export class UserEditComponent implements OnInit, OnDestroy {
       });
 
     this.widget.clearUploads();
+  }
+
+  public deleteProfileImage() {
+    this.applicationService.changeRefreshing(true);
+    this.userService.deleteProfileImage(this.editedUser.id).subscribe(
+      (response: User) => {
+        this.editedUser.profileImage = response.profileImage;
+        this.applicationService.changeRefreshing(false);
+
+        this.eventNotificationService.showSuccessNotification(EventNotificationCaptionEnum.SUCCESS,
+          'Your profile image was successfully deleted');
+      }, (errorResponse: HttpErrorResponse) => {
+        this.applicationService.changeRefreshing(false);
+        this.eventNotificationService.showErrorNotification(EventNotificationCaptionEnum.ERROR,errorResponse.error.message);
+      });
   }
 
   public onProgress($event: any) {

@@ -15,7 +15,8 @@
           <button mat-stroked-button
                   style="width: 170px"
                   color="warn"
-                  class="m-t-10 m-b-10">{{'Delete' | translate}}</button>
+                  class="m-t-10 m-b-10"
+                  (click)="deleteProfileImage()">{{'Delete' | translate}}</button>
           <ngx-uploadcare-widget
             [hidden]="true"
             images-only="true"
