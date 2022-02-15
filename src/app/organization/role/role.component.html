@@ -31,6 +31,7 @@
       <mat-card-content>
         <mat-card-title>{{'UserRoles' | translate}}</mat-card-title>
         <div class="table-responsive">
+
           <table mat-table matSort [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8 roles-table">
 
             <ng-container matColumnDef="number">
@@ -83,6 +84,7 @@
                 (click)="expandedElement = expandedElement === element ? null : element"></tr>
             <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
           </table>
+
           <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
       </mat-card-content>

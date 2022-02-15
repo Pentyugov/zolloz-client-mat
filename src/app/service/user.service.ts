@@ -13,24 +13,39 @@ import {BehaviorSubject} from "rxjs";
 export class UserService {
 
   private host = environment.API_URL;
-  private userSource: BehaviorSubject<User>;
+  private currentUserSource: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+
+  private editedUserSource: BehaviorSubject<User>;
+  public editedUser: Observable<User>;
 
   constructor(private httpClient: HttpClient,
               private authenticationService: AuthenticationService) {
 
-    this.userSource = new BehaviorSubject(this.authenticationService.getUserFromLocalCache());
-    this.currentUser = this.userSource.asObservable();
+    this.currentUserSource = new BehaviorSubject(this.authenticationService.getUserFromLocalCache());
+    this.currentUser = this.currentUserSource.asObservable();
+
+    this.editedUserSource = new BehaviorSubject(new User());
+    this.editedUser = this.editedUserSource.asObservable();
   }
 
   public changeCurrentUser(user: User): void {
-    this.userSource.next(user);
+    this.currentUserSource.next(user);
     this.authenticationService.addUserToLocalCache(user);
   }
 
   public getCurrentUser(): User {
-    return this.userSource.value;
+    return this.currentUserSource.value;
   }
+
+  public changeEditedUser(user: User): void {
+    this.editedUserSource.next(user);
+  }
+
+  public getEditedUser(): User {
+    return this.editedUserSource.value;
+  }
+
   public getUsers(): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.host}/user/get-all-users`);
   }
@@ -41,6 +56,10 @@ export class UserService {
 
   public updateUser(formData: FormData): Observable<User> {
     return this.httpClient.post<User>(`${this.host}/user/update-user`, formData);
+  }
+
+  public getUserById(id: String): Observable<User> {
+    return this.httpClient.get<User>(`${this.host}/user/get-by-id/${id}`);
   }
 
   public resetPassword(email: string): Observable<CustomHttpResponse> {
