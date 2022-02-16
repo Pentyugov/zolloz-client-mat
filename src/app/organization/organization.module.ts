@@ -17,7 +17,7 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MatInputModule} from "@angular/material/input";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
-import { UserAddComponent } from './user/user-add/user-add.component';
+import {UserAddComponent, UserAddDialogComponent} from './user/user-add/user-add.component';
 
 
 @NgModule({
@@ -29,6 +29,7 @@ import { UserAddComponent } from './user/user-add/user-add.component';
     UserComponent,
     UserEditComponent,
     UserEditDialogComponent,
+    UserAddDialogComponent,
     UserAddComponent,
   ],
   imports: [

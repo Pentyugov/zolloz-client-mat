@@ -96,7 +96,7 @@ export class UserService {
   }
 
 
-  public createUserFormData(user: User, profileImage: File | null): FormData {
+  public createUserFormData(user: User, profileImage: File | string | null): FormData {
     const formData = new FormData();
     formData.append('currentUserId', user.id);
     formData.append('username', user.username);

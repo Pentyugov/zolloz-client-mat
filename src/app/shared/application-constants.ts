@@ -4,6 +4,10 @@ export class ApplicationConstants {
   static readonly DIALOG_ACTION_UPDATE = 'Update';
   static readonly DIALOG_ACTION_DELETE = 'Delete';
   static readonly DIALOG_ACTION_CANCEL = 'Cancel';
+  static readonly DIALOG_ACTION_SAVE = 'Save';
+
+
+  static readonly DEFAULT_ROLE = 'USER';
 
   static readonly APP_DEFAULT_LOCALE: Locale = {
     language: 'English',

@@ -57,12 +57,11 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {
       this.translate.use(us.locale);
-    }))
+    }));
   }
 
   ngOnInit(): void {
     this.loadEditedUser();
-    this.loadRoles();
   }
 
   ngOnDestroy(): void {
