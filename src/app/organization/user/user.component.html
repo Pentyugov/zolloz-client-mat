@@ -7,17 +7,20 @@
           <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
             <mat-form-field>
               <input matInput
-                     placeholder="Search User"
+                     placeholder="{{'SearchUser' | translate}}"
                      (keyup)="applyFilter($event.target.value)"
               />
             </mat-form-field>
           </div>
           <div fxFlex.gt-md="75" class="text-right">
-            <button mat-raised-button
-                    color="primary"
-                    (click)="openDialog('Add', {})">
-              Add User
-            </button>
+            <a  [routerLink]="['/organization/users/add']" class="m-r-10 cursor-pointer">
+              <button mat-raised-button
+                      color="primary"
+                      (click)="openDialog('Add', {})">
+                {{'AddUser' | translate}}
+              </button>
+            </a>
+
           </div>
         </div>
       </mat-card-content>
@@ -37,7 +40,7 @@
             </ng-container>
 
             <ng-container matColumnDef="profileImage">
-              <th mat-header-cell *matHeaderCellDef>profileImage</th>
+              <th mat-header-cell *matHeaderCellDef>{{'ProfileImage' | translate}}</th>
               <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)">
                 <div class="d-flex">
                   <img class="mat-card-avatar" [src]="element.profileImage" alt=""/>
@@ -51,17 +54,17 @@
             </ng-container>
 
             <ng-container matColumnDef="firstName">
-              <th mat-header-cell *matHeaderCellDef class="wide">{{'firstName' | translate}}</th>
+              <th mat-header-cell *matHeaderCellDef class="wide">{{'FirstName' | translate}}</th>
               <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)" class="action-link data wide">{{element.firstName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="lastName">
-              <th mat-header-cell *matHeaderCellDef class="wide">{{'lastName' | translate}}</th>
+              <th mat-header-cell *matHeaderCellDef class="wide">{{'LastName' | translate}}</th>
               <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)" class="action-link data wide">{{element.lastName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef class="wide">{{'email' | translate}}</th>
+              <th mat-header-cell *matHeaderCellDef class="wide">{{'Email' | translate}}</th>
               <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)" class="action-link data wide">{{element.email}}</td>
             </ng-container>
 

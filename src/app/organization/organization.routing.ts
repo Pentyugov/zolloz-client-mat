@@ -4,6 +4,7 @@ import {EmployeeComponent} from "./employee/employee.component";
 import {RoleComponent} from "./role/role.component";
 import {UserComponent} from "./user/user.component";
 import {UserEditComponent} from "./user/user-edit/user-edit.component";
+import {UserAddComponent} from "./user/user-add/user-add.component";
 
 export const OrganizationRoutes: Routes = [
   {path: '',
@@ -13,7 +14,10 @@ export const OrganizationRoutes: Routes = [
         component: DepartmentComponent,
         data: {
           title: 'Departments',
-          urls: [{ title: 'Organization', url: '/organization' }, { title: 'Departments' }],
+          urls: [
+            { title: 'Organization', url: '/organization' },
+            { title: 'Departments' }
+            ],
         }
       },
 
@@ -22,7 +26,10 @@ export const OrganizationRoutes: Routes = [
         component: EmployeeComponent,
         data: {
           title: 'Employees',
-          urls: [{ title: 'Organization', url: '/organization' }, { title: 'Employees' }],
+          urls: [
+            { title: 'Organization', url: '/organization' },
+            { title: 'Employees' }
+            ],
         }
       },
 
@@ -31,7 +38,10 @@ export const OrganizationRoutes: Routes = [
         component: RoleComponent,
         data: {
           title: 'Roles',
-          urls: [{ title: 'Organization', url: '/organization' }, { title: 'Roles' }],
+          urls: [
+            { title: 'Organization', url: '/organization' },
+            { title: 'Roles' }
+            ],
         }
       },
 
@@ -40,7 +50,10 @@ export const OrganizationRoutes: Routes = [
         component: UserComponent,
         data: {
           title: 'Users',
-          urls: [{ title: 'Organization', url: '/organization' }, { title: 'Users' }],
+          urls: [
+            { title: 'Organization', url: '/organization' },
+            { title: 'Users' }
+            ],
         }
       },
 
@@ -49,7 +62,24 @@ export const OrganizationRoutes: Routes = [
         component: UserEditComponent,
         data: {
           title: 'Users',
-          urls: [{ title: 'Organization', url: '/organization'}, { title: 'Users', url: '/organization/users'}, {title: 'Edit'}],
+          urls: [
+            { title: 'Organization', url: '/organization'},
+            { title: 'Users', url: '/organization/users'},
+            {title: 'Edit'}
+            ],
+        }
+      },
+
+      {
+        path: 'users/add',
+        component: UserAddComponent,
+        data: {
+          title: 'Users',
+          urls: [
+            { title: 'Organization', url: '/organization'},
+            { title: 'Users', url: '/organization/users'},
+            {title: 'Add'}
+            ],
         }
       },
     ]

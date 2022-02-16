@@ -12,11 +12,12 @@ import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
 import {HttpLoaderFactory} from "../app.module";
 import {UserComponent} from './user/user.component';
-import {UserEditComponent} from './user/user-edit/user-edit.component';
+import {UserEditComponent, UserEditDialogComponent} from './user/user-edit/user-edit.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MatInputModule} from "@angular/material/input";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
+import { UserAddComponent } from './user/user-add/user-add.component';
 
 
 @NgModule({
@@ -27,6 +28,8 @@ import {UcWidgetModule} from "ngx-uploadcare-widget";
     RoleContentComponent,
     UserComponent,
     UserEditComponent,
+    UserEditDialogComponent,
+    UserAddComponent,
   ],
   imports: [
     CommonModule,

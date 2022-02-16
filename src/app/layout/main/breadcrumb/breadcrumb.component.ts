@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, NavigationEnd, ActivatedRoute, Data } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs/operators';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-breadcrumb',
@@ -10,9 +11,9 @@ import { filter, map, mergeMap } from 'rxjs/operators';
   ]
 })
 export class BreadcrumbComponent {
-// @Input() layout;
 pageInfo: Data = Object.create(null);
 constructor(
+  public translate: TranslateService,
   private router: Router,
   private activatedRoute: ActivatedRoute,
   private titleService: Title,

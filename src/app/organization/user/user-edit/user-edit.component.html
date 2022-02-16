@@ -52,7 +52,7 @@
                 <a [routerLink]="['/organization/users']">
                   <button mat-stroked-button color="warn" class="m-r-10">{{'Cancel' | translate}}</button>
                 </a>
-                <button mat-raised-button color="primary" (click)="onUpdateUser()">{{'SaveUser' | translate}}</button>
+                <button mat-raised-button color="primary" (click)="openDialog('Update', editedUser)">{{'SaveUser' | translate}}</button>
               </div>
             </div>
 

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {UserService} from "../../../service/user.service";
 import {User} from "../../../model/user";
 import {Subscription} from "rxjs";
@@ -14,6 +14,9 @@ import {EventNotificationCaptionEnum} from "../../../enum/event-notification-cap
 import {HttpErrorResponse} from "@angular/common/http";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {RoleConstants} from "../../role/role-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 
 @Component({
   selector: 'app-user-edit',
@@ -42,7 +45,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
               private applicationService: ApplicationService,
               private translate: TranslateService,
               private router: Router,
-              private eventNotificationService: EventNotificationService) {
+              private eventNotificationService: EventNotificationService,
+              private dialog: MatDialog) {
     this.id = activatedRouter.snapshot.paramMap.get('id');
     this.rolesDataSource = new MatTableDataSource<Role>();
     this.refreshing = this.applicationService.getRefreshing();
@@ -86,6 +90,19 @@ export class UserEditComponent implements OnInit, OnDestroy {
           this.rolesDataSource.paginator = this.paginator;
         })
     );
+  }
+
+  public openDialog(action: string, data: any): void {
+    data.action = action;
+    const dialogRef = this.dialog.open(UserEditDialogComponent, {
+      data: data,
+      width: RoleConstants.DIALOG_WIDTH
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.event === ApplicationConstants.DIALOG_ACTION_UPDATE) {
+        this.onUpdateUser();
+      }
+    });
   }
 
   public itemsEquals(objOne: any, objTwo: any): boolean {
@@ -180,6 +197,35 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   private addRoleToUser(role: Role): void {
     this.editedUser.roles.push(role);
+  }
+}
+
+
+@Component({
+  selector: 'app-user-edit-dialog',
+  templateUrl: 'user-edit-dialog.component.html',
+  styleUrls: []
+})
+export class UserEditDialogComponent {
+  action: string;
+  local_data: any;
+  constructor(private translate: TranslateService,
+              public dialogRef: MatDialogRef<UserEditDialogComponent>,
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: User) {
+    this.local_data = { ...data };
+    this.action = this.local_data.action;
+  }
+
+  doAction(): void {
+    this.dialogRef.close({
+      event: ApplicationConstants.DIALOG_ACTION_UPDATE
+    });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close({
+      event: ApplicationConstants.DIALOG_ACTION_CANCEL
+    });
   }
 }
 

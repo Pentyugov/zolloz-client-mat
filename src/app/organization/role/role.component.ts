@@ -171,10 +171,10 @@ export class RoleContentComponent {
   inputWidth = 'width: ' + RoleConstants.DIALOG_WIDTH;
   constructor(private translate: TranslateService,
               public dialogRef: MatDialogRef<RoleContentComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: Role,
-  ) {
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: Role) {
     this.local_data = { ...data };
     this.action = this.local_data.action;
+    console.log(this.action);
   }
 
   doAction(): void {
