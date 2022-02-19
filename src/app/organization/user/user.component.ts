@@ -83,7 +83,7 @@ export class UserComponent implements OnInit, OnDestroy {
     }
   }
 
-  openDialog(user: User, ) {
+  openDialog(user: User) {
     this.userToDelete = user;
     const dialogRef = this.dialog.open(UserDeleteDialogComponent, {
       data: this.userToDelete,

@@ -4,7 +4,7 @@
     <mat-card>
       <mat-card-content>
         <div fxLayout="row wrap" class="align-items-center">
-          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="50">
             <mat-form-field>
               <input matInput
                      placeholder="{{'SearchDepartment' | translate}}"
@@ -12,7 +12,7 @@
               />
             </mat-form-field>
           </div>
-          <div fxFlex.gt-md="75" class="text-right">
+          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="50" class="text-right">
             <a  [routerLink]="['/organization/departments/add']" class="m-r-10 cursor-pointer">
               <button mat-raised-button
                       color="primary">
@@ -41,22 +41,22 @@
 
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Name' | translate}}</th>
-              <td mat-cell *matCellDef="let department" (dblclick)="openEditor(department)" class="action-link data">{{department.name}}</td>
+              <td mat-cell *matCellDef="let department" class="action-link data">{{department.name}}</td>
             </ng-container>
 
             <ng-container matColumnDef="parentDept">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'ParentDeptName' | translate}}</th>
-              <td mat-cell *matCellDef="let department" (dblclick)="openEditor(department)" class="action-link data">{{department.parentDepartment?.name}}</td>
+              <td mat-cell *matCellDef="let department" class="action-link data">{{department.parentDepartment?.name}}</td>
             </ng-container>
 
             <ng-container matColumnDef="code">
               <th mat-header-cell *matHeaderCellDef class="wide" mat-sort-header>{{'Code' | translate}}</th>
-              <td mat-cell *matCellDef="let department" (dblclick)="openEditor(department)" class="action-link data wide">{{department.code}}</td>
+              <td mat-cell *matCellDef="let department" class="action-link data wide">{{department.code}}</td>
             </ng-container>
 
             <ng-container matColumnDef="head">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'HeadDept' | translate}}</th>
-              <td mat-cell *matCellDef="let department" (dblclick)="openEditor(department)" class="action-link data wide">
+              <td mat-cell *matCellDef="let department" class="action-link data wide">
                 <mat-checkbox color="primary"
                               class="m-l-10"
                               disabled
@@ -69,11 +69,11 @@
 
             <ng-container matColumnDef="action">
               <th mat-header-cell class="action-header" *matHeaderCellDef>{{'Actions' | translate}}</th>
-              <td mat-cell *matCellDef="let element" class="action-link">
-                <a  [routerLink]="['/organization/departments/edit', element.id]" class="m-r-10 cursor-pointer">
+              <td mat-cell *matCellDef="let department" class="action-link">
+                <a  [routerLink]="['/organization/departments/edit', department.id]" class="m-r-10 cursor-pointer">
                   <i class="fa fa-pencil"></i>
                 </a>
-                <a (click)="openDialog(element)" class="m-r-10 cursor-pointer">
+                <a (click)="openDeleteDialog(department)" class="m-r-10 cursor-pointer">
                   <i class="fas fa-trash text-danger"></i>
                 </a>
               </td>

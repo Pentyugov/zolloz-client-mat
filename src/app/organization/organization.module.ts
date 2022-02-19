@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DepartmentComponent} from './department/department.component';
+import {DepartmentComponent, DepartmentDeleteDialogComponent} from './department/department.component';
 import {RouterModule} from "@angular/router";
 import {OrganizationRoutes} from "./organization.routing";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -19,7 +19,10 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
 import {UserAddComponent, UserAddDialogComponent} from './user/user-add/user-add.component';
 import { DepartmentEditComponent } from './department/department-edit/department-edit.component';
-import { DepartmentAddComponent } from './department/department-add/department-add.component';
+import {
+  DepartmentAddComponent,
+  DepartmentAddDialogComponent
+} from './department/department-add/department-add.component';
 
 
 @NgModule({
@@ -36,6 +39,8 @@ import { DepartmentAddComponent } from './department/department-add/department-a
     UserAddComponent,
     DepartmentEditComponent,
     DepartmentAddComponent,
+    DepartmentAddDialogComponent,
+    DepartmentDeleteDialogComponent,
   ],
   imports: [
     CommonModule,

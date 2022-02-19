@@ -40,7 +40,7 @@
 
             <ng-container matColumnDef="profileImage">
               <th mat-header-cell *matHeaderCellDef>{{'ProfileImage' | translate}}</th>
-              <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)">
+              <td mat-cell *matCellDef="let element">
                 <div class="d-flex">
                   <img class="mat-card-avatar" [src]="element.profileImage" alt=""/>
                 </div>
@@ -49,22 +49,22 @@
 
             <ng-container matColumnDef="username">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Username' | translate}}</th>
-              <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)" class="action-link data">{{element.username}}</td>
+              <td mat-cell *matCellDef="let element" class="action-link data">{{element.username}}</td>
             </ng-container>
 
             <ng-container matColumnDef="firstName">
               <th mat-header-cell *matHeaderCellDef class="wide" mat-sort-header>{{'FirstName' | translate}}</th>
-              <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)" class="action-link data wide">{{element.firstName}}</td>
+              <td mat-cell *matCellDef="let element" class="action-link data wide">{{element.firstName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="lastName">
               <th mat-header-cell *matHeaderCellDef class="wide" mat-sort-header>{{'LastName' | translate}}</th>
-              <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)" class="action-link data wide">{{element.lastName}}</td>
+              <td mat-cell *matCellDef="let element" class="action-link data wide">{{element.lastName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="email">
               <th mat-header-cell *matHeaderCellDef class="wide" mat-sort-header>{{'Email' | translate}}</th>
-              <td mat-cell *matCellDef="let element" (dblclick)="openEditor(element)" class="action-link data wide">{{element.email}}</td>
+              <td mat-cell *matCellDef="let element" class="action-link data wide">{{element.email}}</td>
             </ng-container>
 
             <ng-container matColumnDef="action">

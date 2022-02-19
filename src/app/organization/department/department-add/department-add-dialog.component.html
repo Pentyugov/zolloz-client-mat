@@ -1,7 +1,7 @@
 <h2 class="font-medium" mat-dialog-title><strong>{{action | translate}}</strong></h2>
 
 <mat-dialog-content style="height: 130px; width: 600px">
-  <p>{{'SaveUserMsg' | translate}} <b>{{local_data.username}}</b> ?</p>
+  <p>{{'DepartmentSaveMsg' | translate}} <b>{{local_data.name}}</b> ?</p>
   <div mat-dialog-actions align="end" class="pt-3">
     <button mat-button (click)="closeDialog()" mat-flat-button color="warn">{{'Cancel' | translate}}</button>
     <button mat-button (click)="doAction()" mat-flat-button color="primary">{{action | translate}}</button>
