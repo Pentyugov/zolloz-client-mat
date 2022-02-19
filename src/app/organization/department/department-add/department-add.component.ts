@@ -59,7 +59,9 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
     );
   }
 
-  test() {
-    console.log(this.department.parentDepartment)
+  public changeHeadValue($event: any): void {
+    if ($event.checked) {
+      this.department.parentDepartment = null;
+    }
   }
 }

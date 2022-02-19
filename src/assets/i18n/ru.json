@@ -66,6 +66,7 @@
   "Code" : "Код",
   "EditDepartment" : "Редактирование подразделения ",
   "CreateDepartment" : "Создание подразделения",
+  "EmployeesOfDepartment" : "Сотрудники подразделения",
   "DeleteRoleMsg" : "Удалить роль  ",
   "UpdateUserMsg" : "Обновить данные пользователя ",
   "SaveUserMsg" : "Сохранить пользователя ",
