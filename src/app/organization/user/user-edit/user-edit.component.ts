@@ -15,7 +15,6 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {RoleConstants} from "../../role/role-constants";
 import {ApplicationConstants} from "../../../shared/application-constants";
 
 @Component({
@@ -29,6 +28,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   @ViewChild(UcWidgetComponent) widget!: UcWidgetComponent;
   public displayedColumns = ['number', 'assigned', 'name', 'description'];
   public editedUser: User = new User();
+  public usernameTitle: string = '';
   public roles: Role[] = [];
   public rolesDataSource: MatTableDataSource<Role>;
   public refreshing = true;
@@ -73,6 +73,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
       this.userService.getUserById(this.id).subscribe(
         (response: User) => {
           this.editedUser = response;
+          this.usernameTitle = this.editedUser.username;
           this.userRoles = this.editedUser.roles;
           this.loadRoles();
         })
@@ -95,7 +96,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
     data.action = action;
     const dialogRef = this.dialog.open(UserEditDialogComponent, {
       data: data,
-      width: RoleConstants.DIALOG_WIDTH
+      width: ApplicationConstants.DIALOG_WIDTH
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.event === ApplicationConstants.DIALOG_ACTION_UPDATE) {

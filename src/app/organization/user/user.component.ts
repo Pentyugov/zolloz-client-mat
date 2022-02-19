@@ -1,15 +1,18 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../model/user";
 import {MatTableDataSource} from "@angular/material/table";
-import {UserConstants} from "./user-constants";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {Role} from "../../model/role";
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicationService} from "../../service/application.service";
 import {UserSettings} from "../../model/user-settings";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {ApplicationConstants} from "../../shared/application-constants";
+import {CustomHttpResponse} from "../../model/custom-http-response";
+import {EventNotificationService} from "../../service/event-notification.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-user',
@@ -23,14 +26,19 @@ export class UserComponent implements OnInit, OnDestroy {
   public editorOpened: boolean = false;
   public editedUser: User = new User();
   public users: User[] = [];
-  public columnsToDisplay = UserConstants.TABLE_COLUMNS;
+  public columnsToDisplay = ApplicationConstants.USER_TABLE_COLUMNS;
   public dataSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   private subscriptions: Subscription[] = [];
   private userSettings: UserSettings;
+  private userToDelete: User = new User();
+  private title: string = '';
+  private message: string = '';
   public refreshing = false;
   constructor(private userService: UserService,
               private translate: TranslateService,
-              private applicationService: ApplicationService) {
+              private applicationService: ApplicationService,
+              private dialog: MatDialog,
+              private eventNotificationService: EventNotificationService) {
     this.userSettings = this.applicationService.getUserSettings();
     this.refreshing = this.applicationService.getRefreshing();
     this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {
@@ -75,8 +83,33 @@ export class UserComponent implements OnInit, OnDestroy {
     }
   }
 
-  openDialog(add: string, param2: {}) {
+  openDialog(user: User, ) {
+    this.userToDelete = user;
+    const dialogRef = this.dialog.open(UserDeleteDialogComponent, {
+      data: this.userToDelete,
+      width: ApplicationConstants.DIALOG_WIDTH
+    });
 
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.event === ApplicationConstants.DIALOG_ACTION_DELETE) {
+        this.onDeleteUser();
+      }
+    });
+
+  }
+
+  private onDeleteUser(): void {
+    this.subscriptions.push(
+      this.userService.deleteUser(this.userToDelete.id).subscribe(
+        (response: CustomHttpResponse) => {
+          this.subscriptions.push(this.translate.get('Success' ,).subscribe(m => this.title = m));
+          this.loadUsers();
+          this.eventNotificationService.showSuccessNotification(this.title, response.message);
+        }, (errorResponse: HttpErrorResponse) => {
+          this.subscriptions.push(this.translate.get('Error' ,).subscribe(m => this.title = m));
+          this.eventNotificationService.showSuccessNotification(this.title, errorResponse.error.message);
+        })
+    );
   }
 
   openEditor(user: User): void {
@@ -84,8 +117,34 @@ export class UserComponent implements OnInit, OnDestroy {
     this.editorOpened = true;
   }
 
-  onEditorClose(test: boolean) {
-    this.ngOnInit();
-    this.editorOpened = !test;
+
+}
+
+@Component({
+  selector: 'app-user-delete-dialog',
+  templateUrl: 'user-delete-dialog.component.html',
+  styleUrls: []
+})
+export class UserDeleteDialogComponent {
+  action: string;
+  local_data: any;
+  constructor(private translate: TranslateService,
+              public dialogRef: MatDialogRef<UserDeleteDialogComponent>,
+              @Optional() @Inject(MAT_DIALOG_DATA) public data: User) {
+    this.local_data = { ...data };
+    this.action = this.local_data.action;
+  }
+
+  doAction(): void {
+    this.dialogRef.close({
+      event: ApplicationConstants.DIALOG_ACTION_DELETE
+    });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close({
+      event: ApplicationConstants.DIALOG_ACTION_CANCEL
+    });
   }
 }
+

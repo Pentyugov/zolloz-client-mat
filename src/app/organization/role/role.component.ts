@@ -9,11 +9,11 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
 import {MatSort} from "@angular/material/sort";
-import {RoleConstants} from "./role-constants";
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicationService} from "../../service/application.service";
 import {UserSettings} from "../../model/user-settings";
 import {Subscription} from "rxjs";
+import {ApplicationConstants} from "../../shared/application-constants";
 
 @Component({
   selector: 'app-role',
@@ -33,7 +33,7 @@ export class RoleComponent implements OnInit, OnDestroy {
   public roles: Role [] = [];
   public refreshing: boolean = false;
   public dataSource: MatTableDataSource<Role> = new MatTableDataSource<Role>([]);
-  public columnsToDisplay = RoleConstants.TABLE_COLUMNS;
+  public columnsToDisplay = ApplicationConstants.ROLE_TABLE_COLUMNS;
   public expandedElement: Role | null = null;
 
   private userSettings: UserSettings;
@@ -89,14 +89,14 @@ export class RoleComponent implements OnInit, OnDestroy {
     role.action = action;
     const dialogRef = this.dialog.open(RoleContentComponent, {
       data: role,
-      width: RoleConstants.DIALOG_WIDTH
+      width: ApplicationConstants.DIALOG_WIDTH
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.event === RoleConstants.DIALOG_ACTION_ADD) {
+      if (result.event === ApplicationConstants.DIALOG_ACTION_ADD) {
         this.onCreateRole(result.data);
-      } else if (result.event === RoleConstants.DIALOG_ACTION_UPDATE) {
+      } else if (result.event === ApplicationConstants.DIALOG_ACTION_UPDATE) {
         this.onUpdateRole(result.data);
-      } else if (result.event === RoleConstants.DIALOG_ACTION_DELETE) {
+      } else if (result.event === ApplicationConstants.DIALOG_ACTION_DELETE) {
         this.onDeleteRole(result.data);
       }
     });
@@ -168,7 +168,7 @@ export class RoleComponent implements OnInit, OnDestroy {
 export class RoleContentComponent {
   action: string;
   local_data: any;
-  inputWidth = 'width: ' + RoleConstants.DIALOG_WIDTH;
+  inputWidth = 'width: ' + ApplicationConstants.DIALOG_WIDTH;
   constructor(private translate: TranslateService,
               public dialogRef: MatDialogRef<RoleContentComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: Role) {

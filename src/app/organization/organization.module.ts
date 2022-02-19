@@ -11,13 +11,15 @@ import {FlexLayoutModule} from "@angular/flex-layout";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {HttpClient} from "@angular/common/http";
 import {HttpLoaderFactory} from "../app.module";
-import {UserComponent} from './user/user.component';
+import {UserComponent, UserDeleteDialogComponent} from './user/user.component';
 import {UserEditComponent, UserEditDialogComponent} from './user/user-edit/user-edit.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MatInputModule} from "@angular/material/input";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
 import {UserAddComponent, UserAddDialogComponent} from './user/user-add/user-add.component';
+import { DepartmentEditComponent } from './department/department-edit/department-edit.component';
+import { DepartmentAddComponent } from './department/department-add/department-add.component';
 
 
 @NgModule({
@@ -30,7 +32,10 @@ import {UserAddComponent, UserAddDialogComponent} from './user/user-add/user-add
     UserEditComponent,
     UserEditDialogComponent,
     UserAddDialogComponent,
+    UserDeleteDialogComponent,
     UserAddComponent,
+    DepartmentEditComponent,
+    DepartmentAddComponent,
   ],
   imports: [
     CommonModule,

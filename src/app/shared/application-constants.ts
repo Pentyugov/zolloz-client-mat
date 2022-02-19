@@ -1,10 +1,13 @@
 export class ApplicationConstants {
-
+  static readonly DIALOG_WIDTH = '600px';
   static readonly DIALOG_ACTION_ADD = 'Add';
   static readonly DIALOG_ACTION_UPDATE = 'Update';
   static readonly DIALOG_ACTION_DELETE = 'Delete';
   static readonly DIALOG_ACTION_CANCEL = 'Cancel';
   static readonly DIALOG_ACTION_SAVE = 'Save';
+  static readonly USER_TABLE_COLUMNS = ['number', 'profileImage', 'username', 'firstName', 'lastName', 'email', 'action'];
+  static readonly ROLE_TABLE_COLUMNS = ['number', 'name', 'description', 'permissions', 'action', ];
+  static readonly DEPARTMENT_TABLE_COLUMNS = ['number', 'name', 'parentDept', 'code', 'head', 'action'];
 
 
   static readonly DEFAULT_ROLE = 'USER';

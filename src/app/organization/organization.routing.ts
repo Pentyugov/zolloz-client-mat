@@ -5,6 +5,8 @@ import {RoleComponent} from "./role/role.component";
 import {UserComponent} from "./user/user.component";
 import {UserEditComponent} from "./user/user-edit/user-edit.component";
 import {UserAddComponent} from "./user/user-add/user-add.component";
+import {DepartmentEditComponent} from "./department/department-edit/department-edit.component";
+import {DepartmentAddComponent} from "./department/department-add/department-add.component";
 
 export const OrganizationRoutes: Routes = [
   {path: '',
@@ -18,6 +20,32 @@ export const OrganizationRoutes: Routes = [
             { title: 'Organization', url: '/organization' },
             { title: 'Departments' }
             ],
+        }
+      },
+
+      {
+        path: 'departments/edit/:id',
+        component: DepartmentEditComponent,
+        data: {
+          title: 'Departments',
+          urls: [
+            { title: 'Organization', url: '/organization'},
+            { title: 'Departments', url: '/organization/departments'},
+            {title: 'Edit'}
+          ],
+        }
+      },
+
+      {
+        path: 'departments/add',
+        component: DepartmentAddComponent,
+        data: {
+          title: 'Departments',
+          urls: [
+            { title: 'Organization', url: '/organization'},
+            { title: 'Departments', url: '/organization/departments'},
+            {title: 'Add'}
+          ],
         }
       },
 

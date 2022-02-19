@@ -15,7 +15,6 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {EventNotificationService} from "../../../service/event-notification.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ApplicationConstants} from "../../../shared/application-constants";
-import {RoleConstants} from "../../role/role-constants";
 import {Router} from "@angular/router";
 
 @Component({
@@ -113,7 +112,7 @@ export class UserAddComponent implements OnInit, OnDestroy {
     data.action = action;
     const dialogRef = this.dialog.open(UserAddDialogComponent, {
       data: data,
-      width: RoleConstants.DIALOG_WIDTH
+      width: ApplicationConstants.DIALOG_WIDTH
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.event === ApplicationConstants.DIALOG_ACTION_UPDATE) {

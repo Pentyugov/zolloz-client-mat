@@ -1,0 +1,110 @@
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="refreshing"></mat-progress-bar>
+<div fxLayout="row wrap">
+
+  <div fxFlex.gt-lg="50" fxFlex.gt-md="60" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card style="min-height: 480px">
+      <mat-card-content>
+        <span>
+          <form #departmentAddForm="ngForm">
+            <div fxLayout="row wrap" class="align-items-center m-b-15">
+              <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+                <h3 class="m-0">
+                  <div class="d-flex">
+                    <span ngDefaultControl>{{'CreateDepartment' | translate}}</span>
+                  </div>
+
+                </h3>
+              </div>
+              <div fxFlex.gt-md="75" class="text-right">
+                <a [routerLink]="['/organization/departments']">
+                  <button mat-stroked-button color="warn" class="m-r-10">{{'Cancel' | translate}}</button>
+                </a>
+                <button mat-raised-button color="primary" (click)="openDialog('Update', department)">{{'Save' | translate}}</button>
+              </div>
+            </div>
+
+            <hr/>
+
+            <div fxLayout="row wrap" class="align-items-center m-t-30 m-b-15">
+              <div fxFlex="100" fxFlex.gt-md="100">
+                <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                  <mat-label>{{'Name' | translate}}</mat-label>
+                  <input matInput
+                         placeholder="{{'Name' | translate}}"
+                         name="name"
+                         [(ngModel)]="department.name"/>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-md="100">
+                <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                  <mat-label>{{'Code' | translate}}</mat-label>
+                  <input matInput
+                         placeholder="{{'Code' | translate}}"
+                         name="code"
+                         [(ngModel)]="department.code" />
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-md="100">
+                <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                  <mat-select placeholder="Parent department"
+                              name="food"
+                              [(ngModel)]="department.parentDepartment"
+                              (selectionChange)="test()">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let department of departmentList" [value]="department">
+                      {{ department.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-md="50">
+                <mat-checkbox color="primary"
+                              class="m-r-10 m-t-10"
+                              [(ngModel)]="department.head"
+                >{{'HeadDept' | translate}}
+                </mat-checkbox>
+                <br/>
+              </div>
+
+            </div>
+          </form>
+        </span>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+
+  <div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card >
+      <mat-card-content>
+        <mat-card-title>{{'Employees' | translate}}</mat-card-title>
+        <div class="table-rasponsive">
+          <table mat-table matSort [dataSource]="employeeDs" class="table employee-list no-wrap" style="min-height: 348px">
+
+            <ng-container matColumnDef="number">
+              <mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 50px"> # </mat-header-cell>
+              <mat-cell *matCellDef="let role" style="max-width: 50px"> {{ roles.indexOf(role) + 1}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="firstName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 300px"> {{'FirstName' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let role" style="max-width: 300px"> {{ role.name }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="lastName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'LastName' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let role"> {{ role.description }} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="employeeDisplayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: employeeDisplayedColumns"></mat-row>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
