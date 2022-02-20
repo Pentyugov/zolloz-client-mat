@@ -11,7 +11,6 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {CustomHttpResponse} from "../../model/custom-http-response";
 
 @Component({
   selector: 'app-department',
@@ -22,8 +21,6 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   public departments: Department[] = [];
-  public editorOpened: boolean = false;
-  public editedDepartment: Department = new Department();
   public columnsToDisplay = ApplicationConstants.DEPARTMENT_TABLE_COLUMNS;
   public dataSource: MatTableDataSource<Department> = new MatTableDataSource<Department>([]);
   public departmentToDelete: Department = new Department();

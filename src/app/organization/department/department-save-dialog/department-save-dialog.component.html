@@ -1,0 +1,14 @@
+<h2 class="font-medium" mat-dialog-title><strong>{{action | translate}}</strong></h2>
+
+<mat-dialog-content style="width: 600px" [class]="{'low' : local_data.isEmployeeDsChecked, 'high' : !local_data.isEmployeeDsChecked}">
+  <p *ngIf="local_data.isEmployeeDsChecked; else else_message">{{'DepartmentSaveMsg' | translate}} <b>{{local_data.name}}</b> ?</p>
+  <div mat-dialog-actions align="end" class="pt-3">
+    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">{{'Cancel' | translate}}</button>
+    <button mat-button (click)="doAction()" mat-flat-button color="primary">{{action | translate}}</button>
+  </div>
+</mat-dialog-content>
+
+
+<ng-template #else_message>
+  <p>{{'EmployeeInOtherDepartmentMsg' | translate}} </p>
+</ng-template>

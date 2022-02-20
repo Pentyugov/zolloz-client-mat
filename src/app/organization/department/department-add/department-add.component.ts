@@ -1,9 +1,9 @@
-import {Component, Inject, OnDestroy, OnInit, Optional} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DepartmentService} from "../../../service/department.service";
 import {ApplicationService} from "../../../service/application.service";
 import {EventNotificationService} from "../../../service/event-notification.service";
 import {TranslateService} from "@ngx-translate/core";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {Department} from "../../../model/department";
 import {Subscription} from "rxjs";
@@ -11,6 +11,11 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Employee} from "../../../model/employee";
 import {MatTableDataSource} from "@angular/material/table";
 import {ApplicationConstants} from "../../../shared/application-constants";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {DepartmentEmployeeAddDialogComponent} from "../department-employee-add-dialog/department-employee-add-dialog.component";
+import {DepartmentSaveDialogComponent} from "../department-save-dialog/department-save-dialog.component";
+import {EmployeeService} from "../../../service/employee.service";
 
 @Component({
   selector: 'app-department-add',
@@ -18,20 +23,23 @@ import {ApplicationConstants} from "../../../shared/application-constants";
   styleUrls: ['./department-add.component.scss']
 })
 export class DepartmentAddComponent implements OnInit, OnDestroy {
-
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   public refreshing = true;
   public department: Department = new Department;
   public subscriptions: Subscription[] = [];
   public departmentList: Department[] = [];
   public employees: Employee[] = [];
   public employeeDs: MatTableDataSource<Employee> = new MatTableDataSource<Employee>([]);
-  public employeeDisplayedColumns = ['number', 'firstName', 'lastName'];
+  public employeeDisplayedColumns = ['number', 'personnelNumber', 'firstName', 'lastName'];
+  public isEmployeeDsChecked: boolean = true;
   private messageTitle: string = '';
   private message: string = '';
   constructor(private departmentService: DepartmentService,
               private applicationService: ApplicationService,
               private eventNotificationService: EventNotificationService,
               private translate: TranslateService,
+              private employeeService: EmployeeService,
               private dialog: MatDialog,
               private router: Router) {
     this.refreshing = this.applicationService.getRefreshing();
@@ -47,9 +55,11 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  public openDialog(action: string, data: any) {
+  public openSaveDialog(action: string, data: any) {
+    this.checkEmployeeDs();
     data.action = action;
-    const dialogRef = this.dialog.open(DepartmentAddDialogComponent, {
+    data.isEmployeeDsChecked = this.isEmployeeDsChecked;
+    const dialogRef = this.dialog.open(DepartmentSaveDialogComponent, {
       data: data,
       width: ApplicationConstants.DIALOG_WIDTH
     });
@@ -60,10 +70,32 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
     });
   }
 
+  public openEmployeeAddDialog(action: string, data: any): void {
+    data.action = action;
+    data.employees = this.employeeDs.data;
+    const dialogRef = this.dialog.open(DepartmentEmployeeAddDialogComponent, {
+      data: data,
+      width: '100%'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.event.action === ApplicationConstants.DIALOG_ACTION_SAVE) {
+        this.initDataSource(result.event.data);
+      }
+    });
+  }
+
   public changeHeadValue($event: any): void {
     if ($event.checked) {
       this.department.parentDepartment = null;
     }
+  }
+
+  private checkEmployeeDs(): void {
+    this.employeeDs.data.forEach(employee => {
+      if (employee.department?.id !== this.department.id) {
+        this.isEmployeeDsChecked = false;
+      }
+    })
   }
 
   private onSaveDepartment(): void {
@@ -71,20 +103,24 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.departmentService.addDepartment(this.department).subscribe(
         (response: Department) => {
+          console.log('/////////////////saved department');
+          console.log(response);
           this.department = response;
+          this.employeeDs.data.forEach(employee => employee.department = this.department);
+          this.updateEmployees();
 
-          this.subscriptions.push(
-            this.translate.get('Success').subscribe(m => this.messageTitle = m)
-          );
-
-          this.subscriptions.push(
-            this.translate.get('DepartmentSavedMsg').subscribe(m => this.message = m)
-          );
-
-          this.applicationService.changeRefreshing(false);
-          this.router.navigateByUrl('/organization/departments').then(() => {
-            this.eventNotificationService.showSuccessNotification(this.messageTitle, this.message);
-          });
+          // this.subscriptions.push(
+          //   this.translate.get('Success').subscribe(m => this.messageTitle = m)
+          // );
+          //
+          // this.subscriptions.push(
+          //   this.translate.get('DepartmentSavedMsg').subscribe(m => this.message = m)
+          // );
+          //
+          // this.applicationService.changeRefreshing(false);
+          // this.router.navigateByUrl('/organization/departments').then(() => {
+          //   this.eventNotificationService.showSuccessNotification(this.messageTitle, this.message);
+          // });
 
         }, (errorResponse: HttpErrorResponse) => {
           this.subscriptions.push(
@@ -95,6 +131,20 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
         }
       )
     );
+  }
+
+  private updateEmployees(): void {
+    if (this.employeeDs.data.length > 0) {
+      this.subscriptions.push(
+        this.employeeService.updateAllEmployees(this.employeeDs.data).subscribe(
+          (response: Employee[]) => {
+            console.log('Employee response')
+            console.log(response);
+          }
+        )
+      );
+    }
+
   }
 
   private loadDepartments(): void {
@@ -112,31 +162,10 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
     );
   }
 
-}
-
-@Component({
-  selector: 'app-department-add-dialog',
-  templateUrl: 'department-add-dialog.component.html',
-  styleUrls: []
-})
-export class DepartmentAddDialogComponent {
-  action: string;
-  local_data: any;
-  constructor(public dialogRef: MatDialogRef<DepartmentAddDialogComponent>,
-              @Optional() @Inject(MAT_DIALOG_DATA) public data: Department) {
-    this.local_data = { ...data };
-    this.action = this.local_data.action;
+  private initDataSource(employees: Employee[]): void {
+    this.employeeDs = new MatTableDataSource<Employee>(employees);
+    this.employeeDs.paginator = this.paginator;
+    this.employeeDs.sort = this.sort;
   }
 
-  doAction(): void {
-    this.dialogRef.close({
-      event: ApplicationConstants.DIALOG_ACTION_SAVE
-    });
-  }
-
-  closeDialog(): void {
-    this.dialogRef.close({
-      event: ApplicationConstants.DIALOG_ACTION_CANCEL
-    });
-  }
 }

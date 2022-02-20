@@ -1,7 +1,9 @@
 {
+  "ActionEdit" : "Edit",
   "Home": "Home",
   "Organization" : "Organization",
   "Departments" : "Departments",
+  "Department" : "Department",
   "Roles" : "Roles",
   "Personal": "Personal",
   "Employees" : "Employees",
@@ -77,6 +79,8 @@
   "DepartmentSavedMsg" : "Department was saved",
   "DepartmentDeleteMsg" : "Sure want to delete department ",
   "DepartmentDeletedMsg" : "Department was deleted",
+  "EmployeeInOtherDepartmentMsg" : "Some of selected employees are registered in another department. \nIf continue they will be transfer to current department. Continue?",
+  "PersonnelNumber" : "Personnel number",
   "Users" : "Users",
   "Buttons": "Buttons",
   "Cards": "Cards",

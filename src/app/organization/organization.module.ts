@@ -19,10 +19,10 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
 import {UserAddComponent, UserAddDialogComponent} from './user/user-add/user-add.component';
 import { DepartmentEditComponent } from './department/department-edit/department-edit.component';
-import {
-  DepartmentAddComponent,
-  DepartmentAddDialogComponent
+import {DepartmentAddComponent
 } from './department/department-add/department-add.component';
+import {DepartmentEmployeeAddDialogComponent} from "./department/department-employee-add-dialog/department-employee-add-dialog.component";
+import { DepartmentSaveDialogComponent } from './department/department-save-dialog/department-save-dialog.component';
 
 
 @NgModule({
@@ -39,8 +39,9 @@ import {
     UserAddComponent,
     DepartmentEditComponent,
     DepartmentAddComponent,
-    DepartmentAddDialogComponent,
     DepartmentDeleteDialogComponent,
+    DepartmentEmployeeAddDialogComponent,
+    DepartmentSaveDialogComponent,
   ],
   imports: [
     CommonModule,

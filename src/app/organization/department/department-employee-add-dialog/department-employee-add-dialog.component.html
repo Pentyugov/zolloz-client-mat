@@ -1,0 +1,62 @@
+<h2 class="font-medium" mat-dialog-title><strong>{{'Employees' | translate}}</strong></h2>
+<mat-dialog-content>
+  <div class="table-responsive">
+    <table mat-table matSort [dataSource]="employeeDs" class="table employee-list no-wrap">
+
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+          >
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let employee">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="$event ? this.selection.toggle(employee) : null"
+            [checked]="selection.isSelected(employee)"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="personnelNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'PersonnelNumber' | translate}}</th>
+        <td mat-cell *matCellDef="let employee" class="action-link data">{{employee.personnelNumber}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'FirstName' | translate}}</th>
+        <td mat-cell *matCellDef="let employee" class="action-link data">{{employee.firstName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef class="wide" mat-sort-header>{{'LastName' | translate}}</th>
+        <td mat-cell *matCellDef="let employee" class="action-link data">{{employee.lastName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef class="wide" mat-sort-header>{{'Department' | translate}}</th>
+        <td mat-cell *matCellDef="let employee" class="action-link data">{{employee.department?.name}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="employeeDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: employeeDisplayedColumns" class="example-detail-row"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <div class="text-right">
+      <button mat-raised-button
+              class="m-r-10"
+              (click)="closeDialog()"
+              color="warn">{{'Cancel' | translate}}</button>
+      <button mat-raised-button
+              class="m-r-10"
+              (click)="doAction()"
+              color="primary">{{'Save' | translate}}</button>
+    </div>
+
+
+  </div>
+</mat-dialog-content>

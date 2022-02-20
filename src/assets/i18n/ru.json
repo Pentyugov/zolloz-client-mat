@@ -1,7 +1,9 @@
 {
+  "ActionEdit" : "Редактировать",
   "Home": "Главная",
   "Organization" : "Организация",
   "Departments" : "Подразделения",
+  "Department" : "Подразделение",
   "Roles" : "Роли",
   "Personal": "Персональные",
   "Employees" : "Сотрудники",
@@ -77,6 +79,8 @@
   "DepartmentSavedMsg" : "Подразделение сохранено",
   "DepartmentDeleteMsg" : "Удалить подразделение ",
   "DepartmentDeletedMsg" : "Подразделение удалено",
+  "EmployeeInOtherDepartmentMsg" : "Некоторые из выбранных сотрудников находятся в других подразделениях. Если продолжить они будут переведены в данное подразделение. Продолжить?",
+  "PersonnelNumber" : "Табельный номер",
   "Users" : "Пользователи",
   "Error" : "Ошибка",
   "Buttons": "Buttons",
