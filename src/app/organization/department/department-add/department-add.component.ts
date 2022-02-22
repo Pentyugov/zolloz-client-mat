@@ -103,48 +103,54 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.departmentService.addDepartment(this.department).subscribe(
         (response: Department) => {
-          console.log('/////////////////saved department');
-          console.log(response);
           this.department = response;
-          this.employeeDs.data.forEach(employee => employee.department = this.department);
-          this.updateEmployees();
-
-          // this.subscriptions.push(
-          //   this.translate.get('Success').subscribe(m => this.messageTitle = m)
-          // );
-          //
-          // this.subscriptions.push(
-          //   this.translate.get('DepartmentSavedMsg').subscribe(m => this.message = m)
-          // );
-          //
-          // this.applicationService.changeRefreshing(false);
-          // this.router.navigateByUrl('/organization/departments').then(() => {
-          //   this.eventNotificationService.showSuccessNotification(this.messageTitle, this.message);
-          // });
-
+          if (this.employeeDs.data.length > 0) {
+            this.employeeDs.data.forEach(employee => employee.department = this.department);
+            this.updateEmployees();
+          } else {
+            this.afterCommit();
+          }
         }, (errorResponse: HttpErrorResponse) => {
-          this.subscriptions.push(
-            this.translate.get('Error').subscribe(m => this.messageTitle = m)
-          );
           this.applicationService.changeRefreshing(false);
-          this.eventNotificationService.showErrorNotification(this.messageTitle, errorResponse.error.message);
+          this.showErrorNotification(errorResponse.error.message);
         }
       )
     );
   }
 
   private updateEmployees(): void {
-    if (this.employeeDs.data.length > 0) {
-      this.subscriptions.push(
-        this.employeeService.updateAllEmployees(this.employeeDs.data).subscribe(
-          (response: Employee[]) => {
-            console.log('Employee response')
-            console.log(response);
-          }
-        )
-      );
-    }
+    this.subscriptions.push(
+      this.employeeService.updateAllEmployees(this.employeeDs.data).subscribe(
+        () => {
+          this.afterCommit();
+        }, (errorResponse: HttpErrorResponse) => {
+          this.applicationService.changeRefreshing(false);
+          this.showErrorNotification(errorResponse.error.message);
+        }
+      )
+    );
+  }
 
+  private showErrorNotification(errorMessage: string): void {
+    this.subscriptions.push(
+      this.translate.get(ApplicationConstants.NOTIFICATION_TITLE_ERROR).subscribe(m => this.messageTitle = m)
+    );
+    this.eventNotificationService.showErrorNotification(this.messageTitle, errorMessage);
+  }
+
+  private afterCommit(): void {
+    this.subscriptions.push(
+      this.translate.get('Success').subscribe(m => this.messageTitle = m)
+    );
+
+    this.subscriptions.push(
+      this.translate.get('DepartmentSavedMsg').subscribe(m => this.message = m)
+    );
+
+    this.applicationService.changeRefreshing(false);
+    this.router.navigateByUrl('/organization/departments').then(() => {
+      this.eventNotificationService.showSuccessNotification(this.messageTitle, this.message);
+    });
   }
 
   private loadDepartments(): void {

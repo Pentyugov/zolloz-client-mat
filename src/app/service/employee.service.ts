@@ -31,6 +31,10 @@ export class EmployeeService {
     return this.httpClient.get<Employee[]>(`${this.host}/employee/get-all-employees`);
   }
 
+  public getEmployeesByDepartments(departmentId: string): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>(`${this.host}/employee/get-employees-by-department/${departmentId}`);
+  }
+
   public deleteEmployee(id: string): Observable<CustomHttpResponse> {
     return this.httpClient.delete<CustomHttpResponse>(`${this.host}/employee/delete-employee/${id}`);
   }

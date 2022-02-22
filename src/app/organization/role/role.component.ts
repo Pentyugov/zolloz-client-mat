@@ -57,7 +57,7 @@ export class RoleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getRoles(true);
+    this.getRoles();
   }
 
   ngOnDestroy(): void {
