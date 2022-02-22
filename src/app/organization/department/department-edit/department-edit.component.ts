@@ -190,9 +190,10 @@ export class DepartmentEditComponent implements OnInit {
 
   private updateDepartmentsList(): void {
     this.subscriptions.push(
-      this.departmentService.getDepartments().subscribe(
+      this.departmentService.getPossibleParentDepartments(this.department.id).subscribe(
         (response: Department[]) => {
-          this.departmentList = response.filter(dept => dept.id !== this.department.id);
+          this.departmentList = response;
+          this.department.parentDepartment = this.departmentList.find(dept => dept.id === this.department.parentDepartment?.id);
         }, (errorResponse: HttpErrorResponse) => {
           this.showErrorNotification(errorResponse.error.message)
         }

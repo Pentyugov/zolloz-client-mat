@@ -31,6 +31,10 @@ export class DepartmentService {
     return this.httpClient.get<Department>(`${this.host}/department/get-department-by-id/${id}`);
   }
 
+  public getPossibleParentDepartments(id: string): Observable<Department[]> {
+    return this.httpClient.get<Department[]>(`${this.host}/department/get-possible-parent/${id}`);
+  }
+
   public deleteDepartment(id: string): Observable<CustomHttpResponse> {
     return this.httpClient.delete<CustomHttpResponse>(`${this.host}/department/delete-department/${id}`);
   }

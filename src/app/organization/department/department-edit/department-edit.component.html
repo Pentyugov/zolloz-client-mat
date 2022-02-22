@@ -59,7 +59,7 @@
                               required
                               [disabled]="department.head"
                               [(ngModel)]="department.parentDepartment">
-                    <mat-option>None</mat-option>
+                    <mat-option [value]="null">None</mat-option>
                     <mat-option *ngFor="let department of departmentList" [value]="department">
                       {{ department.name }}
                     </mat-option>
