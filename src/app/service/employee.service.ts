@@ -31,6 +31,10 @@ export class EmployeeService {
     return this.httpClient.get<Employee[]>(`${this.host}/employee/get-all-employees`);
   }
 
+  public getEmployeeById(id: string): Observable<Employee> {
+    return this.httpClient.get<Employee>(`${this.host}/employee/get-employee-by-id/${id}`);
+  }
+
   public getEmployeesByDepartments(departmentId: string): Observable<Employee[]> {
     return this.httpClient.get<Employee[]>(`${this.host}/employee/get-employees-by-department/${departmentId}`);
   }
@@ -64,8 +68,8 @@ export class EmployeeService {
     employee.hireDate = employeeToClone.hireDate;
     employee.dismissalDate = employeeToClone.dismissalDate;
     employee.head = employeeToClone.head;
-    employee.userId = employeeToClone.userId;
-    employee.positionId = employeeToClone.positionId;
+    employee.user = employeeToClone.user;
+    employee.position = employeeToClone.position;
     employee.department = employeeToClone.department;
     return employee;
   }

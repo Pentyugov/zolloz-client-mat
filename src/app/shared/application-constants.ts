@@ -9,13 +9,38 @@ export class ApplicationConstants {
   static readonly DIALOG_ACTION_DELETE = 'Delete';
   static readonly DIALOG_ACTION_CANCEL = 'Cancel';
   static readonly DIALOG_ACTION_SAVE = 'Save';
+  static readonly DIALOG_ACTION_APPLY = 'Apply';
 
 //    ==============================================================
 //    =                        Table columns                       =
 //    ==============================================================
-  static readonly USER_TABLE_COLUMNS = ['number', 'profileImage', 'username', 'firstName', 'lastName', 'email', 'action'];
-  static readonly ROLE_TABLE_COLUMNS = ['number', 'name', 'description', 'permissions', 'action', ];
-  static readonly DEPARTMENT_TABLE_COLUMNS = ['number', 'name', 'parentDept', 'code', 'head', 'action'];
+  static readonly USER_TABLE_COLUMNS = ['number',
+                                        'profileImage',
+                                        'username',
+                                        'firstName',
+                                        'lastName',
+                                        'email',
+                                        'action'];
+
+  static readonly EMPLOYEES_TABLE_COLUMNS = ['name',
+                                             'department',
+                                             'phoneNumber',
+                                             'email',
+                                             'personnelNumber',
+                                             'action'];
+
+  static readonly ROLE_TABLE_COLUMNS = ['number',
+                                        'name',
+                                        'description',
+                                        'permissions',
+                                        'action', ];
+
+  static readonly DEPARTMENT_TABLE_COLUMNS = ['number',
+                                              'name',
+                                              'parentDept',
+                                              'code',
+                                              'head',
+                                              'action'];
 
 
   static readonly DEFAULT_ROLE = 'USER';

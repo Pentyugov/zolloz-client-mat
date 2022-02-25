@@ -45,7 +45,7 @@
         <span>
           <form #userAddForm="ngForm">
             <div fxLayout="row wrap" class="align-items-center m-b-15">
-              <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="25">
+              <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="25" fxFlex="25">
                 <h3 class="m-0">
                   <div class="d-flex">
                     <span [(ngModel)]="userToCreate.username"
@@ -54,7 +54,7 @@
 
                 </h3>
               </div>
-              <div fxFlex.gt-md="50" class="text-right">
+              <div fxFlex.gt-md="50" fxFlex.gt-xs="75" class="text-right">
                 <a [routerLink]="['/organization/users']">
                   <button mat-stroked-button
                           color="warn"
@@ -70,7 +70,7 @@
             <hr/>
 
             <div fxLayout="row wrap" class="align-items-center m-t-30 m-b-15">
-              <div fxFlex="75" fxFlex.gt-md="50" fxFlex.gt-xs="50" fxFlex.gt-md="50" class="text-right">
+              <div fxFlex="100" fxFlex.gt-md="50">
                 <mat-form-field appearance="outline" class="p-r-15 m-r-15">
                   <mat-label>{{'Username' | translate}}</mat-label>
                   <input matInput

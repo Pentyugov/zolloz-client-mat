@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {DepartmentComponent, DepartmentDeleteDialogComponent} from './department/department.component';
 import {RouterModule} from "@angular/router";
 import {OrganizationRoutes} from "./organization.routing";
@@ -23,6 +23,10 @@ import {DepartmentAddComponent
 } from './department/department-add/department-add.component';
 import {DepartmentEmployeeAddDialogComponent} from "./department/department-employee-add-dialog/department-employee-add-dialog.component";
 import { DepartmentSaveDialogComponent } from './department/department-save-dialog/department-save-dialog.component';
+import { EmployeeAddComponent } from './employee/employee-add/employee-add.component';
+import { EmployeeSaveDialogComponent } from './employee/employee-save-dialog/employee-save-dialog.component';
+import {EmployeePrefillDialogComponent} from "./employee/employee-prefill-dialog/employee-prefill-dialog.component";
+import { EmployeeEditComponent } from './employee/employee-edit/employee-edit.component';
 
 
 @NgModule({
@@ -42,7 +46,12 @@ import { DepartmentSaveDialogComponent } from './department/department-save-dial
     DepartmentDeleteDialogComponent,
     DepartmentEmployeeAddDialogComponent,
     DepartmentSaveDialogComponent,
+    EmployeeAddComponent,
+    EmployeePrefillDialogComponent,
+    EmployeeSaveDialogComponent,
+    EmployeeEditComponent,
   ],
+  providers: [DatePipe],
   imports: [
     CommonModule,
     RouterModule.forChild(OrganizationRoutes),

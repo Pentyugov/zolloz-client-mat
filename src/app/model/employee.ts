@@ -1,4 +1,6 @@
 import {Department} from "./department";
+import {Position} from "./position";
+import {User} from "./user";
 
 export class Employee {
   id: string;
@@ -12,8 +14,8 @@ export class Employee {
   dismissalDate: Date | null;
   head: boolean;
   personnelNumber: number;
-  userId: string;
-  positionId: string;
+  user: User | null | undefined;
+  position: Position | null | undefined;
   department: Department | null | undefined;
 
   constructor() {
@@ -28,8 +30,8 @@ export class Employee {
     this.dismissalDate = null;
     this.head = false;
     this.personnelNumber = 0;
-    this.userId = '';
-    this.positionId = '';
+    this.user = null;
+    this.position = null;
     this.department = null;
   }
 }

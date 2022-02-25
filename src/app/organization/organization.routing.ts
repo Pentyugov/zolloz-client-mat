@@ -7,6 +7,8 @@ import {UserEditComponent} from "./user/user-edit/user-edit.component";
 import {UserAddComponent} from "./user/user-add/user-add.component";
 import {DepartmentEditComponent} from "./department/department-edit/department-edit.component";
 import {DepartmentAddComponent} from "./department/department-add/department-add.component";
+import {EmployeeAddComponent} from "./employee/employee-add/employee-add.component";
+import {EmployeeEditComponent} from "./employee/employee-edit/employee-edit.component";
 
 export const OrganizationRoutes: Routes = [
   {path: '',
@@ -58,6 +60,33 @@ export const OrganizationRoutes: Routes = [
             { title: 'Organization', url: '/organization' },
             { title: 'Employees' }
             ],
+        }
+      },
+
+      {
+        path: 'employees/add',
+        component: EmployeeAddComponent,
+        data: {
+          title: 'Employees',
+          urls: [
+            { title: 'Organization', url: '/organization'},
+            { title: 'Employees', url: '/organization/employees'},
+            {title: 'Add'}
+          ],
+        }
+      },
+
+
+      {
+        path: 'employees/edit/:id',
+        component: EmployeeEditComponent,
+        data: {
+          title: 'Employees',
+          urls: [
+            { title: 'Organization', url: '/organization'},
+            { title: 'Employees', url: '/organization/employees'},
+            {title: 'Edit'}
+          ],
         }
       },
 
