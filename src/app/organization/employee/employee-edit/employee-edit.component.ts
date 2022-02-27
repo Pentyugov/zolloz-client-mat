@@ -1,53 +1,53 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Employee} from "../../../model/employee";
-import {User} from "../../../model/user";
-import {Department} from "../../../model/department";
-import {Position} from "../../../model/position";
-import {ApplicationService} from "../../../service/application.service";
-import {DatePipe} from "@angular/common";
-import {EmployeeService} from "../../../service/employee.service";
-import {UserService} from "../../../service/user.service";
-import {DepartmentService} from "../../../service/department.service";
-import {PositionService} from "../../../service/position.service";
-import {TranslateService} from "@ngx-translate/core";
-import {MatDialog} from "@angular/material/dialog";
-import {EventNotificationService} from "../../../service/event-notification.service";
-import {EmployeePrefillDialogComponent} from "../employee-prefill-dialog/employee-prefill-dialog.component";
-import {ApplicationConstants} from "../../../shared/application-constants";
-import {Subscription} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Employee } from '../../../model/employee';
+import { User } from '../../../model/user';
+import { Department } from '../../../model/department';
+import { Position } from '../../../model/position';
+import { ApplicationService } from '../../../service/application.service';
+import { EmployeeService } from '../../../service/employee.service';
+import { UserService } from '../../../service/user.service';
+import { DepartmentService } from '../../../service/department.service';
+import { PositionService } from '../../../service/position.service';
+import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { EventNotificationService } from '../../../service/event-notification.service';
+import { EmployeePrefillDialogComponent } from '../employee-prefill-dialog/employee-prefill-dialog.component';
+import { ApplicationConstants } from '../../../shared/application-constants';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { EmployeeSaveDialogComponent } from '../employee-save-dialog/employee-save-dialog.component';
+import { AbstractEditor } from '../../../shared/screens/editor/AbstractEditor';
 
 @Component({
   selector: 'app-employee-edit',
   templateUrl: './employee-edit.component.html',
   styleUrls: ['./employee-edit.component.scss']
 })
-export class EmployeeEditComponent implements OnInit, OnDestroy {
+export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnDestroy {
   public refreshing: boolean = false;
   public hireDate: Date | null = null;
   public dismissalDate: Date | null = null;
-  public employeeToCreate: Employee = new Employee();
+  public employeeToUpdate: Employee = new Employee();
   public users: User[] = [];
   public departments: Department[] = [];
   public positions: Position[] = [];
-  private subscriptions: Subscription[] = [];
   private id: any;
 
-
-  constructor(private applicationService: ApplicationService,
+  constructor(router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
               private activatedRouter: ActivatedRoute,
               private employeeService: EmployeeService,
               private userService: UserService,
               private departmentService: DepartmentService,
               private positionService: PositionService,
-              private translate: TranslateService,
-              private dialog: MatDialog,
-              private eventNotificationService: EventNotificationService) {
+              private dialog: MatDialog) {
+    super(router, translate, eventNotificationService, applicationService);
 
-    this.id = this.activatedRouter.snapshot.paramMap.get('id');
-    this.refreshing = applicationService.getRefreshing();
-    this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
-
+      this.id = this.activatedRouter.snapshot.paramMap.get('id');
+      this.refreshing = applicationService.getRefreshing();
+      this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
   }
 
   ngOnInit(): void {
@@ -55,17 +55,19 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.employeeService.getEmployeeById(this.id).subscribe(
         (response: Employee) => {
-          this.employeeToCreate = response;
+          this.employeeToUpdate = response;
           this.loadUsers();
           this.loadDepartments();
           this.loadPositions();
-          if (this.employeeToCreate.hireDate) {
-            this.hireDate = new Date(Date.parse(this.employeeToCreate.hireDate!.toString()));
+          if (this.employeeToUpdate.hireDate) {
+            this.hireDate = new Date(Date.parse(this.employeeToUpdate.hireDate!.toString()));
           }
 
-          if (this.employeeToCreate.dismissalDate) {
-            this.dismissalDate = new Date(Date.parse(this.employeeToCreate.dismissalDate.toString()));
+          if (this.employeeToUpdate.dismissalDate) {
+            this.dismissalDate = new Date(Date.parse(this.employeeToUpdate.dismissalDate.toString()));
           }
+        }, (errorResponse: HttpErrorResponse) => {
+          this.showErrorNotification(errorResponse.error.message);
         }
       )
     );
@@ -75,9 +77,16 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  openDialog(save: string, employeeToCreate: Employee) {
-    console.log('saving employee')
-    console.log(this.employeeToCreate)
+  public openSaveDialog() {
+    this.dialog.open(EmployeeSaveDialogComponent, {
+      data: this.employeeToUpdate,
+      width: ApplicationConstants.DIALOG_WIDTH
+    }).afterClosed().subscribe(response => {
+      if (response.event.action === ApplicationConstants.DIALOG_ACTION_SAVE) {
+        this.onUpdateEmployee();
+      }
+    });
+
   }
 
   public openPrefillDialog($event: any): void {
@@ -96,12 +105,12 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
 
   public updateHireDate(event: any): void {
     this.hireDate = new Date(Date.parse(event.target.value))
-    this.employeeToCreate.hireDate = this.hireDate;
+    this.employeeToUpdate.hireDate = this.hireDate;
   }
 
   public updateDismissalDate(event: any): void {
     this.dismissalDate = new Date(Date.parse(event.target.value))
-    this.employeeToCreate.dismissalDate = this.dismissalDate;
+    this.employeeToUpdate.dismissalDate = this.dismissalDate;
   }
 
   private loadUsers(): void {
@@ -109,7 +118,9 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
       this.userService.getUsers().subscribe(
         (response: User[]) => {
           this.users = response;
-          this.employeeToCreate.user = this.users.find(u => u.id === this.employeeToCreate.user?.id)
+          this.employeeToUpdate.user = this.users.find(u => u.id === this.employeeToUpdate.user?.id)
+        }, (errorResponse: HttpErrorResponse) => {
+          this.showErrorNotification(errorResponse.error.message);
         }
       )
     );
@@ -120,7 +131,9 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
       this.departmentService.getDepartments().subscribe(
         (response: Department[]) => {
           this.departments = response;
-          this.employeeToCreate.department = this.departments.find(d => d.id === this.employeeToCreate.department?.id)
+          this.employeeToUpdate.department = this.departments.find(d => d.id === this.employeeToUpdate.department?.id)
+        }, (errorResponse: HttpErrorResponse) => {
+          this.showErrorNotification(errorResponse.error.message);
         }
       )
     );
@@ -131,15 +144,31 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
       this.positionService.getPositions().subscribe(
         (response: Position[]) => {
           this.positions = response;
-          this.employeeToCreate.position = this.positions.find(p => p.id === this.employeeToCreate.position?.id)
+          this.employeeToUpdate.position = this.positions.find(p => p.id === this.employeeToUpdate.position?.id)
+        }, (errorResponse: HttpErrorResponse) => {
+          this.showErrorNotification(errorResponse.error.message);
+        }
+      )
+    );
+  }
+
+  private onUpdateEmployee(): void {
+    this.subscriptions.push(
+      this.employeeService.updateEmployee(this.employeeToUpdate).subscribe(
+        () => {
+          this.afterCommit('EmployeeSavedMsg', '/organization/employees');
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.showErrorNotification(errorResponse.error.message);
         }
       )
     );
   }
 
   private preFillData(user: User): void {
-    this.employeeToCreate.firstName = user.firstName;
-    this.employeeToCreate.lastName = user.lastName;
-    this.employeeToCreate.email = user.email;
+    this.employeeToUpdate.firstName = user.firstName;
+    this.employeeToUpdate.lastName = user.lastName;
+    this.employeeToUpdate.email = user.email;
   }
+
 }

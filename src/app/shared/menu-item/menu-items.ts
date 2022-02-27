@@ -51,8 +51,9 @@ const MENUITEMS = [
     children: [
       { state: 'departments', name: 'Departments', type: 'link' },
       { state: 'employees', name: 'Employees', type: 'link' },
-      { state: 'roles', name: 'Roles', type: 'link' },
+      { state: 'positions', name: 'Positions', type: 'link' },
       { state: 'users', name: 'Users', type: 'link' },
+      { state: 'roles', name: 'Roles', type: 'link' },
     ],
   },
   {

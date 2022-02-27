@@ -1,16 +1,18 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Subscription} from "rxjs";
-import {ApplicationService} from "../../service/application.service";
-import {EmployeeService} from "../../service/employee.service";
-import {TranslateService} from "@ngx-translate/core";
-import {Employee} from "../../model/employee";
-import {EventNotificationService} from "../../service/event-notification.service";
-import {HttpErrorResponse} from "@angular/common/http";
-import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
-import {ApplicationConstants} from "../../shared/application-constants";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ApplicationService } from '../../service/application.service';
+import { EmployeeService } from '../../service/employee.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Employee } from '../../model/employee';
+import { EventNotificationService } from '../../service/event-notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ApplicationConstants } from '../../shared/application-constants';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { EmployeeDeleteDialogComponent } from './employee-delete-dialog/employee-delete-dialog.component';
+import { AbstractBrowser } from '../../shared/screens/browser/AbstractBrowser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee',
@@ -18,22 +20,20 @@ import {MatSort} from "@angular/material/sort";
   styles: [
   ]
 })
-export class EmployeeComponent implements OnInit, OnDestroy {
+export class EmployeeComponent extends AbstractBrowser implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
-  public refreshing: boolean = false;
   public columnsToDisplay = ApplicationConstants.EMPLOYEES_TABLE_COLUMNS;
   public dataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>([]);
-  private subscriptions: Subscription[] = [];
 
-
-  constructor(private applicationService: ApplicationService,
+  constructor(router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
               private employeeService: EmployeeService,
-              private translate: TranslateService,
-              private eventNotificationService: EventNotificationService) {
+              private dialog: MatDialog) {
+    super(router, translate, eventNotificationService, applicationService);
 
-    this.refreshing = applicationService.getRefreshing();
-    this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
 
   }
 
@@ -57,12 +57,6 @@ export class EmployeeComponent implements OnInit, OnDestroy {
     );
   }
 
-  private showErrorNotification(message: string): void {
-    this.subscriptions.push(this.translate.get(EventNotificationCaptionEnum.ERROR).subscribe(title => {
-      this.eventNotificationService.showErrorNotification(title, message);
-    }));
-  }
-
   public applyFilter(value: any) {
     if (this.dataSource) {
       this.dataSource.filter = value.trim().toLowerCase();
@@ -75,7 +69,28 @@ export class EmployeeComponent implements OnInit, OnDestroy {
     this.dataSource.paginator = this.paginator;
   }
 
-  openDialog(element: any) {
-
+  public openDeleteDialog(employee: Employee) {
+    this.dialog.open(EmployeeDeleteDialogComponent, {
+      data: employee,
+      width: ApplicationConstants.DIALOG_WIDTH
+    }).afterClosed().subscribe(response => {
+      if (response.event.action === ApplicationConstants.DIALOG_ACTION_DELETE) {
+        console.log(response.event.action)
+        this.onDeleteEmployee(employee);
+      }
+    });
   }
+
+  private onDeleteEmployee(employee: Employee): void {
+    this.applicationService.changeRefreshing(true);
+    this.subscriptions.push(this.employeeService.deleteEmployee(employee.id).subscribe(() => {
+      this.afterCommit('EmployeeDeletedMsg');
+      this.loadEmployees();
+    }, (errorResponse: HttpErrorResponse) => {
+      this.showErrorNotification(errorResponse.error.message);
+      this.applicationService.changeRefreshing(false);
+    }));
+  }
+
+
 }

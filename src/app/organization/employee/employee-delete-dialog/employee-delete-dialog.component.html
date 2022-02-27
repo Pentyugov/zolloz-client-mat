@@ -1,0 +1,18 @@
+<h2 class="font-medium" mat-dialog-title><strong>{{'Confirmation' | translate}}</strong></h2>
+<mat-dialog-content class="pb-3">
+  <div class="danger dark">
+    <p>{{'EmployeeDeleteMsg' | translate}} {{local_data.firstName}} {{data.lastName}}?</p>
+
+    <div class="text-right">
+      <button mat-raised-button
+              class="m-r-10"
+              (click)="closeDialog()"
+              color="warn">{{'Cancel' | translate}}</button>
+      <button mat-raised-button
+              class="m-r-10"
+              (click)="doAction()"
+              color="primary">{{'Delete' | translate}}</button>
+    </div>
+  </div>
+</mat-dialog-content>
+

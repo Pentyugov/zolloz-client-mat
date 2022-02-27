@@ -9,6 +9,7 @@ import {DepartmentEditComponent} from "./department/department-edit/department-e
 import {DepartmentAddComponent} from "./department/department-add/department-add.component";
 import {EmployeeAddComponent} from "./employee/employee-add/employee-add.component";
 import {EmployeeEditComponent} from "./employee/employee-edit/employee-edit.component";
+import { PositionComponent } from './position/position.component';
 
 export const OrganizationRoutes: Routes = [
   {path: '',
@@ -111,6 +112,18 @@ export const OrganizationRoutes: Routes = [
             { title: 'Organization', url: '/organization' },
             { title: 'Users' }
             ],
+        }
+      },
+
+      {
+        path: 'positions',
+        component: PositionComponent,
+        data: {
+          title: 'Positions',
+          urls: [
+            { title: 'Organization', url: '/organization' },
+            { title: 'Positions' }
+          ],
         }
       },
 

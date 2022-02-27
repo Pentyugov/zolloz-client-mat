@@ -1,29 +1,28 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
-import {ApplicationService} from "../../../service/application.service";
-import {EmployeeService} from "../../../service/employee.service";
-import {TranslateService} from "@ngx-translate/core";
-import {EventNotificationService} from "../../../service/event-notification.service";
-import {Employee} from "../../../model/employee";
-import {User} from "../../../model/user";
-import {UserService} from "../../../service/user.service";
-import {DepartmentService} from "../../../service/department.service";
-import {PositionService} from "../../../service/position.service";
-import {Department} from "../../../model/department";
-import {Position} from "../../../model/position";
-import {MatDialog} from "@angular/material/dialog";
-import {ApplicationConstants} from "../../../shared/application-constants";
-import {EmployeePrefillDialogComponent} from "../employee-prefill-dialog/employee-prefill-dialog.component";
-import {Router} from "@angular/router";
-import {HttpErrorResponse} from "@angular/common/http";
-import {EmployeeSaveDialogComponent} from "../employee-save-dialog/employee-save-dialog.component";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ApplicationService } from '../../../service/application.service';
+import { EmployeeService } from '../../../service/employee.service';
+import { TranslateService } from '@ngx-translate/core';
+import { EventNotificationService } from '../../../service/event-notification.service';
+import { Employee } from '../../../model/employee';
+import { User } from '../../../model/user';
+import { UserService } from '../../../service/user.service';
+import { DepartmentService } from '../../../service/department.service';
+import { PositionService } from '../../../service/position.service';
+import { Department } from '../../../model/department';
+import { Position } from '../../../model/position';
+import { MatDialog } from '@angular/material/dialog';
+import { ApplicationConstants } from '../../../shared/application-constants';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { EmployeeSaveDialogComponent } from '../employee-save-dialog/employee-save-dialog.component';
+import { AbstractEditor } from '../../../shared/screens/editor/AbstractEditor';
 
 @Component({
   selector: 'app-employee-add',
   templateUrl: './employee-add.component.html',
   styleUrls: ['./employee-add.component.scss']
 })
-export class EmployeeAddComponent implements OnInit, OnDestroy {
+export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDestroy {
   public refreshing: boolean = false;
   public hireDate: Date | null = null;
   public dismissalDate: Date | null = null;
@@ -31,20 +30,19 @@ export class EmployeeAddComponent implements OnInit, OnDestroy {
   public users: User[] = [];
   public departments: Department[] = [];
   public positions: Position[] = [];
-  private subscriptions: Subscription[] = [];
-  private messageTitle: string = '';
-  private message: string = '';
 
 
-  constructor(private applicationService: ApplicationService,
+  constructor(router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
               private employeeService: EmployeeService,
               private userService: UserService,
               private departmentService: DepartmentService,
               private positionService: PositionService,
-              private translate: TranslateService,
-              private dialog: MatDialog,
-              private router: Router,
-              private eventNotificationService: EventNotificationService) {
+              private dialog: MatDialog) {
+
+    super(router, translate, eventNotificationService, applicationService);
 
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
@@ -90,7 +88,7 @@ export class EmployeeAddComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.employeeService.addEmployee(this.employeeToCreate).subscribe(
         () => {
-          this.afterCommit();
+          this.afterCommit('EmployeeSavedMsg', '/organization/employees');
         },
         (errorResponse: HttpErrorResponse) => {
           this.showErrorNotification(errorResponse.error.message);
@@ -107,21 +105,6 @@ export class EmployeeAddComponent implements OnInit, OnDestroy {
   public updateDismissalDate(event: any): void {
     this.dismissalDate = new Date(Date.parse(event.target.value))
     this.employeeToCreate.dismissalDate = this.dismissalDate;
-  }
-
-  private afterCommit(): void {
-    this.subscriptions.push(
-      this.translate.get('Success').subscribe(m => this.messageTitle = m)
-    );
-
-    this.subscriptions.push(
-      this.translate.get('EmployeeSavedMsg').subscribe(m => this.message = m)
-    );
-
-    this.applicationService.changeRefreshing(false);
-    this.router.navigateByUrl('/organization/employees').then(() => {
-      this.eventNotificationService.showSuccessNotification(this.messageTitle, this.message);
-    });
   }
 
   private loadUsers(): void {
@@ -172,10 +155,4 @@ export class EmployeeAddComponent implements OnInit, OnDestroy {
     this.employeeToCreate.email = user.email;
   }
 
-  private showErrorNotification(errorMessage: string): void {
-    this.subscriptions.push(
-      this.translate.get(ApplicationConstants.NOTIFICATION_TITLE_ERROR).subscribe(m => this.messageTitle = m)
-    );
-    this.eventNotificationService.showErrorNotification(this.messageTitle, errorMessage);
-  }
 }
