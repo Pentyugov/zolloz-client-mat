@@ -42,6 +42,11 @@ export class ApplicationConstants {
                                               'head',
                                               'action'];
 
+  static readonly POSITION_TABLE_COLUMNS = ['number',
+                                            'name',
+                                            'code',
+                                            'action'];
+
 
   static readonly DEFAULT_ROLE = 'USER';
 

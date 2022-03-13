@@ -114,9 +114,8 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   public onUpdateUser() {
     this.applicationService.changeRefreshing(true);
-    let formData: FormData = this.userService.createUserFormData(this.editedUser, null);
     this.subscriptions.push(
-      this.userService.updateUser(formData).subscribe(
+      this.userService.updateUser2(this.editedUser).subscribe(
         (response: User) => {
           this.editedUser = response;
           this.applicationService.changeRefreshing(false);

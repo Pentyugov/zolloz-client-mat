@@ -1,1 +1,73 @@
-<p>position works!</p>
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="refreshing"></mat-progress-bar>
+<div fxLayout="row wrap" >
+  <div fxFlex="100">
+    <mat-card>
+      <mat-card-content>
+        <div fxLayout="row wrap" class="align-items-center">
+          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="50">
+            <mat-form-field>
+              <input matInput
+                     placeholder="{{'SearchPosition' | translate}}"
+                     (keyup)="applyFilter($event.target.value)"
+              />
+            </mat-form-field>
+          </div>
+          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="50" class="text-right">
+            <a  [routerLink]="['/organization/positions/add']" class="m-r-10 cursor-pointer">
+              <button mat-raised-button
+                      color="primary">
+                {{'AddPosition' | translate}}
+              </button>
+            </a>
+
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row wrap">
+  <div fxFlex="100">
+    <mat-card>
+      <mat-card-content>
+        <div class="table-responsive">
+          <table mat-table matSort [dataSource]="dataSource" class="table employee-list no-wrap">
+
+            <ng-container matColumnDef="number">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell class="data" *matCellDef="let position" >{{positions.indexOf(position) + 1}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="wide">{{'Name' | translate}}</th>
+              <td mat-cell *matCellDef="let position" class="action-link data wide">{{position.name}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef class="wide" mat-sort-header>{{'Code' | translate}}</th>
+              <td mat-cell *matCellDef="let department" class="action-link data wide">{{department.code}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell class="action-header" *matHeaderCellDef>{{'Actions' | translate}}</th>
+              <td mat-cell *matCellDef="let position" class="action-link">
+                <a  [routerLink]="['/organization/positions/edit', position.id]" class="m-r-10 cursor-pointer">
+                  <i class="fa fa-pencil"></i>
+                </a>
+                <a (click)="openDeleteDialog(position)" class="m-r-10 cursor-pointer">
+                  <i class="fas fa-trash text-danger"></i>
+                </a>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay" class="example-detail-row"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

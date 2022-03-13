@@ -58,6 +58,10 @@ export class UserService {
     return this.httpClient.post<User>(`${this.host}/user/update-user`, formData);
   }
 
+  public updateUser2(user: User): Observable<User> {
+    return this.httpClient.post<User>(`${this.host}/user/update-user`, user);
+  }
+
   public getUserById(id: String): Observable<User> {
     return this.httpClient.get<User>(`${this.host}/user/get-by-id/${id}`);
   }

@@ -29,6 +29,8 @@ import {EmployeePrefillDialogComponent} from "./employee/employee-prefill-dialog
 import { EmployeeEditComponent } from './employee/employee-edit/employee-edit.component';
 import { EmployeeDeleteDialogComponent } from './employee/employee-delete-dialog/employee-delete-dialog.component';
 import { PositionComponent } from './position/position.component';
+import { PositionDeleteDialogComponent } from './position/position-delete-dialog/position-delete-dialog.component';
+import { PositionAddDialogComponent } from './position/position-add-dialog/position-add-dialog.component';
 
 
 @NgModule({
@@ -54,6 +56,8 @@ import { PositionComponent } from './position/position.component';
     EmployeeEditComponent,
     EmployeeDeleteDialogComponent,
     PositionComponent,
+    PositionDeleteDialogComponent,
+    PositionAddDialogComponent,
   ],
   providers: [DatePipe],
   imports: [
