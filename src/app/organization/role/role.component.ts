@@ -161,7 +161,7 @@ export class RoleComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-  selector: 'role-content',
+  selector: 'app-role-content',
   templateUrl: 'role-content.html',
   styleUrls: ['role-content.scss']
 })
