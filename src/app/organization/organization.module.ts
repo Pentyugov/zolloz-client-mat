@@ -18,19 +18,18 @@ import {MatInputModule} from "@angular/material/input";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
 import {UserAddComponent, UserAddDialogComponent} from './user/user-add/user-add.component';
-import { DepartmentEditComponent } from './department/department-edit/department-edit.component';
-import {DepartmentAddComponent
-} from './department/department-add/department-add.component';
+import {DepartmentEditComponent} from './department/department-edit/department-edit.component';
+import {DepartmentAddComponent} from './department/department-add/department-add.component';
 import {DepartmentEmployeeAddDialogComponent} from "./department/department-employee-add-dialog/department-employee-add-dialog.component";
-import { DepartmentSaveDialogComponent } from './department/department-save-dialog/department-save-dialog.component';
-import { EmployeeAddComponent } from './employee/employee-add/employee-add.component';
-import { EmployeeSaveDialogComponent } from './employee/employee-save-dialog/employee-save-dialog.component';
+import {DepartmentSaveDialogComponent} from './department/department-save-dialog/department-save-dialog.component';
+import {EmployeeAddComponent} from './employee/employee-add/employee-add.component';
+import {EmployeeSaveDialogComponent} from './employee/employee-save-dialog/employee-save-dialog.component';
 import {EmployeePrefillDialogComponent} from "./employee/employee-prefill-dialog/employee-prefill-dialog.component";
-import { EmployeeEditComponent } from './employee/employee-edit/employee-edit.component';
-import { EmployeeDeleteDialogComponent } from './employee/employee-delete-dialog/employee-delete-dialog.component';
-import { PositionComponent } from './position/position.component';
-import { PositionDeleteDialogComponent } from './position/position-delete-dialog/position-delete-dialog.component';
-import { PositionAddDialogComponent } from './position/position-add-dialog/position-add-dialog.component';
+import {EmployeeEditComponent} from './employee/employee-edit/employee-edit.component';
+import {EmployeeDeleteDialogComponent} from './employee/employee-delete-dialog/employee-delete-dialog.component';
+import {PositionComponent} from './position/position.component';
+import {PositionDeleteDialogComponent} from './position/position-delete-dialog/position-delete-dialog.component';
+import {PositionAddDialogComponent} from './position/position-add-dialog/position-add-dialog.component';
 
 
 @NgModule({
