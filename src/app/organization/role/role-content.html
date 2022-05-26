@@ -31,6 +31,7 @@
       </div>
 
     <button mat-button (click)="doAction()" mat-flat-button color="warn" [disabled]="!userForm.valid">{{action | translate}}</button>
+
     <button mat-button (click)="closeDialog()">{{'Cancel' | translate}}</button>
   </form>
 </mat-dialog-content>

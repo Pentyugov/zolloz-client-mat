@@ -115,7 +115,7 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
 
   private loadUsers(): void {
     this.subscriptions.push(
-      this.userService.getUsers().subscribe(
+      this.userService.getUsersWithoutEmployee().subscribe(
         (response: User[]) => {
           this.users = response;
           this.employeeToUpdate.user = this.users.find(u => u.id === this.employeeToUpdate.user?.id)

@@ -50,6 +50,10 @@ export class UserService {
     return this.httpClient.get<User[]>(`${this.host}/user/get-all-users`);
   }
 
+  public getUsersWithoutEmployee(): Observable<User[]> {
+    return this.httpClient.get<User[]>(`${this.host}/user/get-users-without-employee`)
+  }
+
   public addUser(formData: FormData): Observable<User> {
     return this.httpClient.post<User>(`${this.host}/user/add-new-user`, formData);
   }

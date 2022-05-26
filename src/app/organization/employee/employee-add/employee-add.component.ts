@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeeSaveDialogComponent } from '../employee-save-dialog/employee-save-dialog.component';
 import { AbstractEditor } from '../../../shared/screens/editor/AbstractEditor';
+import {EmployeePrefillDialogComponent} from "../employee-prefill-dialog/employee-prefill-dialog.component";
 
 @Component({
   selector: 'app-employee-add',
@@ -72,11 +73,11 @@ export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDe
 
   public openPrefillDialog($event: any): void {
     if ($event.value) {
-      this.dialog.open(EmployeeSaveDialogComponent, {
+      this.dialog.open(EmployeePrefillDialogComponent, {
         data: $event.value,
         width: ApplicationConstants.DIALOG_WIDTH
       }).afterClosed().subscribe(response => {
-        if (response.event.action === ApplicationConstants.DIALOG_ACTION_SAVE) {
+        if (response.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
           this.preFillData($event.value);
         }
       });
@@ -109,7 +110,7 @@ export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDe
 
   private loadUsers(): void {
     this.subscriptions.push(
-      this.userService.getUsers().subscribe(
+      this.userService.getUsersWithoutEmployee().subscribe(
         (response: User[]) => {
           this.users = response;
           this.employeeToCreate.user = this.users.find(u => u.id === this.employeeToCreate.user?.id)
