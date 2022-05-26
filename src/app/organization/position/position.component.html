@@ -12,13 +12,16 @@
               />
             </mat-form-field>
           </div>
-          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="50" class="text-right">
-            <a  [routerLink]="['/organization/positions/add']" class="m-r-10 cursor-pointer">
+          <div fxFlex.gt-md="75"
+               fxFlex.gt-lg="75"
+               fxFlex.gt-xs="75"
+               fxFlex="50"
+               class="text-right">
               <button mat-raised-button
+                      (click)="openPositionAddDialog()"
                       color="primary">
                 {{'AddPosition' | translate}}
               </button>
-            </a>
 
           </div>
         </div>

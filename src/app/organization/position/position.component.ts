@@ -13,6 +13,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {PositionDeleteDialogComponent} from "./position-delete-dialog/position-delete-dialog.component";
+import {PositionAddDialogComponent} from "./position-add-dialog/position-add-dialog.component";
 
 @Component({
   selector: 'app-position',
@@ -87,6 +88,22 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
     this.dataSource.data = employees;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  public openPositionAddDialog() {
+    const dialogRef = this.dialog.open(PositionAddDialogComponent, {
+      width: ApplicationConstants.DIALOG_WIDTH
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.event === ApplicationConstants.DIALOG_ACTION_ADD) {
+
+      } else if (result.event === ApplicationConstants.DIALOG_ACTION_UPDATE) {
+
+      } else if (result.event === ApplicationConstants.DIALOG_ACTION_DELETE) {
+
+      }
+    });
   }
 
 
