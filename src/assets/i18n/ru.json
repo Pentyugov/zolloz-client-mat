@@ -51,6 +51,7 @@
   "ProfileUpdatedSuccess": "Ваш профиль был успешно обновлен",
   "SettingsUpdateSuccess" : "Настройки были успешно сохранены",
   "SearchRole" : "Поиск роли...",
+  "SearchPosition" : "Поиск должности...",
   "SearchEmployee" : "Поиск сотрудника...",
   "AddEmployee" : "Добавить сотрудника",
   "AddPosition" : "Добавить должность",

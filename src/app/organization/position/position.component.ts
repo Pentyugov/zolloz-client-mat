@@ -16,6 +16,7 @@ import {PositionDeleteDialogComponent} from "./position-delete-dialog/position-d
 import {PositionAddDialogComponent} from "./position-add-dialog/position-add-dialog.component";
 import {Role} from "../../model/role";
 import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
+import {PositionEditDialogComponent} from "./position-edit-dialog/position-edit-dialog.component";
 
 @Component({
   selector: 'app-position',
@@ -103,6 +104,33 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
         this.onCreatePosition(result.data);
       }
     });
+  }
+
+  public openPositionEditDialog(position: Position) {
+    const dialogRef = this.dialog.open(PositionEditDialogComponent, {
+      data: position,
+      width: ApplicationConstants.DIALOG_WIDTH
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.event === ApplicationConstants.DIALOG_ACTION_SAVE) {
+        this.onUpdatePosition(result.data);
+      }
+    });
+  }
+
+  private onUpdatePosition(position: Position): void {
+    if (position) {
+      this.positionService.updatePosition(position).subscribe(
+        (response: Position) => {
+          this.loadPositions()
+          this.eventNotificationService
+            .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Position: ${response.name} was updated successfully`);
+        }, (errorResponse: HttpErrorResponse) => {
+          this.eventNotificationService
+            .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+        });
+    }
   }
 
   private onCreatePosition(position: Position): void {

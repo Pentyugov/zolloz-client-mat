@@ -30,6 +30,7 @@ import {EmployeeDeleteDialogComponent} from './employee/employee-delete-dialog/e
 import {PositionComponent} from './position/position.component';
 import {PositionDeleteDialogComponent} from './position/position-delete-dialog/position-delete-dialog.component';
 import {PositionAddDialogComponent} from './position/position-add-dialog/position-add-dialog.component';
+import { PositionEditDialogComponent } from './position/position-edit-dialog/position-edit-dialog.component';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import {PositionAddDialogComponent} from './position/position-add-dialog/positio
     PositionComponent,
     PositionDeleteDialogComponent,
     PositionAddDialogComponent,
+    PositionEditDialogComponent,
   ],
   providers: [DatePipe],
   imports: [

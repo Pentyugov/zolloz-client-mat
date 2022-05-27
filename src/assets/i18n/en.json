@@ -51,6 +51,7 @@
   "ProfileUpdatedSuccess" : "Your profile was successfully updated",
   "SettingsUpdateSuccess" : "Your settings was successfully updated",
   "SearchRole" : "Search role...",
+  "SearchPosition" : "Search position...",
   "CreateRole": "Create role",
   "UserRoles" : "User roles",
   "SearchEmployee" : "Search employee",
