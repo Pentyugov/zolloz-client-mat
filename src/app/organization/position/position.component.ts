@@ -14,6 +14,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {PositionDeleteDialogComponent} from "./position-delete-dialog/position-delete-dialog.component";
 import {PositionAddDialogComponent} from "./position-add-dialog/position-add-dialog.component";
+import {Role} from "../../model/role";
+import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
 
 @Component({
   selector: 'app-position',
@@ -92,19 +94,29 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
 
   public openPositionAddDialog() {
     const dialogRef = this.dialog.open(PositionAddDialogComponent, {
+      data: {'action' : ApplicationConstants.DIALOG_ACTION_ADD},
       width: ApplicationConstants.DIALOG_WIDTH
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result.event === ApplicationConstants.DIALOG_ACTION_ADD) {
-
-      } else if (result.event === ApplicationConstants.DIALOG_ACTION_UPDATE) {
-
-      } else if (result.event === ApplicationConstants.DIALOG_ACTION_DELETE) {
-
+        this.onCreatePosition(result.data);
       }
     });
   }
 
+  private onCreatePosition(position: Position): void {
+    if (position) {
+      this.positionService.addPosition(position).subscribe(
+        (response: Position) => {
+          this.loadPositions()
+          this.eventNotificationService
+            .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Position: ${response.name} was added successfully`);
+        }, (errorResponse: HttpErrorResponse) => {
+          this.eventNotificationService
+            .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+        });
+    }
+  }
 
 }
