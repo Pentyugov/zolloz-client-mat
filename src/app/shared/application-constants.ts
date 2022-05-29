@@ -47,6 +47,13 @@ export class ApplicationConstants {
                                             'code',
                                             'action'];
 
+  static readonly PROJECT_TABLE_COLUMNS = ['name',
+                                           'code',
+                                           'projectManager',
+                                           'client',
+                                           'status',
+                                           'action'];
+
 
   static readonly DEFAULT_ROLE = 'USER';
 

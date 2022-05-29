@@ -197,5 +197,19 @@
   "Menu Levels": "Menu Levels",
   "Second Level": "Second Level",
   "Third Level": "Third Level",
-  "aSecond Level": "aSecond Level"
+  "aSecond Level": "aSecond Level",
+  "TotalProjects": "Всего проектов",
+  "Projects": "Проекты",
+  "Project": "Проект",
+  "Projects.Status.Open": "Открытых",
+  "Projects.Status.InProgress": "В работе",
+  "Projects.Status.Closed": "Закрытых",
+  "Projects.Search": "Поиск по проектам",
+  "Status": "Статус",
+  "Status.Open" : "Открыт",
+  "Status.InProgress" : "В работе",
+  "Status.Closed" : "Закрыт",
+  "ProjectManager": "Руководитель проекта",
+  "CreateProject": "Создать проект",
+  "Client": "Заказчик"
 }

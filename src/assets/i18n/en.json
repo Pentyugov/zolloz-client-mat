@@ -197,5 +197,19 @@
   "Menu Levels": "Menu Levels",
   "Second Level": "Second Level",
   "Third Level": "Third Level",
-  "aSecond Level": "aSecond Level"
+  "aSecond Level": "aSecond Level",
+  "TotalProjects": "Total projects",
+  "Projects": "Projects",
+  "Project": "Project",
+  "Projects.Status.Open": "Open",
+  "Projects.Status.InProgress": "In progress",
+  "Projects.Status.Closed": "Closed",
+  "Projects.Search": "Search in projects",
+  "Status": "Status",
+  "Status.Open" : "Open",
+  "Status.InProgress" : "In progress",
+  "Status.Closed" : "Closed",
+  "ProjectManager": "Project manager",
+  "CreateProject": "Create project",
+  "Client": "Client"
 }
