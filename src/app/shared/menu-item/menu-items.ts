@@ -56,6 +56,19 @@ const MENUITEMS = [
       { state: 'roles', name: 'Roles', type: 'link' },
     ],
   },
+
+  {
+    state: 'projects',
+    name: 'Projects',
+    type: 'sub',
+    icon: 'domain',
+    children: [
+      { state: 'projects', name: 'Projects', type: 'link' },
+      { state: 'taskboard', name: 'Taskboard', type: 'link' },
+      { state: 'notes', name: 'Notes', type: 'link' },
+      { state: 'todo', name: 'Todo', type: 'link' },
+    ],
+  },
   {
     state: 'dashboards',
     name: 'Dashboards',

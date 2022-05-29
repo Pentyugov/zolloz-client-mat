@@ -25,6 +25,10 @@ export const AppRoutes: Routes = [
       {
         path: 'organization',
         loadChildren: () => import('./organization/organization.module').then((m) => m.OrganizationModule),
+      },
+      {
+        path: 'projects',
+        loadChildren: () => import('./project/project.module').then((m) => m.ProjectModule),
       }
     ]
   },

@@ -127,8 +127,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
           this.eventNotificationService
             .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Position: ${response.name} was updated successfully`);
         }, (errorResponse: HttpErrorResponse) => {
-          this.eventNotificationService
-            .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+          this.showErrorNotification(errorResponse.error.message);
         });
     }
   }
@@ -141,8 +140,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
           this.eventNotificationService
             .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Position: ${response.name} was added successfully`);
         }, (errorResponse: HttpErrorResponse) => {
-          this.eventNotificationService
-            .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+          this.showErrorNotification(errorResponse.error.message);
         });
     }
   }
