@@ -124,12 +124,14 @@
               <div fxFlex="100" fxFlex.gt-md="50">
                 <mat-checkbox color="primary"
                               class="m-r-10 m-t-10"
+                              value="checked"
                               [(ngModel)]="userToCreate.nonLocked"
                 >{{'IsNotLocked' | translate}}
                 </mat-checkbox>
                 <br/>
                 <mat-checkbox color="primary"
                               class="m-r-10 m-t-10"
+                              value="checked"
                               [(ngModel)]="userToCreate.active"
                 >{{'Active' | translate}}
                 </mat-checkbox>

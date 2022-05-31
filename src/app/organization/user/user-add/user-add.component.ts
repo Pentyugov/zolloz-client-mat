@@ -57,6 +57,8 @@ export class UserAddComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadRoles();
+    this.userToCreate.active = true;
+    this.userToCreate.nonLocked = true;
   }
 
   ngOnDestroy(): void {
