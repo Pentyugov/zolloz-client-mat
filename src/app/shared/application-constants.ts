@@ -54,6 +54,12 @@ export class ApplicationConstants {
                                            'status',
                                            'action'];
 
+  static readonly PROJECT_PARTICIPANTS_TABLE_COLUMNS = ['number',
+                                                        'firstName',
+                                                        'lastName',
+                                                        'username',
+                                                        'email',];
+
 
   static readonly DEFAULT_ROLE = 'USER';
 

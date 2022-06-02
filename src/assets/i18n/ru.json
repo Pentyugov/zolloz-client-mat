@@ -211,5 +211,6 @@
   "Status.Closed" : "Закрыт",
   "ProjectManager": "Руководитель проекта",
   "CreateProject": "Создать проект",
-  "Client": "Заказчик"
+  "Client": "Заказчик",
+  "ProjectEditor": "Редактирование проекта"
 }

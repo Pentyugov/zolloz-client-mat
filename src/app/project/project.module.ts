@@ -13,11 +13,14 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
 import {ProjectRoutes} from "./project.routing";
 import { ProjectsComponent } from './projects/projects.component';
+import { ProjectEditComponent } from './projects/project-edit/project-edit.component';
+import { NgxMaskModule, IConfig } from 'ngx-mask'
 
 
 @NgModule({
   declarations: [
-    ProjectsComponent
+    ProjectsComponent,
+    ProjectEditComponent
   ],
   providers: [DatePipe],
   imports: [
@@ -31,6 +34,7 @@ import { ProjectsComponent } from './projects/projects.component';
     ReactiveFormsModule,
     MatInputModule,
     NgMultiSelectDropDownModule.forRoot(),
+    NgxMaskModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

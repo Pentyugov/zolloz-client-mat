@@ -1,6 +1,6 @@
 import {Routes} from "@angular/router";
-import {DepartmentComponent} from "../organization/department/department.component";
 import {ProjectsComponent} from "./projects/projects.component";
+import {ProjectEditComponent} from "./projects/project-edit/project-edit.component";
 
 export const ProjectRoutes: Routes = [
   {path: '',
@@ -16,7 +16,18 @@ export const ProjectRoutes: Routes = [
           ],
         }
       },
-
+      {
+        path: 'projects/edit',
+        component: ProjectEditComponent,
+        data: {
+          title: 'Project editor',
+          urls: [
+            { title: 'Projects', url: '/projects'},
+            { title: 'Project', url: '/projects/project'},
+            {title: 'Add'}
+          ],
+        }
+      },
 
 
 

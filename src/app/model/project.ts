@@ -8,7 +8,10 @@ export class Project {
   code: string;
   status: number;
   projectManager: User | null;
-  client: Contractor | null;
+  contractor: Contractor | null;
+  closingDate: Date;
+  dueDate: Date;
+  conclusionDate: Date;
   tickets: Ticket[];
   participants: User[] = [];
 
@@ -17,9 +20,12 @@ export class Project {
     this.name = '';
     this.code = '';
     this.projectManager = null;
-    this.client = null;
+    this.contractor = null;
     this.participants = [];
     this.tickets = [];
     this.status = 0;
+    this.closingDate = new Date();
+    this.dueDate = new Date();
+    this.conclusionDate = new Date();
   }
 }

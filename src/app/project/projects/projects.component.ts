@@ -11,6 +11,8 @@ import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {ApplicationConstants} from "../../shared/application-constants";
+import {MatDialog} from "@angular/material/dialog";
+import {ProjectEditComponent} from "./project-edit/project-edit.component";
 
 @Component({
   selector: 'app-projects',
@@ -32,7 +34,8 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
                         protected override translate: TranslateService,
                         protected override eventNotificationService: EventNotificationService,
                         protected override applicationService: ApplicationService,
-                        protected projectService: ProjectService) {
+                        protected projectService: ProjectService,
+                        protected projectEditor: MatDialog) {
     super(router, translate, eventNotificationService, applicationService)
   }
 
@@ -86,7 +89,10 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   }
 
   public openDialog(action: string, obj: any): void {
-
+      this.projectEditor.open(ProjectEditComponent, {
+        width: "100%",
+        height: "100%"
+    })
   }
 
 }

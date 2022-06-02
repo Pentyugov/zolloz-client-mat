@@ -211,5 +211,7 @@
   "Status.Closed" : "Closed",
   "ProjectManager": "Project manager",
   "CreateProject": "Create project",
-  "Client": "Client"
+  "Client": "Client",
+  "ProjectEditor": "Project editor"
+
 }

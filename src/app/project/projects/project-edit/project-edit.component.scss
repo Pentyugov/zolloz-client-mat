@@ -1,0 +1,11 @@
+.participants-list {
+  td.mat-cell,
+  td.mat-footer-cell,
+  th.mat-header-cell {
+    padding: 15px !important;
+  }
+
+  .d-flex {
+    align-items: center;
+  }
+}
