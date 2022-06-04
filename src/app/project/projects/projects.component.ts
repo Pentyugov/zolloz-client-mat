@@ -20,8 +20,8 @@ import {ProjectEditComponent} from "./project-edit/project-edit.component";
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDestroy {
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
-  @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, {static: true}) sort: MatSort = Object.create(null);
   public columnsToDisplay = ApplicationConstants.PROJECT_TABLE_COLUMNS;
   public projects: Project[] = [];
   public dataSource: MatTableDataSource<Project> = new MatTableDataSource<Project>([]);
@@ -30,12 +30,13 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   Closed = -1;
   InProgress = -1;
   Open = -1;
+
   public constructor(protected override router: Router,
-                        protected override translate: TranslateService,
-                        protected override eventNotificationService: EventNotificationService,
-                        protected override applicationService: ApplicationService,
-                        protected projectService: ProjectService,
-                        protected projectEditor: MatDialog) {
+                     protected override translate: TranslateService,
+                     protected override eventNotificationService: EventNotificationService,
+                     protected override applicationService: ApplicationService,
+                     protected projectService: ProjectService,
+                     protected projectEditor: MatDialog) {
     super(router, translate, eventNotificationService, applicationService)
   }
 
@@ -54,7 +55,7 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
           this.projects = response;
           this.initDataSource(this.projects);
           this.initFilters();
-        }, (errorResponse : HttpErrorResponse) => {
+        }, (errorResponse: HttpErrorResponse) => {
           this.showErrorNotification(errorResponse.error.message);
         }
       )
@@ -85,13 +86,21 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   }
 
   public getStatus(status: number): string {
-    return status===10 ? 'Status.Open' : status===20 ? 'Status.InProgress' : 'Status.Closed';
+    return status === 10 ? 'Status.Open' : status === 20 ? 'Status.InProgress' : 'Status.Closed';
   }
 
-  public openDialog(action: string, obj: any): void {
-      this.projectEditor.open(ProjectEditComponent, {
-        width: "100%",
-        height: "100%"
+  public openDialog(action: string, editedItem: Project | null): void {
+    let isNewItem = false;
+    if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
+      isNewItem = true;
+    }
+    this.projectEditor.open(ProjectEditComponent, {
+      width: "100%",
+      height: "100%",
+      data: {
+        editedItem: editedItem,
+        isNewItem: isNewItem
+      }
     })
   }
 

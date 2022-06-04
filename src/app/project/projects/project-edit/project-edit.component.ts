@@ -7,11 +7,14 @@ import {ApplicationService} from "../../../service/application.service";
 import {Project} from "../../../model/project";
 import {MatTableDataSource} from "@angular/material/table";
 import {User} from "../../../model/user";
-import {UserService} from "../../../service/user.service";
 import {ProjectService} from "../../../service/project.service";
 import {ApplicationConstants} from "../../../shared/application-constants";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Role} from "../../../model/role";
+
+interface Status {
+  code: number,
+  status: string
+}
 
 
 @Component({
@@ -23,6 +26,26 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit {
   public refreshing: boolean = false;
   public participantsDs: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   public participantsDisplayedColumns = ApplicationConstants.PROJECT_PARTICIPANTS_TABLE_COLUMNS;
+  public closingDate: Date | null = null;
+  public dueDate: Date | null = null;
+  public dialog_data: any;
+
+  public statuses: Status[] = [
+    {
+      code: 10,
+      status: 'Open',
+    },
+
+    {
+      code: 20,
+      status: 'In progress',
+    },
+
+    {
+      code: 30,
+      status: 'Closed',
+    },
+  ]
 
   constructor(router: Router,
               translate: TranslateService,
@@ -35,9 +58,13 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit {
 
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
+    this.dialog_data = data;
   }
 
   ngOnInit(): void {
+    if (this.dialog_data.isNewItem) {
+      this.initNewItem();
+    }
     this.subscriptions.push()
   }
 
@@ -47,5 +74,21 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit {
 
   public close() {
     this.dialogRef.close();
+  }
+
+  public onChangeStatus(): void {
+    console.log(this.editedProject.status)
+  }
+
+  public onUpdateClosingDate(event: any): void {
+
+  }
+
+  public onUpdateDueDate(event: any): void {
+
+  }
+
+  private initNewItem() {
+    console.log("initializing new item")
   }
 }

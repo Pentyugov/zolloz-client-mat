@@ -37,13 +37,52 @@
                 </mat-form-field>
               </div>
 
-              <div fxFlex="100" fxFlex.gt-md="100">
+              <div fxFlex="100" fxFlex.gt-md="50">
                 <mat-form-field appearance="outline" class="p-r-15 m-r-15">
                   <mat-label>{{'Code' | translate}}</mat-label>
                   <input matInput
                          placeholder="{{'Code' | translate}}"
                          name="code"
                          [(ngModel)]="editedProject.code" />
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-md="50">
+                <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                  <mat-label>{{'Status' | translate}}</mat-label>
+                  <mat-select placeholder="{{'Status' | translate}}"
+                              name="status"
+                              (selectionChange)="onChangeStatus()"
+                              [(ngModel)]="editedProject.status">
+                    <mat-option [value]="null">{{'None' | translate}}</mat-option>
+                    <mat-option *ngFor="let status of statuses" [value]="status.code">
+                      {{ status.status }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-md="50">
+                <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                  <mat-label>{{'ClosingDate' | translate}}</mat-label>
+                  <input matInput
+                         type="date"
+                         placeholder="{{'ClosingDate' | translate}}"
+                         name="closingDate"
+                         (change)="onUpdateClosingDate($event)"
+                         [valueAsDate]="closingDate"/>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" fxFlex.gt-md="50">
+                <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                  <mat-label>{{'DueDate' | translate}}</mat-label>
+                  <input matInput
+                         type="date"
+                         placeholder="{{'DueDate' | translate}}"
+                         name="dueDate"
+                         (change)="onUpdateDueDate($event)"
+                         [valueAsDate]="dueDate"/>
                 </mat-form-field>
               </div>
 
