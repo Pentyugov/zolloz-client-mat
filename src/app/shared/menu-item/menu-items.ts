@@ -61,7 +61,7 @@ const MENUITEMS = [
     state: 'projects',
     name: 'Projects',
     type: 'sub',
-    icon: 'foldercopy',
+    icon: 'folder',
     children: [
       { state: 'projects', name: 'Projects', type: 'link' },
       { state: 'taskboard', name: 'Taskboard', type: 'link' },

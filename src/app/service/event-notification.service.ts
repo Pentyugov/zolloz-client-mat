@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {NotificationsService} from "angular2-notifications";
+import {NotificationType} from "../enum/notification-type.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,26 @@ export class EventNotificationService {
 
   constructor(private _service: NotificationsService) {
 
+  }
+
+  public showNotification(type: NotificationType, caption: string, description: string): void {
+    switch (type) {
+      case NotificationType.INFO:
+        this.showInfoNotification(caption, description);
+        break;
+      case NotificationType.SUCCESS:
+        this.showSuccessNotification(caption, description);
+        break;
+      case NotificationType.WARNING:
+        this.showWarnNotification(caption, description);
+        break;
+      case NotificationType.ERROR:
+        this.showErrorNotification(caption, description);
+        break;
+      case NotificationType.DEFAULT:
+        this.showAlertNotification(caption, description);
+        break;
+    }
   }
 
   public showInfoNotification(caption: string, description: string): void {

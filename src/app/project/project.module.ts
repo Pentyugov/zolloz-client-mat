@@ -13,14 +13,15 @@ import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
 import {ProjectRoutes} from "./project.routing";
 import { ProjectsComponent } from './projects/projects.component';
-import { ProjectEditComponent } from './projects/project-edit/project-edit.component';
+import {ProjectEditComponent, ProjectSaveConfirmComponent} from './projects/project-edit/project-edit.component';
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 
 
 @NgModule({
   declarations: [
     ProjectsComponent,
-    ProjectEditComponent
+    ProjectEditComponent,
+    ProjectSaveConfirmComponent
   ],
   providers: [DatePipe],
   imports: [

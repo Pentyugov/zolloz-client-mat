@@ -212,5 +212,16 @@
   "ProjectManager": "Руководитель проекта",
   "CreateProject": "Создать проект",
   "Client": "Заказчик",
-  "ProjectEditor": "Редактирование проекта"
+  "ProjectCreation" : "Создание проекта",
+  "ProjectEditor": "Редактирование проекта",
+  "ProjectParticipants" : "Участники проекта",
+  "Notifications" : "Уведомления",
+  "ConclusionDate" : "Дата заключения",
+  "ClosingDate" : "Дата закрытия",
+  "DueDate" : "Выполнить до",
+  "Contractor" : "Контрагент",
+  "SaveChanges" : "Сохранить изменения"
+
+
+
 }

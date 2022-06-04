@@ -212,6 +212,13 @@
   "ProjectManager": "Project manager",
   "CreateProject": "Create project",
   "Client": "Client",
-  "ProjectEditor": "Project editor"
-
+  "ProjectCreation" : "Create project",
+  "ProjectEditor": "Project editor",
+  "ProjectParticipants" : "Project participants",
+  "Notifications" : "Notifications",
+  "ConclusionDate" : "Conclusion date",
+  "ClosingDate" : "Closing date",
+  "DueDate" : "Due date",
+  "Contractor" : "Contractor",
+  "SaveChanges" : "Save changes"
 }

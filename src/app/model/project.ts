@@ -7,12 +7,11 @@ export class Project {
   name: string;
   code: string;
   status: number;
-  projectManager: User | null;
-  contractor: Contractor | null;
+  projectManager: User | null | undefined;
+  contractor: Contractor | null | undefined;
   closingDate: Date;
   dueDate: Date;
   conclusionDate: Date;
-  tickets: Ticket[];
   participants: User[] = [];
 
   constructor() {
@@ -22,7 +21,6 @@ export class Project {
     this.projectManager = null;
     this.contractor = null;
     this.participants = [];
-    this.tickets = [];
     this.status = 0;
     this.closingDate = new Date();
     this.dueDate = new Date();

@@ -10,6 +10,8 @@ export abstract class AbstractBrowser {
   public messageTitle: string = '';
   public message: string = '';
   public refreshing: boolean = true;
+  public selectedRow: any;
+  public clickedRow: any;
 
   public subscriptions: Subscription[] = [];
   protected constructor(protected router: Router,
@@ -45,6 +47,18 @@ export abstract class AbstractBrowser {
       return text.length > 40 ? text.slice(0, limit) + '...' : text;
     }
     return '';
+  }
+
+  public onEnterRow(row: any): void {
+    this.selectedRow = row;
+  }
+
+  public onLeaveRow(): void {
+    this.selectedRow = null;
+  }
+
+  public onClickRow(row: any): void {
+    this.clickedRow = row;
   }
 
 

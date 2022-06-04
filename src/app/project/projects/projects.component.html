@@ -12,9 +12,7 @@
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
       <div
-        class="box p-20 bg-success text-center cursor-pointer"
-        (click)="btnCategoryClick(10)"
-      >
+        class="box p-20 bg-success text-center cursor-pointer" (click)="btnCategoryClick(10)">
         <h1 class="font-light text-white m-0">{{ Open }}</h1>
         <h6 class="text-white m-0">{{'Projects.Status.Open' | translate}}</h6>
       </div>
@@ -24,9 +22,7 @@
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
       <div
-        class="box p-20 bg-warning text-center cursor-pointer"
-        (click)="btnCategoryClick(20)"
-      >
+        class="box p-20 bg-warning text-center cursor-pointer" (click)="btnCategoryClick(20)">
         <h1 class="font-light text-white m-0">{{ InProgress }}</h1>
         <h6 class="text-white m-0">{{'Projects.Status.InProgress' | translate}}</h6>
       </div>
@@ -36,9 +32,7 @@
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
       <div
-        class="box p-20 bg-danger text-center cursor-pointer"
-        (click)="btnCategoryClick(30)"
-      >
+        class="box p-20 bg-danger text-center cursor-pointer" (click)="btnCategoryClick(30)">
         <h1 class="font-light text-white m-0">{{ Closed }}</h1>
         <h6 class="text-white m-0">{{'Projects.Status.Closed' | translate}}</h6>
       </div>
@@ -125,7 +119,13 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+            <tr mat-row (mouseenter)="onEnterRow(row)"
+                        (mouseleave)="onLeaveRow()"
+                        (click)="onClickRow(row)"
+                        (dblclick)="openDialog('Update', row)"
+                        [ngClass]="{'highlight-selected' : row.id === clickedRow?.id ,'highlight' : row.id === selectedRow?.id}"
+                        *matRowDef="let row; columns: columnsToDisplay; let entry">
+            </tr>
           </table>
         </div>
       </mat-card-content>

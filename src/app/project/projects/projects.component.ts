@@ -62,10 +62,13 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
     );
   }
 
-  private initDataSource(projects: Project []): void {
+  private initDataSource(projects: Project[]): void {
     this.dataSource.data = projects;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = (project: Project, filter: string) => {
+      return project.status.toString().trim().toLowerCase() == filter;
+    };
   }
 
   private initFilters(): void {
@@ -73,12 +76,19 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
     this.Open = this.btnCategoryClick(Number(10));
     this.InProgress = this.btnCategoryClick(20);
     this.Closed = this.btnCategoryClick(30);
-    this.btnCategoryClick(0);
+    this.btnCategoryClick(-1);
   }
 
   public btnCategoryClick(val: Number): number {
-    this.dataSource.filter = val.toString().trim().toLowerCase();
-    return this.dataSource.filteredData.length;
+    this.clickedRow = null;
+    if (val > 0) {
+      this.dataSource.filter = val.toString().trim().toLowerCase();
+      return this.dataSource.filteredData.length;
+    } else {
+      this.initDataSource(this.projects);
+      return this.projects.length;
+    }
+
   }
 
   public applyFilter(filterValue: string): void {
@@ -94,14 +104,20 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
     if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
       isNewItem = true;
     }
-    this.projectEditor.open(ProjectEditComponent, {
+    const editor = this.projectEditor.open(ProjectEditComponent, {
       width: "100%",
-      height: "100%",
+      height: "75%",
       data: {
         editedItem: editedItem,
         isNewItem: isNewItem
       }
-    })
+    });
+
+    editor.afterClosed().subscribe(() => {
+      this.loadProjects();
+    });
   }
+
+
 
 }

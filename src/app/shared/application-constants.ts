@@ -69,6 +69,56 @@ export class ApplicationConstants {
   static readonly NOTIFICATION_TITLE_SUCCESS = 'Success';
   static readonly NOTIFICATION_TITLE_ERROR = 'Error';
 
+  static readonly NOTIFICATION_TYPE_SUCCESS = 10;
+  static readonly NOTIFICATION_TYPE_INFO = 20;
+  static readonly NOTIFICATION_TYPE_WARNING = 30;
+  static readonly NOTIFICATION_TYPE_DANGER = 40;
+
+  static readonly NOTIFICATION_ACCESSORY_SYSTEM = 10;
+  static readonly NOTIFICATION_ACCESSORY_CALENDAR = 20;
+  static readonly NOTIFICATION_ACCESSORY_TODO = 30;
+  static readonly NOTIFICATION_ACCESSORY_WORKFLOW = 40;
+//    ==============================================================
+//    =                         PROJECTS                           =
+//    ==============================================================
+  static readonly PROJECT_STATUSES = [
+    {
+      code: 10,
+      status: 'Status.Open',
+    },
+
+    {
+      code: 20,
+      status: 'Status.InProgress',
+    },
+
+    {
+      code: 30,
+      status: 'Status.Closed',
+    },
+  ]
+
+//    ==============================================================
+//    =                      PERMISSIONS                           =
+//    ==============================================================
+  static readonly PERMISSION_READ = 'READ';
+  static readonly PERMISSION_DELETE = 'DELETE';
+  static readonly PERMISSION_CREATE = 'CREATE';
+  static readonly PERMISSION_UPDATE = 'UPDATE';
+  static readonly PERMISSION_SEND_SYS_MAIL = 'SEND_SYS_MAIL';
+  static readonly PERMISSION_CREATE_PROJECT = 'CREATE_PROJECT';
+  static readonly PERMISSION_DELETE_PROJECT = 'DELETE_PROJECT';
+  static readonly PERMISSION_EDIT_PROJECT = 'EDIT_PROJECT';
+
+//    ==============================================================
+//    =                            ROLES                           =
+//    ==============================================================
+  static readonly ROLE_ADMIN = 'ADMIN';
+  static readonly ROLE_USER = 'USER';
+  static readonly ROLE_SECRETARY = 'SECRETARY';
+  static readonly ROLE_PROJECT_MANAGER = 'PROJECT_MANAGER';
+
+
 //    ==============================================================
 //    =                            Locales                         =
 //    ==============================================================

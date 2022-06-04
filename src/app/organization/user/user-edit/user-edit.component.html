@@ -43,7 +43,7 @@
               <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex="100">
                 <h3 class="m-0">
                   <div class="d-flex">
-                    <span ngDefaultControl>{{'EditUser' | translate}} {{ usernameTitle }}</span>
+                    <span ngDefaultControl>{{'EditUser' | translate}}</span>
                   </div>
 
                 </h3>
@@ -57,7 +57,7 @@
             </div>
 
             <hr/>
-            <span class="font-medium">{{'LastLoginDate' | translate}}
+            <span class="font-medium" *ngIf="editedUser.lastLoginDate != null">{{'LastLoginDate' | translate}}
               <h6 class="m-t-5 m-b-0">{{editedUser.lastLoginDate}}</h6>
             </span>
 

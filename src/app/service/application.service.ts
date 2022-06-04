@@ -23,8 +23,6 @@ export class ApplicationService {
 
     this.settingsSource = new BehaviorSubject<UserSettings>(new UserSettings());
     this.userSettings = this.settingsSource.asObservable();
-
-
   }
 
   public getRefreshing(): boolean {
@@ -64,6 +62,14 @@ export class ApplicationService {
       return  JSON.parse(localStorage.getItem('locale') as string) as Locale;
     }
     return ApplicationConstants.APP_DEFAULT_LOCALE;
+  }
+
+  public playSound(): void {
+    if (this.getUserSettings().enableChatNotificationSound) {
+      let audio = new Audio('assets/sounds/sound_1.wav');
+      audio.play();
+    }
+
   }
 
 

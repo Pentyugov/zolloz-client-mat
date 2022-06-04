@@ -50,6 +50,14 @@ export class UserService {
     return this.httpClient.get<User[]>(`${this.host}/user/get-all-users`);
   }
 
+  public getAllWithRole(role: String): Observable<User[]> {
+    return this.httpClient.get<User[]>(`${this.host}/user/get-all-with-role/${role}`);
+  }
+
+  public getAllWithPermission(permission: String): Observable<User[]> {
+    return this.httpClient.get<User[]>(`${this.host}/user/get-all-with-permission/${permission}`);
+  }
+
   public getUsersWithoutEmployee(): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.host}/user/get-users-without-employee`)
   }
