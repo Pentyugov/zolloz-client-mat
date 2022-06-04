@@ -25,6 +25,9 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   public columnsToDisplay = ApplicationConstants.PROJECT_TABLE_COLUMNS;
   public projects: Project[] = [];
   public dataSource: MatTableDataSource<Project> = new MatTableDataSource<Project>([]);
+  private defaultFilterPredicate?: (data: any, filter: string) => boolean;
+  private statusFilterPredicate?: (data: Project, filter: string) => boolean;
+  private isDefaultPredicate: boolean = true;
   searchText: any;
   totalCount = -1;
   Closed = -1;
@@ -37,7 +40,11 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
                      protected override applicationService: ApplicationService,
                      protected projectService: ProjectService,
                      protected projectEditor: MatDialog) {
-    super(router, translate, eventNotificationService, applicationService)
+    super(router, translate, eventNotificationService, applicationService);
+    this.defaultFilterPredicate = this.dataSource.filterPredicate;
+    this.statusFilterPredicate = (project: Project, filter: string) => {
+      return project.status.toString().trim().toLowerCase() == filter;
+    };
   }
 
   ngOnInit(): void {
@@ -66,9 +73,6 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
     this.dataSource.data = projects;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (project: Project, filter: string) => {
-      return project.status.toString().trim().toLowerCase() == filter;
-    };
   }
 
   private initFilters(): void {
@@ -80,18 +84,33 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   }
 
   public btnCategoryClick(val: Number): number {
+    if (this.isDefaultPredicate) {
+      this.changePredicate(this.statusFilterPredicate);
+    }
     this.clickedRow = null;
     if (val > 0) {
       this.dataSource.filter = val.toString().trim().toLowerCase();
       return this.dataSource.filteredData.length;
     } else {
-      this.initDataSource(this.projects);
-      return this.projects.length;
+      this.clearFilters();
+      return this.totalCount;
     }
+  }
 
+  private changePredicate(filterPredicate: any): void {
+    this.clearFilters();
+    this.dataSource.filterPredicate = filterPredicate;
+    this.isDefaultPredicate = !this.isDefaultPredicate;
+  }
+
+  public clearFilters(){
+    this.dataSource.filter = '';
   }
 
   public applyFilter(filterValue: string): void {
+    if (!this.isDefaultPredicate) {
+      this.changePredicate(this.defaultFilterPredicate);
+    }
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 

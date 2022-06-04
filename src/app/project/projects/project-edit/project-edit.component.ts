@@ -96,7 +96,7 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
     this.subscriptions.push(this.projectService.addProject(this.editedProject).subscribe(
       (response: Project) => {
         this.eventNotificationService
-          .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Role: ${response.name} was updated successfully`);
+          .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Project: ${response.name} was created successfully`);
       }, (errorResponse: HttpErrorResponse) => {
         this.eventNotificationService
           .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
@@ -105,11 +105,23 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
   }
 
   public onUpdateProject(): void {
+    this.subscriptions.push(this.projectService.updateProject(this.editedProject).subscribe(
+      (response: Project) => {
+        this.eventNotificationService
+          .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Project: ${response.name} was updated successfully`);
+      }, (errorResponse: HttpErrorResponse) => {
+        this.eventNotificationService
+          .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+      }));
     this.close();
   }
 
   public close() {
-    this.dialogRef.close();
+    this.dialogRef.close({
+      event: {
+        action: ApplicationConstants.DIALOG_ACTION_SAVE
+      }
+    });
   }
 
   public isNewItem(): boolean {

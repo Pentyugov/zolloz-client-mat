@@ -79,7 +79,12 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let row; columns: columnsToDisplay" class="example-detail-row"></tr>
+            <tr mat-row (mouseenter)="onEnterRow(row)"
+                (mouseleave)="onLeaveRow()"
+                (click)="onClickRow(row)"
+                (dblclick)="openDialog('Update', row)"
+                [ngClass]="{'highlight-selected' : row.id === clickedRow?.id ,'highlight-mouse-on' : row.id === selectedRow?.id}"
+                *matRowDef="let row; columns: columnsToDisplay; let entry">
           </table>
           <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
         </div>

@@ -17,8 +17,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
-  styles: [
-  ]
+  styleUrls: ['./employee.component.scss']
 })
 export class EmployeeComponent extends AbstractBrowser implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);

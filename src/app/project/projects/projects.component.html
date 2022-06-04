@@ -2,7 +2,7 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div class="box p-20 bg-info text-center cursor-pointer" (click)="btnCategoryClick(0)">
+      <div class="box p-20 bg-info text-center cursor-pointer" (click)="btnCategoryClick(-1)">
         <h1 class="font-light text-white m-0">{{ totalCount }}</h1>
         <h6 class="text-white m-0">{{'TotalProjects' | translate}}</h6>
       </div>
@@ -55,7 +55,7 @@
             </mat-form-field>
           </div>
           <div fxFlex.gt-md="75" class="text-right">
-            <button mat-raised-button (click)="openDialog('Add', {})" color="primary">
+            <button mat-raised-button (click)="openDialog('Add', null)" color="primary">
               {{'CreateProject' | translate}}
             </button>
           </div>
@@ -69,7 +69,7 @@
     <mat-card>
       <mat-card-content>
         <div class="table-responsive">
-          <table mat-table [dataSource]="dataSource" class="table ticket-list no-wrap">
+          <table mat-table matSort [dataSource]="dataSource" class="table ticket-list no-wrap">
 
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef >{{'Name' | translate}}</th>
@@ -123,10 +123,11 @@
                         (mouseleave)="onLeaveRow()"
                         (click)="onClickRow(row)"
                         (dblclick)="openDialog('Update', row)"
-                        [ngClass]="{'highlight-selected' : row.id === clickedRow?.id ,'highlight' : row.id === selectedRow?.id}"
+                        [ngClass]="{'highlight-selected' : row.id === clickedRow?.id ,'highlight-mouse-on' : row.id === selectedRow?.id}"
                         *matRowDef="let row; columns: columnsToDisplay; let entry">
             </tr>
           </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
       </mat-card-content>
     </mat-card>
