@@ -59,7 +59,7 @@ const MENUITEMS = [
 
   {
     state: 'projects',
-    name: 'Projects',
+    name: 'MyProjects',
     type: 'sub',
     icon: 'folder',
     children: [

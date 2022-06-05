@@ -4,17 +4,26 @@ import { TranslateService } from '@ngx-translate/core';
 import { EventNotificationService } from '../../../service/event-notification.service';
 import { ApplicationService } from '../../../service/application.service';
 import { ApplicationConstants } from '../../application-constants';
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 export abstract class AbstractEditor {
 
   public messageTitle: string = '';
   public message: string = '';
+  public isDarkMode: boolean = false;
+  public refreshing: boolean = true;
 
   public subscriptions: Subscription[] = [];
     protected constructor(protected router: Router,
                           protected translate: TranslateService,
                           protected eventNotificationService: EventNotificationService,
-                          protected applicationService: ApplicationService) {
+                          protected applicationService: ApplicationService,
+                          protected dialog: MatDialog) {
+      this.refreshing = applicationService.getRefreshing();
+      this.subscriptions.push(applicationService.refreshing.subscribe(r => this.refreshing = r));
+      this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
+      this.subscriptions.push(applicationService.darkMode.subscribe(dm => this.isDarkMode = dm));
+      this.subscriptions.push(applicationService.darkMode.subscribe(dm => this.isDarkMode = dm));
     }
 
   protected showErrorNotification(errorMessage: string): void {

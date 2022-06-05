@@ -13,6 +13,7 @@ import {MatSort} from "@angular/material/sort";
 import {ApplicationConstants} from "../../shared/application-constants";
 import {MatDialog} from "@angular/material/dialog";
 import {ProjectEditComponent} from "./project-edit/project-edit.component";
+import {ProjectDeleteDialogComponent} from "./project-delete-dialog/project-delete-dialog.component";
 
 @Component({
   selector: 'app-projects',
@@ -25,10 +26,9 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   public columnsToDisplay = ApplicationConstants.PROJECT_TABLE_COLUMNS;
   public projects: Project[] = [];
   public dataSource: MatTableDataSource<Project> = new MatTableDataSource<Project>([]);
-  private defaultFilterPredicate?: (data: any, filter: string) => boolean;
-  private statusFilterPredicate?: (data: Project, filter: string) => boolean;
+  private readonly defaultFilterPredicate?: (data: any, filter: string) => boolean;
+  private readonly statusFilterPredicate?: (data: Project, filter: string) => boolean;
   private isDefaultPredicate: boolean = true;
-  searchText: any;
   totalCount = -1;
   Closed = -1;
   InProgress = -1;
@@ -38,6 +38,7 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
                      protected override translate: TranslateService,
                      protected override eventNotificationService: EventNotificationService,
                      protected override applicationService: ApplicationService,
+                     protected dialog: MatDialog,
                      protected projectService: ProjectService,
                      protected projectEditor: MatDialog) {
     super(router, translate, eventNotificationService, applicationService);
@@ -65,8 +66,7 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
         }, (errorResponse: HttpErrorResponse) => {
           this.showErrorNotification(errorResponse.error.message);
         }
-      )
-    );
+      ));
   }
 
   private initDataSource(projects: Project[]): void {
@@ -126,6 +126,7 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
     const editor = this.projectEditor.open(ProjectEditComponent, {
       width: "100%",
       height: "75%",
+      panelClass: this.isDarkMode ? 'dark' : '',
       data: {
         editedItem: editedItem,
         isNewItem: isNewItem
@@ -135,6 +136,29 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
     editor.afterClosed().subscribe(() => {
       this.loadProjects();
     });
+  }
+
+  public openDeleteDialog(project: Project) {
+    this.dialog.open(ProjectDeleteDialogComponent, {
+      data: project,
+      width: ApplicationConstants.DIALOG_WIDTH,
+      panelClass: this.isDarkMode ? 'dark' : ''
+    }).afterClosed().subscribe(response => {
+      if (response.event.action === ApplicationConstants.DIALOG_ACTION_DELETE) {
+        this.onDeleteProject(this.clickedRow);
+      }
+    });
+  }
+
+  public onDeleteProject(project: Project): void {
+    this.subscriptions.push(this.projectService.deleteProject(project.id).subscribe(
+      (response: Project) => {
+
+        this.loadProjects();
+      }, (errorResponse: HttpErrorResponse) => {
+        this.showErrorNotification(errorResponse.error.message);
+      }
+    ));
   }
 
 

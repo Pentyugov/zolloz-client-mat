@@ -14,7 +14,6 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {PositionDeleteDialogComponent} from "./position-delete-dialog/position-delete-dialog.component";
 import {PositionAddDialogComponent} from "./position-add-dialog/position-add-dialog.component";
-import {Role} from "../../model/role";
 import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
 import {PositionEditDialogComponent} from "./position-edit-dialog/position-edit-dialog.component";
 

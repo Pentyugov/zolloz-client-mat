@@ -11,7 +11,6 @@ export const ProjectRoutes: Routes = [
         data: {
           title: 'Projects',
           urls: [
-            { title: 'Project', url: '/projects' },
             { title: 'Projects' }
           ],
         }
@@ -22,7 +21,6 @@ export const ProjectRoutes: Routes = [
         data: {
           title: 'Project editor',
           urls: [
-            { title: 'Projects', url: '/projects'},
             { title: 'Project', url: '/projects/project'},
             {title: 'Add'}
           ],

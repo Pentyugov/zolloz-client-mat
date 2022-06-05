@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {AbstractEditor} from "../../../shared/screens/editor/AbstractEditor";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
@@ -14,8 +14,10 @@ import {Contractor} from "../../../model/contractor";
 import {UserService} from "../../../service/user.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ContractorService} from "../../../service/contractor.service";
-import {Role} from "../../../model/role";
 import {EventNotificationCaptionEnum} from "../../../enum/event-notification-caption.enum";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {ProjectAddParticipantsComponent} from "./addparticipants/project-add-participants.component";
 
 @Component({
   templateUrl: './project-edit.component.html',
@@ -25,9 +27,10 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
   public editedProject: Project = new Project();
   public projectManagers: User[] = [];
   public contractors: Contractor[] = [];
-  public refreshing: boolean = false;
   public participantsDs: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   public participantsDisplayedColumns = ApplicationConstants.PROJECT_PARTICIPANTS_TABLE_COLUMNS;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   public conclusionDate: Date | null = null;
   public dueDate: Date | null = null;
   public dialog_data: any;
@@ -38,13 +41,14 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
+              dialog: MatDialog,
               private userService: UserService,
               private projectService: ProjectService,
               private contractorService: ContractorService,
-              private dialog: MatDialog,
+
               public dialogRef: MatDialogRef<ProjectEditComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-    super(router, translate, eventNotificationService, applicationService);
+    super(router, translate, eventNotificationService, applicationService, dialog);
 
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
@@ -60,6 +64,7 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
   ngOnInit(): void {
     if (!this.isNewItem()) {
       this.editedProject = this.data.editedItem;
+      this.participantsDs.data = this.editedProject.participants;
       if (this.editedProject.conclusionDate) {
         this.conclusionDate = new Date(Date.parse(this.editedProject.conclusionDate!.toString()));
       }
@@ -75,7 +80,8 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
 
   openSaveDialog() {
     const dialogRef = this.dialog.open(ProjectSaveConfirmComponent, {
-      width: ApplicationConstants.DIALOG_WIDTH
+      width: ApplicationConstants.DIALOG_WIDTH,
+      panelClass: this.isDarkMode ? 'dark' : ''
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -90,6 +96,28 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
         }
       }
     });
+  }
+
+  public openAddParticipantsDialog(action: string, data: any): void {
+    data.action = action;
+    data.participants = this.participantsDs.data;
+    const dialogRef = this.dialog.open(ProjectAddParticipantsComponent, {
+      data: data,
+      width: '100%'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.event.action === ApplicationConstants.DIALOG_ACTION_SAVE) {
+        console.log(result.event.data);
+        this.initDataSource(result.event.data);
+      }
+    });
+  }
+
+  private initDataSource(participants: User[]): void {
+    this.participantsDs = new MatTableDataSource<User>(participants);
+    this.participantsDs.paginator = this.paginator;
+    this.participantsDs.sort = this.sort;
+    this.editedProject.participants = participants;
   }
 
   public onCreateProject(): void {

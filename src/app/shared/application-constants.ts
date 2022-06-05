@@ -26,8 +26,7 @@ export class ApplicationConstants {
                                              'department',
                                              'phoneNumber',
                                              'email',
-                                             'personnelNumber',
-                                             'action'];
+                                             'personnelNumber'];
 
   static readonly ROLE_TABLE_COLUMNS = ['number',
                                         'name',
@@ -51,8 +50,7 @@ export class ApplicationConstants {
                                            'code',
                                            'projectManager',
                                            'client',
-                                           'status',
-                                           'action'];
+                                           'status'];
 
   static readonly PROJECT_PARTICIPANTS_TABLE_COLUMNS = ['number',
                                                         'firstName',

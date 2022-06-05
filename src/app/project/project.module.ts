@@ -14,14 +14,18 @@ import {UcWidgetModule} from "ngx-uploadcare-widget";
 import {ProjectRoutes} from "./project.routing";
 import { ProjectsComponent } from './projects/projects.component';
 import {ProjectEditComponent, ProjectSaveConfirmComponent} from './projects/project-edit/project-edit.component';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxMaskModule } from 'ngx-mask';
+import { ProjectAddParticipantsComponent } from './projects/project-edit/addparticipants/project-add-participants.component'
+import {ProjectDeleteDialogComponent} from "./projects/project-delete-dialog/project-delete-dialog.component";
 
 
 @NgModule({
   declarations: [
     ProjectsComponent,
     ProjectEditComponent,
-    ProjectSaveConfirmComponent
+    ProjectSaveConfirmComponent,
+    ProjectAddParticipantsComponent,
+    ProjectDeleteDialogComponent
   ],
   providers: [DatePipe],
   imports: [

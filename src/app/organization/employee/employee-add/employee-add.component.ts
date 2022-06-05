@@ -1,21 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ApplicationService } from '../../../service/application.service';
-import { EmployeeService } from '../../../service/employee.service';
-import { TranslateService } from '@ngx-translate/core';
-import { EventNotificationService } from '../../../service/event-notification.service';
-import { Employee } from '../../../model/employee';
-import { User } from '../../../model/user';
-import { UserService } from '../../../service/user.service';
-import { DepartmentService } from '../../../service/department.service';
-import { PositionService } from '../../../service/position.service';
-import { Department } from '../../../model/department';
-import { Position } from '../../../model/position';
-import { MatDialog } from '@angular/material/dialog';
-import { ApplicationConstants } from '../../../shared/application-constants';
-import { Router } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
-import { EmployeeSaveDialogComponent } from '../employee-save-dialog/employee-save-dialog.component';
-import { AbstractEditor } from '../../../shared/screens/editor/AbstractEditor';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ApplicationService} from '../../../service/application.service';
+import {EmployeeService} from '../../../service/employee.service';
+import {TranslateService} from '@ngx-translate/core';
+import {EventNotificationService} from '../../../service/event-notification.service';
+import {Employee} from '../../../model/employee';
+import {User} from '../../../model/user';
+import {UserService} from '../../../service/user.service';
+import {DepartmentService} from '../../../service/department.service';
+import {PositionService} from '../../../service/position.service';
+import {Department} from '../../../model/department';
+import {Position} from '../../../model/position';
+import {MatDialog} from '@angular/material/dialog';
+import {ApplicationConstants} from '../../../shared/application-constants';
+import {Router} from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
+import {EmployeeSaveDialogComponent} from '../employee-save-dialog/employee-save-dialog.component';
+import {AbstractEditor} from '../../../shared/screens/editor/AbstractEditor';
 import {EmployeePrefillDialogComponent} from "../employee-prefill-dialog/employee-prefill-dialog.component";
 
 @Component({
@@ -24,7 +24,6 @@ import {EmployeePrefillDialogComponent} from "../employee-prefill-dialog/employe
   styleUrls: ['./employee-add.component.scss']
 })
 export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDestroy {
-  public refreshing: boolean = false;
   public hireDate: Date | null = null;
   public dismissalDate: Date | null = null;
   public employeeToCreate: Employee = new Employee();
@@ -37,13 +36,14 @@ export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDe
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
+              dialog: MatDialog,
               private employeeService: EmployeeService,
               private userService: UserService,
               private departmentService: DepartmentService,
               private positionService: PositionService,
-              private dialog: MatDialog) {
+              ) {
 
-    super(router, translate, eventNotificationService, applicationService);
+    super(router, translate, eventNotificationService, applicationService, dialog);
 
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));

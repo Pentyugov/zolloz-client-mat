@@ -1,9 +1,9 @@
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { EventNotificationService } from '../../../service/event-notification.service';
-import { ApplicationService } from '../../../service/application.service';
-import { ApplicationConstants } from '../../application-constants';
-import { Subscription } from 'rxjs';
+import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+import {EventNotificationService} from '../../../service/event-notification.service';
+import {ApplicationService} from '../../../service/application.service';
+import {ApplicationConstants} from '../../application-constants';
+import {Subscription} from 'rxjs';
 
 export abstract class AbstractBrowser {
 
@@ -12,6 +12,7 @@ export abstract class AbstractBrowser {
   public refreshing: boolean = true;
   public selectedRow: any;
   public clickedRow: any;
+  public isDarkMode: boolean = false;
 
   public subscriptions: Subscription[] = [];
   protected constructor(protected router: Router,
@@ -21,6 +22,7 @@ export abstract class AbstractBrowser {
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.refreshing.subscribe(r => this.refreshing = r));
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
+    this.subscriptions.push(applicationService.darkMode.subscribe(dm => this.isDarkMode = dm));
   }
 
   protected showErrorNotification(errorMessage: string): void {

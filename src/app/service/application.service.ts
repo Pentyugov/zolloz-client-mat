@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ApplicationConstants, Locale} from "../shared/application-constants";
 import {BehaviorSubject, Observable} from "rxjs";
 import {UserSettings} from "../model/user-settings";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment.prod";
 
 @Injectable({
@@ -14,6 +14,9 @@ export class ApplicationService {
   private refreshingSource: BehaviorSubject<boolean>;
   public refreshing: Observable<boolean>;
 
+  private darkModeSource: BehaviorSubject<boolean>;
+  public darkMode: Observable<boolean>;
+
   private settingsSource!: BehaviorSubject<UserSettings>;
   public userSettings!: Observable<UserSettings>;
 
@@ -23,6 +26,9 @@ export class ApplicationService {
 
     this.settingsSource = new BehaviorSubject<UserSettings>(new UserSettings());
     this.userSettings = this.settingsSource.asObservable();
+
+    this.darkModeSource = new BehaviorSubject<boolean>(false);
+    this.darkMode = this.darkModeSource.asObservable();
   }
 
   public getRefreshing(): boolean {
@@ -31,6 +37,14 @@ export class ApplicationService {
 
   public changeRefreshing(refreshing: boolean): void {
     this.refreshingSource.next(refreshing);
+  }
+
+  public getDarkMode(): boolean {
+    return this.darkModeSource.value;
+  }
+
+  public changeDarkMode(darkMode: boolean): void {
+    this.darkModeSource.next(darkMode);
   }
 
   public getUserSettings(): UserSettings {
@@ -42,6 +56,8 @@ export class ApplicationService {
   }
 
   public changeSettings(userSettings: UserSettings): void {
+    this.saveUserSettingsToLocalStorage(userSettings);
+    this.changeDarkMode(userSettings.darkTheme);
     this.settingsSource.next(userSettings);
   }
 
@@ -51,6 +67,17 @@ export class ApplicationService {
 
   public saveUserSettings(userSettings: UserSettings): Observable<UserSettings> {
     return this.httpClient.post<UserSettings>(`${this.host}/app/user-settings/save-user-settings`, userSettings);
+  }
+
+  public saveUserSettingsToLocalStorage(userSettings: UserSettings): void {
+    localStorage.setItem('userSettings',  JSON.stringify(userSettings));
+  }
+
+  public getUserSettingsFromLocalStorage(): UserSettings {
+    if (localStorage.getItem('userSettings') !== null) {
+      return  JSON.parse(localStorage.getItem('locale') as string) as UserSettings;
+    }
+    return this.getUserSettings();
   }
 
   public saveApplicationLocale(locale: Locale): void {

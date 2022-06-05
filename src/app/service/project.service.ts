@@ -28,6 +28,10 @@ export class ProjectService {
     return this.httpClient.post<Project>(`${this.host}/projects/update-project`, project);
   }
 
+  public deleteProject(id: String): Observable<Project> {
+    return this.httpClient.delete<Project>(`${this.host}/projects/delete-project/${id}`);
+  }
+
   public getProjectById(id: String): Observable<Project> {
     return this.httpClient.get<Project>(`${this.host}/projects/get-by-id/${id}`);
   }
