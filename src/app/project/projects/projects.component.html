@@ -123,7 +123,8 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row (mouseenter)="onEnterRow(row)"
+            <tr mat-row
+                (mouseenter)="onEnterRow(row)"
                         (mouseleave)="onLeaveRow()"
                         (click)="onClickRow(row)"
                         (dblclick)="openDialog('Update', row)"

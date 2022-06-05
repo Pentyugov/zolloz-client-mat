@@ -31,6 +31,7 @@ import {PositionComponent} from './position/position.component';
 import {PositionDeleteDialogComponent} from './position/position-delete-dialog/position-delete-dialog.component';
 import {PositionAddDialogComponent} from './position/position-add-dialog/position-add-dialog.component';
 import { PositionEditDialogComponent } from './position/position-edit-dialog/position-edit-dialog.component';
+import {NgxMaskModule} from "ngx-mask";
 
 
 @NgModule({
@@ -61,24 +62,25 @@ import { PositionEditDialogComponent } from './position/position-edit-dialog/pos
     PositionEditDialogComponent,
   ],
   providers: [DatePipe],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(OrganizationRoutes),
-    FormsModule,
-    MaterialModule,
-    PerfectScrollbarModule,
-    FlexLayoutModule,
-    UcWidgetModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient],
-      },
-    }),
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(OrganizationRoutes),
+        FormsModule,
+        MaterialModule,
+        PerfectScrollbarModule,
+        FlexLayoutModule,
+        UcWidgetModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        NgMultiSelectDropDownModule.forRoot(),
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient],
+            },
+        }),
+        NgxMaskModule,
+    ],
 })
 export class OrganizationModule { }

@@ -88,11 +88,14 @@
                 <mat-form-field appearance="outline" class="p-r-15 m-r-15">
                   <mat-label>{{'PhoneNumber' | translate}}</mat-label>
                   <input matInput
+                         mask="+0 (000)-000-00-00"
                          placeholder="{{'PhoneNumber' | translate}}"
                          name="phoneNumber"
                          [(ngModel)]="employeeToUpdate.phoneNumber" />
                 </mat-form-field>
               </div>
+
+
 
               <div fxFlex="100" fxFlex.gt-md="50">
                 <mat-form-field appearance="outline" class="p-r-15 m-r-15">

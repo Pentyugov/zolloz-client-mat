@@ -2,7 +2,7 @@
 <div fxLayout="row wrap">
 
   <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
-    <mat-card style="min-height: 480px">
+    <mat-card style="height: 100%">
       <mat-card-content>
         <span>
           <form #projectEditForm="ngForm">
@@ -127,7 +127,7 @@
 
 
   <div  fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
-    <mat-card >
+    <mat-card style="height: 100%">
       <mat-card-content>
         <div fxLayout="row wrap" class="align-items-center m-b-15">
           <div fxFlex.gt-md="50" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="100">
@@ -146,7 +146,7 @@
         </div>
 
         <hr/>
-        <div class="table-rasponsive">
+        <div class="table-rasponsive" style="height: 100%">
           <table mat-table matSort [dataSource]="participantsDs" class="table participants-list no-wrap" style="min-height: 292px">
 
             <ng-container matColumnDef="number">
@@ -177,9 +177,14 @@
             <mat-header-row *matHeaderRowDef="participantsDisplayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: participantsDisplayedColumns"></mat-row>
           </table>
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
         </div>
       </mat-card-content>
+      <div class="paginator-bottom">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+
     </mat-card>
+
   </div>
 </div>

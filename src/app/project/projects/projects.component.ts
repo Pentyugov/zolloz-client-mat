@@ -34,7 +34,7 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   InProgress = -1;
   Open = -1;
 
-  public constructor(protected override router: Router,
+  public constructor(public override router: Router,
                      protected override translate: TranslateService,
                      protected override eventNotificationService: EventNotificationService,
                      protected override applicationService: ApplicationService,

@@ -10,6 +10,7 @@ export class ApplicationConstants {
   static readonly DIALOG_ACTION_CANCEL = 'Cancel';
   static readonly DIALOG_ACTION_SAVE = 'Save';
   static readonly DIALOG_ACTION_APPLY = 'Apply';
+  static readonly THEME_DARK_MODE_CLASS = 'dark';
 
 //    ==============================================================
 //    =                        Table columns                       =
@@ -38,8 +39,7 @@ export class ApplicationConstants {
                                               'name',
                                               'parentDept',
                                               'code',
-                                              'head',
-                                              'action'];
+                                              'head'];
 
   static readonly POSITION_TABLE_COLUMNS = ['number',
                                             'name',

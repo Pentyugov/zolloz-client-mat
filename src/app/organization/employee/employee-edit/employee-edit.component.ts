@@ -24,6 +24,7 @@ import {AbstractEditor} from '../../../shared/screens/editor/AbstractEditor';
   styleUrls: ['./employee-edit.component.scss']
 })
 export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnDestroy {
+  public phone = '+79639137660';
   public hireDate: Date | null = null;
   public dismissalDate: Date | null = null;
   public employeeToUpdate: Employee = new Employee();

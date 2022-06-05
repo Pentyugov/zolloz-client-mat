@@ -84,7 +84,7 @@
             <tr mat-row (mouseenter)="onEnterRow(row)"
                 (mouseleave)="onLeaveRow()"
                 (click)="onClickRow(row)"
-                (dblclick)="openDialog('Update', row)"
+                (dblclick)="router.navigateByUrl('/organization/employees/edit/' + clickedRow?.id)"
                 [ngClass]="{
                         'highlight-selected-dark' : row.id === clickedRow?.id && isDarkMode,
                         'highlight-selected' : row.id === clickedRow?.id && !isDarkMode,

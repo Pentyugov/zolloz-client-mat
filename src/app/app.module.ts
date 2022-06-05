@@ -25,6 +25,7 @@ import {VerticalSidebarComponent} from "./layout/main/vertical-sidebar/vertical-
 import {HomeComponent} from './home/home.component';
 import {BreadcrumbComponent} from './layout/main/breadcrumb/breadcrumb.component';
 import {AuthInterceptor} from "./interceptor/auth.interceptor";
+import { NgxMaskModule, IConfig } from 'ngx-mask'
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -35,6 +36,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   wheelSpeed: 2,
   wheelPropagation: true,
 };
+export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BreadcrumbComponent,
   ],
   imports: [
+    NgxMaskModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
