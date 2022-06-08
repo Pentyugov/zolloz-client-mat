@@ -14,6 +14,8 @@ import {ApplicationConstants} from "../../shared/application-constants";
 import {MatDialog} from "@angular/material/dialog";
 import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {ProjectDeleteDialogComponent} from "./project-delete-dialog/project-delete-dialog.component";
+import {NgxPermissionsService} from "ngx-permissions";
+import {AuthenticationService} from "../../service/authentication.service";
 
 @Component({
   selector: 'app-projects',
@@ -29,10 +31,10 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   private readonly defaultFilterPredicate?: (data: any, filter: string) => boolean;
   private readonly statusFilterPredicate?: (data: Project, filter: string) => boolean;
   private isDefaultPredicate: boolean = true;
-  totalCount = -1;
-  Closed = -1;
-  InProgress = -1;
-  Open = -1;
+  totalCount = 0;
+  Closed = 0;
+  InProgress = 0;
+  Open = 0;
 
   public constructor(public override router: Router,
                      protected override translate: TranslateService,
@@ -40,7 +42,8 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
                      protected override applicationService: ApplicationService,
                      protected dialog: MatDialog,
                      protected projectService: ProjectService,
-                     protected projectEditor: MatDialog) {
+                     protected projectEditor: MatDialog
+  ) {
     super(router, translate, eventNotificationService, applicationService);
     this.defaultFilterPredicate = this.dataSource.filterPredicate;
     this.statusFilterPredicate = (project: Project, filter: string) => {

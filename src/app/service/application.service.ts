@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {UserSettings} from "../model/user-settings";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment.prod";
+import {AuthenticationService} from "./authentication.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class ApplicationService {
   private settingsSource!: BehaviorSubject<UserSettings>;
   public userSettings!: Observable<UserSettings>;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private authenticationService: AuthenticationService) {
     this.refreshingSource = new BehaviorSubject<boolean>(false);
     this.refreshing = this.refreshingSource.asObservable();
 

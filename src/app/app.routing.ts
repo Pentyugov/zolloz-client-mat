@@ -4,6 +4,7 @@ import {MainComponent} from "./layout/main/main.component";
 import {RegisterComponent} from "./authentication/register/register.component";
 import {AuthenticationGuard} from "./guard/authentication.guard";
 import {HomeComponent} from "./home/home.component";
+import {ScreenGuard} from "./guard/screen.guard";
 
 export const AppRoutes: Routes = [
   {path: '',

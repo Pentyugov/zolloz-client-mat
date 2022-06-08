@@ -20,8 +20,7 @@ export class ApplicationConstants {
                                         'username',
                                         'firstName',
                                         'lastName',
-                                        'email',
-                                        'action'];
+                                        'email'];
 
   static readonly EMPLOYEES_TABLE_COLUMNS = ['name',
                                              'department',
@@ -32,8 +31,7 @@ export class ApplicationConstants {
   static readonly ROLE_TABLE_COLUMNS = ['number',
                                         'name',
                                         'description',
-                                        'permissions',
-                                        'action', ];
+                                        'permissions'];
 
   static readonly DEPARTMENT_TABLE_COLUMNS = ['number',
                                               'name',
@@ -43,8 +41,7 @@ export class ApplicationConstants {
 
   static readonly POSITION_TABLE_COLUMNS = ['number',
                                             'name',
-                                            'code',
-                                            'action'];
+                                            'code'];
 
   static readonly PROJECT_TABLE_COLUMNS = ['name',
                                            'code',

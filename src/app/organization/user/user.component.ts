@@ -1,6 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {UserService} from "../../service/user.service";
-import {Subscription} from "rxjs";
 import {User} from "../../model/user";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
@@ -13,13 +12,15 @@ import {ApplicationConstants} from "../../shared/application-constants";
 import {CustomHttpResponse} from "../../model/custom-http-response";
 import {EventNotificationService} from "../../service/event-notification.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {AbstractBrowser} from "../../shared/screens/browser/AbstractBrowser";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit, OnDestroy {
+export class UserComponent extends AbstractBrowser implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
 
@@ -28,17 +29,17 @@ export class UserComponent implements OnInit, OnDestroy {
   public users: User[] = [];
   public columnsToDisplay = ApplicationConstants.USER_TABLE_COLUMNS;
   public dataSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
-  private subscriptions: Subscription[] = [];
   private userSettings: UserSettings;
   private userToDelete: User = new User();
   private title: string = '';
-  private message: string = '';
-  public refreshing = false;
-  constructor(private userService: UserService,
-              private translate: TranslateService,
-              private applicationService: ApplicationService,
-              private dialog: MatDialog,
-              private eventNotificationService: EventNotificationService) {
+
+  constructor(router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
+              private userService: UserService,
+              private dialog: MatDialog) {
+    super(router, translate, eventNotificationService, applicationService);
     this.userSettings = this.applicationService.getUserSettings();
     this.refreshing = this.applicationService.getRefreshing();
     this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {

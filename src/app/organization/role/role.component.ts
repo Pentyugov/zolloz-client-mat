@@ -1,9 +1,9 @@
-import {Component, Inject, Optional, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {Role} from "../../model/role";
 import {RoleService} from "../../service/role.service";
 import {EventNotificationService} from "../../service/event-notification.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
@@ -12,8 +12,9 @@ import {MatSort} from "@angular/material/sort";
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicationService} from "../../service/application.service";
 import {UserSettings} from "../../model/user-settings";
-import {Subscription} from "rxjs";
 import {ApplicationConstants} from "../../shared/application-constants";
+import {AbstractBrowser} from "../../shared/screens/browser/AbstractBrowser";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-role',
@@ -27,23 +28,23 @@ import {ApplicationConstants} from "../../shared/application-constants";
     ]),
   ],
 })
-export class RoleComponent implements OnInit, OnDestroy {
+export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   public roles: Role [] = [];
-  public refreshing: boolean = false;
   public dataSource: MatTableDataSource<Role> = new MatTableDataSource<Role>([]);
   public columnsToDisplay = ApplicationConstants.ROLE_TABLE_COLUMNS;
   public expandedElement: Role | null = null;
 
   private userSettings: UserSettings;
-  private subscriptions: Subscription[] = [];
 
-  constructor(private roleService: RoleService,
-              private applicationService: ApplicationService,
-              private eventNotificationService: EventNotificationService,
-              public translate: TranslateService,
+  constructor(router: Router,
+              applicationService: ApplicationService,
+              eventNotificationService: EventNotificationService,
+              translate: TranslateService,
+              private roleService: RoleService,
               public dialog: MatDialog) {
+    super(router, translate, eventNotificationService, applicationService);
 
     this.userSettings = this.applicationService.getUserSettings();
     this.translate.use(this.userSettings.locale);

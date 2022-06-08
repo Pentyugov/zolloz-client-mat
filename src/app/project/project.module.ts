@@ -17,6 +17,8 @@ import {ProjectEditComponent, ProjectSaveConfirmComponent} from './projects/proj
 import { NgxMaskModule } from 'ngx-mask';
 import { ProjectAddParticipantsComponent } from './projects/project-edit/addparticipants/project-add-participants.component'
 import {ProjectDeleteDialogComponent} from "./projects/project-delete-dialog/project-delete-dialog.component";
+import { TicketComponent } from './ticket/ticket.component';
+import {NgxPermissionsModule, NgxPermissionsRestrictStubModule} from "ngx-permissions";
 
 
 @NgModule({
@@ -25,7 +27,8 @@ import {ProjectDeleteDialogComponent} from "./projects/project-delete-dialog/pro
     ProjectEditComponent,
     ProjectSaveConfirmComponent,
     ProjectAddParticipantsComponent,
-    ProjectDeleteDialogComponent
+    ProjectDeleteDialogComponent,
+    TicketComponent
   ],
   providers: [DatePipe],
   imports: [
@@ -47,6 +50,11 @@ import {ProjectDeleteDialogComponent} from "./projects/project-delete-dialog/pro
         deps: [HttpClient],
       },
     }),
+    NgxPermissionsRestrictStubModule,
   ],
+
+  exports: [
+    NgxPermissionsModule
+  ]
 })
 export class ProjectModule { }

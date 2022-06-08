@@ -11,6 +11,8 @@ import {SystemRoleName} from "../enum/system-role-name.enum";
 import {Router} from "@angular/router";
 import {EventNotificationService} from "./event-notification.service";
 import {ApplicationService} from "./application.service";
+import {NgxPermissionsService, NgxRolesService} from "ngx-permissions";
+import {ScreenService} from "./screen.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +22,15 @@ export class AuthenticationService {
   private token: string | null;
   private loggedInUsername: string | null;
   private jwtHelperService = new JwtHelperService();
+  private permissions: string[] = [];
 
   constructor(private httpClient: HttpClient,
               private router: Router,
               private applicationService: ApplicationService,
-              private eventNotificationService: EventNotificationService) {
+              private eventNotificationService: EventNotificationService,
+              private permissionsService: NgxPermissionsService,
+              private roleService: NgxRolesService,
+              private screenService: ScreenService) {
     this.token = '';
     this.loggedInUsername = '';
   }
@@ -50,9 +56,7 @@ export class AuthenticationService {
       if (showNotification) {
         this.eventNotificationService.showInfoNotification('Info', 'You have been successfully logged out');
       }
-
     });
-
   }
 
   public saveToken(token: string): void {
@@ -62,6 +66,8 @@ export class AuthenticationService {
 
   public addUserToLocalCache(user: User): void {
     localStorage.setItem('user', JSON.stringify(user));
+    this.updateRoles();
+    this.updatePermissions();
   }
 
   public getUserFromLocalCache(): User {
@@ -113,5 +119,33 @@ export class AuthenticationService {
     return false;
   }
 
+  public updateRoles(): void {
+    this.getUserFromLocalCache().roles.forEach(role =>
+      this.roleService.addRole(role.name, () => {
+        return true;
+      }));
+  }
+
+  public updatePermissions():void {
+    this.getUserFromLocalCache()
+      .roles.forEach(role =>
+        role.permissions?.forEach(permission => {
+          this.permissions.push(permission.name);
+          this.permissionsService.addPermission(permission.name)
+        }));
+  }
+
+
+
+  public canActivateScreen(screen: string): boolean {
+    return this.hasAccessToScreen(screen)
+  }
+
+  public hasAccessToScreen(screen: string): boolean {
+    this.screenService.hasScreenAccess(screen).subscribe((response: boolean) => {
+      console.log(response);
+    })
+    return false;
+  }
 
 }

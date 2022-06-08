@@ -10,6 +10,7 @@ import {DepartmentAddComponent} from "./department/department-add/department-add
 import {EmployeeAddComponent} from "./employee/employee-add/employee-add.component";
 import {EmployeeEditComponent} from "./employee/employee-edit/employee-edit.component";
 import { PositionComponent } from './position/position.component';
+import {ScreenGuard} from "../guard/screen.guard";
 
 export const OrganizationRoutes: Routes = [
   {path: '',
@@ -17,7 +18,9 @@ export const OrganizationRoutes: Routes = [
       {
         path: 'departments',
         component: DepartmentComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$Department.Browser',
           title: 'Departments',
           urls: [
             { title: 'Organization', url: '/organization' },
