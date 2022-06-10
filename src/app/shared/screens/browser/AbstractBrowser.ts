@@ -4,6 +4,7 @@ import {EventNotificationService} from '../../../service/event-notification.serv
 import {ApplicationService} from '../../../service/application.service';
 import {ApplicationConstants} from '../../application-constants';
 import {Subscription} from 'rxjs';
+import {ScreenService} from "../../../service/screen.service";
 
 export abstract class AbstractBrowser {
 
@@ -13,16 +14,23 @@ export abstract class AbstractBrowser {
   public selectedRow: any;
   public clickedRow: any;
   public isDarkMode: boolean = false;
+  public id: string = '';
+  public readonly CREATE_ACTION =ApplicationConstants.SCREEN_ACTION_CREATE;
+  public readonly BROWSE_ACTION =ApplicationConstants.SCREEN_ACTION_BROWSE;
+  public readonly EDIT_ACTION =ApplicationConstants.SCREEN_ACTION_EDIT;
+  public readonly DELETE_ACTION =ApplicationConstants.SCREEN_ACTION_DELETE;
 
   public subscriptions: Subscription[] = [];
   protected constructor(public router: Router,
                         protected translate: TranslateService,
                         protected eventNotificationService: EventNotificationService,
-                        protected applicationService: ApplicationService) {
+                        protected applicationService: ApplicationService,
+                        protected screenService: ScreenService) {
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.refreshing.subscribe(r => this.refreshing = r));
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
     this.subscriptions.push(applicationService.darkMode.subscribe(dm => this.isDarkMode = dm));
+    this.initId();
   }
 
   protected showErrorNotification(errorMessage: string): void {
@@ -51,6 +59,10 @@ export abstract class AbstractBrowser {
     return '';
   }
 
+  public isActionPermit(action: string): boolean {
+    return this.screenService.isActionPermit(this.id, action);
+  }
+
   public onEnterRow(row: any): void {
     this.selectedRow = row;
   }
@@ -61,6 +73,16 @@ export abstract class AbstractBrowser {
 
   public onClickRow(row: any): void {
     this.clickedRow = row;
+  }
+
+  public initId(): void {
+    this.id = "screen$" + this.constructor.name.replace("Component", "");
+  }
+
+  public openEditorByUrl(url: string): void {
+    if (this.isActionPermit(this.EDIT_ACTION)) {
+      this.router.navigateByUrl(url);
+    }
   }
 
 

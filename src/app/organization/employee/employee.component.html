@@ -13,13 +13,17 @@
             </mat-form-field>
           </div>
           <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="50" class="text-right">
-            <a  [routerLink]="['/organization/employees/add']" class="m-r-10 cursor-pointer">
+            <a  [routerLink]="['/organization/employees/add']"
+                *ngIf="isActionPermit(CREATE_ACTION)"
+                class="m-r-10 cursor-pointer">
               <button mat-raised-button
                       color="primary">
                 {{'AddEmployee' | translate}}
               </button>
             </a>
-            <a  [routerLink]="['/organization/employees/edit', clickedRow?.id]" class="m-r-10 cursor-pointer">
+            <a  [routerLink]="['/organization/employees/edit', clickedRow?.id]"
+                *ngIf="isActionPermit(EDIT_ACTION)"
+                class="m-r-10 cursor-pointer">
               <button mat-raised-button
                       color="accent"
                       style="margin-left: 10px"
@@ -28,6 +32,7 @@
               </button>
             </a>
             <button mat-raised-button
+                    *ngIf="isActionPermit(DELETE_ACTION)"
                     (click)="openDeleteDialog(clickedRow)"
                     color="warn"
                     style="margin-left: 10px"
@@ -84,7 +89,7 @@
             <tr mat-row (mouseenter)="onEnterRow(row)"
                 (mouseleave)="onLeaveRow()"
                 (click)="onClickRow(row)"
-                (dblclick)="router.navigateByUrl('/organization/employees/edit/' + clickedRow?.id)"
+                (dblclick)="openEditorByUrl('/organization/employees/edit/' + clickedRow?.id)"
                 [ngClass]="{
                         'highlight-selected-dark' : row.id === clickedRow?.id && isDarkMode,
                         'highlight-selected' : row.id === clickedRow?.id && !isDarkMode,

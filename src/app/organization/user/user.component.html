@@ -87,7 +87,7 @@
 
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; columns: columnsToDisplay" class="example-detail-row"
-                (dblclick)="router.navigateByUrl('/organization/users/edit' + clickedRow.id)"
+                (dblclick)="router.navigateByUrl('/organization/users/edit/' + clickedRow.id)"
                 (mouseenter)="onEnterRow(row)"
                 (mouseleave)="onLeaveRow()"
                 (click)="onClickRow(row)"

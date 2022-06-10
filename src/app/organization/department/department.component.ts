@@ -12,6 +12,7 @@ import {MatSort} from "@angular/material/sort";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AbstractBrowser} from "../../shared/screens/browser/AbstractBrowser";
 import {Router} from "@angular/router";
+import {ScreenService} from "../../service/screen.service";
 
 @Component({
   selector: 'app-department',
@@ -30,9 +31,10 @@ export class DepartmentComponent extends AbstractBrowser implements OnInit, OnDe
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
+              screenService: ScreenService,
               private departmentService: DepartmentService,
               private dialog: MatDialog) {
-    super(router, translate, eventNotificationService, applicationService);
+    super(router, translate, eventNotificationService, applicationService, screenService);
   }
 
   ngOnInit(): void {

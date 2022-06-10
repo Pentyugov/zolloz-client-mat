@@ -16,6 +16,7 @@ import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {ProjectDeleteDialogComponent} from "./project-delete-dialog/project-delete-dialog.component";
 import {NgxPermissionsService} from "ngx-permissions";
 import {AuthenticationService} from "../../service/authentication.service";
+import {ScreenService} from "../../service/screen.service";
 
 @Component({
   selector: 'app-projects',
@@ -36,15 +37,16 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   InProgress = 0;
   Open = 0;
 
-  public constructor(public override router: Router,
-                     protected override translate: TranslateService,
-                     protected override eventNotificationService: EventNotificationService,
-                     protected override applicationService: ApplicationService,
+  public constructor(router: Router,
+                     translate: TranslateService,
+                     eventNotificationService: EventNotificationService,
+                     applicationService: ApplicationService,
+                     screenService: ScreenService,
                      protected dialog: MatDialog,
                      protected projectService: ProjectService,
                      protected projectEditor: MatDialog
   ) {
-    super(router, translate, eventNotificationService, applicationService);
+    super(router, translate, eventNotificationService, applicationService, screenService);
     this.defaultFilterPredicate = this.dataSource.filterPredicate;
     this.statusFilterPredicate = (project: Project, filter: string) => {
       return project.status.toString().trim().toLowerCase() == filter;

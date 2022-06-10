@@ -16,6 +16,7 @@ import {PositionDeleteDialogComponent} from "./position-delete-dialog/position-d
 import {PositionAddDialogComponent} from "./position-add-dialog/position-add-dialog.component";
 import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
 import {PositionEditDialogComponent} from "./position-edit-dialog/position-edit-dialog.component";
+import {ScreenService} from "../../service/screen.service";
 
 @Component({
   selector: 'app-position',
@@ -33,9 +34,10 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
+              screenService: ScreenService,
               private positionService: PositionService,
               private dialog: MatDialog) {
-    super(router, translate, eventNotificationService, applicationService);
+    super(router, translate, eventNotificationService, applicationService, screenService);
   }
 
   ngOnInit(): void {

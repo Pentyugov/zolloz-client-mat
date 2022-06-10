@@ -15,8 +15,9 @@ export const ProjectRoutes: Routes = [
       {
         path: 'projects',
         component: ProjectsComponent,
+        canActivate: [ScreenGuard],
         data: {
-          screen: 'zolloz$ProjectsBrowser',
+          screen: 'screen$Project.Browser',
           title: 'Projects',
           urls: [
             { title: 'Projects' }

@@ -13,7 +13,9 @@
             </mat-form-field>
           </div>
           <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="50" class="text-right">
-            <a  [routerLink]="['/organization/departments/add']" class="m-r-10 cursor-pointer">
+            <a  [routerLink]="['/organization/departments/add']"
+                *ngIf="isActionPermit(CREATE_ACTION)"
+                class="m-r-10 cursor-pointer">
               <button mat-raised-button
                       color="primary">
                 {{'AddDepartment' | translate}}
@@ -21,6 +23,7 @@
             </a>
 
             <button mat-raised-button
+                    *ngIf="isActionPermit(EDIT_ACTION)"
                     (click)="router.navigateByUrl('/organization/departments/edit/' + clickedRow.id)"
                     color="accent"
                     style="margin-left: 10px"
@@ -29,6 +32,7 @@
             </button>
 
             <button mat-raised-button
+                    *ngIf="isActionPermit(DELETE_ACTION)"
                     (click)="openDeleteDialog(clickedRow)"
                     color="warn"
                     style="margin-left: 10px"
@@ -84,7 +88,7 @@
 
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
             <tr mat-row *matRowDef="let row; columns: columnsToDisplay" class="example-detail-row"
-                (dblclick)="router.navigateByUrl('/organization/departments/edit/' + clickedRow.id)"
+                (dblclick)="openEditorByUrl('/organization/departments/edit/' + clickedRow.id)"
                 (mouseenter)="onEnterRow(row)"
                 (mouseleave)="onLeaveRow()"
                 (click)="onClickRow(row)"

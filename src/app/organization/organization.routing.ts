@@ -20,7 +20,7 @@ export const OrganizationRoutes: Routes = [
         component: DepartmentComponent,
         canActivate: [ScreenGuard],
         data: {
-          screen: 'screen$Department.Browser',
+          screen: 'screen$Department.Browse',
           title: 'Departments',
           urls: [
             { title: 'Organization', url: '/organization' },
@@ -32,7 +32,9 @@ export const OrganizationRoutes: Routes = [
       {
         path: 'departments/edit/:id',
         component: DepartmentEditComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$Department.Edit',
           title: 'Departments',
           urls: [
             { title: 'Organization', url: '/organization'},
@@ -45,7 +47,9 @@ export const OrganizationRoutes: Routes = [
       {
         path: 'departments/add',
         component: DepartmentAddComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$Department.Create',
           title: 'Departments',
           urls: [
             { title: 'Organization', url: '/organization'},
@@ -58,7 +62,9 @@ export const OrganizationRoutes: Routes = [
       {
         path: 'employees',
         component: EmployeeComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$Employee.Browse',
           title: 'Employees',
           urls: [
             { title: 'Organization', url: '/organization' },
@@ -70,7 +76,9 @@ export const OrganizationRoutes: Routes = [
       {
         path: 'employees/add',
         component: EmployeeAddComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$Employee.Create',
           title: 'Employees',
           urls: [
             { title: 'Organization', url: '/organization'},
@@ -84,7 +92,9 @@ export const OrganizationRoutes: Routes = [
       {
         path: 'employees/edit/:id',
         component: EmployeeEditComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$Employee.Edit',
           title: 'Employees',
           urls: [
             { title: 'Organization', url: '/organization'},
@@ -97,7 +107,9 @@ export const OrganizationRoutes: Routes = [
       {
         path: 'roles',
         component: RoleComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$Role.Browse',
           title: 'Roles',
           urls: [
             { title: 'Organization', url: '/organization' },
@@ -109,7 +121,9 @@ export const OrganizationRoutes: Routes = [
       {
         path: 'users',
         component: UserComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$User.Browse',
           title: 'Users',
           urls: [
             { title: 'Organization', url: '/organization' },
@@ -119,9 +133,41 @@ export const OrganizationRoutes: Routes = [
       },
 
       {
+        path: 'users/edit/:id',
+        component: UserEditComponent,
+        canActivate: [ScreenGuard],
+        data: {
+          screen: 'screen$User.Edit',
+          title: 'Users',
+          urls: [
+            { title: 'Organization', url: '/organization'},
+            { title: 'Users', url: '/organization/users'},
+            {title: 'Edit'}
+          ],
+        }
+      },
+
+      {
+        path: 'users/add',
+        component: UserAddComponent,
+        canActivate: [ScreenGuard],
+        data: {
+          screen: 'screen$User.Create',
+          title: 'Users',
+          urls: [
+            { title: 'Organization', url: '/organization'},
+            { title: 'Users', url: '/organization/users'},
+            {title: 'Add'}
+          ],
+        }
+      },
+
+      {
         path: 'positions',
         component: PositionComponent,
+        canActivate: [ScreenGuard],
         data: {
+          screen: 'screen$Position.Browse',
           title: 'Positions',
           urls: [
             { title: 'Organization', url: '/organization' },
@@ -130,31 +176,7 @@ export const OrganizationRoutes: Routes = [
         }
       },
 
-      {
-        path: 'users/edit/:id',
-        component: UserEditComponent,
-        data: {
-          title: 'Users',
-          urls: [
-            { title: 'Organization', url: '/organization'},
-            { title: 'Users', url: '/organization/users'},
-            {title: 'Edit'}
-            ],
-        }
-      },
 
-      {
-        path: 'users/add',
-        component: UserAddComponent,
-        data: {
-          title: 'Users',
-          urls: [
-            { title: 'Organization', url: '/organization'},
-            { title: 'Users', url: '/organization/users'},
-            {title: 'Add'}
-            ],
-        }
-      },
     ]
   }
 ];

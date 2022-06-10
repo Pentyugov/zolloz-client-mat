@@ -14,6 +14,7 @@ import {EventNotificationService} from "../../service/event-notification.service
 import {HttpErrorResponse} from "@angular/common/http";
 import {AbstractBrowser} from "../../shared/screens/browser/AbstractBrowser";
 import {Router} from "@angular/router";
+import {ScreenService} from "../../service/screen.service";
 
 @Component({
   selector: 'app-user',
@@ -37,9 +38,10 @@ export class UserComponent extends AbstractBrowser implements OnInit, OnDestroy 
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
+              screenService: ScreenService,
               private userService: UserService,
               private dialog: MatDialog) {
-    super(router, translate, eventNotificationService, applicationService);
+    super(router, translate, eventNotificationService, applicationService, screenService);
     this.userSettings = this.applicationService.getUserSettings();
     this.refreshing = this.applicationService.getRefreshing();
     this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {

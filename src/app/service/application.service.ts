@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {ApplicationConstants, Locale} from "../shared/application-constants";
 import {BehaviorSubject, Observable} from "rxjs";
 import {UserSettings} from "../model/user-settings";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment.prod";
 import {AuthenticationService} from "./authentication.service";
+import {ScreenPermissions} from "../model/screen-permissions";
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +64,24 @@ export class ApplicationService {
     this.settingsSource.next(userSettings);
   }
 
+  public saveScreenPermissionsToLocalStorage(screenPermission: ScreenPermissions[]) {
+    localStorage.setItem('screenPermission', JSON.stringify(screenPermission));
+  }
+
+  public getScreenPermissionsFromLocalStorage(): ScreenPermissions[] {
+    let screenPermission: ScreenPermissions[] = [];
+    if (localStorage.getItem('screenPermission') !== null) {
+      screenPermission = JSON.parse(localStorage.getItem('screenPermission') as string) as ScreenPermissions[];
+    }
+    return screenPermission;
+  }
+
   public loadUserSettings(): Observable<UserSettings> {
     return this.httpClient.get<UserSettings>(`${this.host}/app/user-settings/get-user-settings`);
+  }
+
+  public loadScreenPermission(): Observable<ScreenPermissions[]> {
+    return this.httpClient.get<ScreenPermissions[]>(`${this.host}/screen-permissions/get-all-for-user`);
   }
 
   public saveUserSettings(userSettings: UserSettings): Observable<UserSettings> {

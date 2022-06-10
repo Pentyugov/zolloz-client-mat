@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EmployeeDeleteDialogComponent } from './employee-delete-dialog/employee-delete-dialog.component';
 import { AbstractBrowser } from '../../shared/screens/browser/AbstractBrowser';
 import { Router } from '@angular/router';
+import {ScreenService} from "../../service/screen.service";
 
 @Component({
   selector: 'app-employee',
@@ -29,9 +30,10 @@ export class EmployeeComponent extends AbstractBrowser implements OnInit, OnDest
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
+              screenService: ScreenService,
               private employeeService: EmployeeService,
               private dialog: MatDialog) {
-    super(router, translate, eventNotificationService, applicationService);
+    super(router, translate, eventNotificationService, applicationService, screenService);
 
 
   }

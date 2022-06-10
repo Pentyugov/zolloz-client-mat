@@ -1,6 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {Router} from '@angular/router';
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy} from '@angular/core';
 
 import {PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 import {AuthenticationService} from "../../service/authentication.service";
@@ -9,13 +9,14 @@ import {UserService} from "../../service/user.service";
 import {UserSettings} from "../../model/user-settings";
 import {Subscription} from "rxjs";
 import {ApplicationService} from "../../service/application.service";
+import {ScreenPermissions} from "../../model/screen-permissions";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: []
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
 
   dark = false;
@@ -42,6 +43,7 @@ export class MainComponent implements OnInit, OnDestroy {
               private applicationService: ApplicationService) {
 
     this.loadUserSettings();
+    this.loadScreenPermissions();
     this.currentUser = this.authenticationService.getUserFromLocalCache();
     this.userService.changeCurrentUser(this.currentUser);
     this.mobileQuery = media.matchMedia('(min-width: 1100px)');
@@ -52,10 +54,6 @@ export class MainComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {
       this.userSettings = us;
     }));
-  }
-
-  ngOnInit(): void {
-
   }
 
   ngOnDestroy(): void {
@@ -82,6 +80,14 @@ export class MainComponent implements OnInit, OnDestroy {
       (response: UserSettings) => {
         this.applicationService.changeSettings(response);
         this.userSettings = this.applicationService.getUserSettings();
+      }
+    );
+  }
+
+  public loadScreenPermissions(): void {
+    this.applicationService.loadScreenPermission().subscribe(
+      (response: ScreenPermissions[]) => {
+        this.applicationService.saveScreenPermissionsToLocalStorage(response);
       }
     );
   }

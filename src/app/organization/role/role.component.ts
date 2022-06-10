@@ -15,6 +15,7 @@ import {UserSettings} from "../../model/user-settings";
 import {ApplicationConstants} from "../../shared/application-constants";
 import {AbstractBrowser} from "../../shared/screens/browser/AbstractBrowser";
 import {Router} from "@angular/router";
+import {ScreenService} from "../../service/screen.service";
 
 @Component({
   selector: 'app-role',
@@ -42,9 +43,10 @@ export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy 
               applicationService: ApplicationService,
               eventNotificationService: EventNotificationService,
               translate: TranslateService,
+              screenService: ScreenService,
               private roleService: RoleService,
               public dialog: MatDialog) {
-    super(router, translate, eventNotificationService, applicationService);
+    super(router, translate, eventNotificationService, applicationService, screenService);
 
     this.userSettings = this.applicationService.getUserSettings();
     this.translate.use(this.userSettings.locale);

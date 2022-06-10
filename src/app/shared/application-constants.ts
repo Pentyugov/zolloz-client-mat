@@ -105,6 +105,16 @@ export class ApplicationConstants {
   static readonly PERMISSION_DELETE_PROJECT = 'DELETE_PROJECT';
   static readonly PERMISSION_EDIT_PROJECT = 'EDIT_PROJECT';
 
+
+//    ==============================================================
+//    =                     SCREENS ACTIONS                        =
+//    ==============================================================
+
+  static readonly SCREEN_ACTION_BROWSE = "Browse";
+  static readonly SCREEN_ACTION_CREATE = "Create";
+  static readonly SCREEN_ACTION_EDIT = "Edit";
+  static readonly SCREEN_ACTION_DELETE = "Delete";
+
 //    ==============================================================
 //    =                            ROLES                           =
 //    ==============================================================
