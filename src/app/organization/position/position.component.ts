@@ -17,6 +17,8 @@ import {PositionAddDialogComponent} from "./position-add-dialog/position-add-dia
 import {EventNotificationCaptionEnum} from "../../enum/event-notification-caption.enum";
 import {PositionEditDialogComponent} from "./position-edit-dialog/position-edit-dialog.component";
 import {ScreenService} from "../../service/screen.service";
+import {Employee} from "../../model/employee";
+import {EmployeeService} from "../../service/employee.service";
 
 @Component({
   selector: 'app-position',
@@ -26,9 +28,15 @@ import {ScreenService} from "../../service/screen.service";
 export class PositionComponent extends AbstractBrowser implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
+  @ViewChild(MatPaginator, { static: false }) employeePaginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, { static: true }) employeeSort: MatSort = Object.create(null);
+
   public columnsToDisplay = ApplicationConstants.POSITION_TABLE_COLUMNS;
+  public employeeDisplayedColumns = ['number', 'personnelNumber', 'firstName', 'lastName'];
+  public employeeDs: MatTableDataSource<Employee> = new MatTableDataSource<Employee>([]);
   public dataSource: MatTableDataSource<Position> = new MatTableDataSource<Position>([]);
   public positions: Position[] = [];
+  public employees: Employee[] = [];
 
   constructor(router: Router,
               translate: TranslateService,
@@ -36,12 +44,14 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
               applicationService: ApplicationService,
               screenService: ScreenService,
               private positionService: PositionService,
+              private employeeService: EmployeeService,
               private dialog: MatDialog) {
     super(router, translate, eventNotificationService, applicationService, screenService);
   }
 
   ngOnInit(): void {
     this.loadPositions();
+    this.loadEmployees();
   }
 
   ngOnDestroy(): void {
@@ -59,9 +69,25 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
         }));
   }
 
+  public loadEmployees(): void {
+    this.subscriptions.push(
+      this.employeeService.getEmployees().subscribe(
+        (response: Employee[]) => {
+          this.employees = response;
+        }, (errorResponse : HttpErrorResponse) => {
+          this.showErrorNotification(errorResponse.error.message);
+        }));
+  }
+
   public applyFilter(value: any) {
     if (this.dataSource) {
       this.dataSource.filter = value.trim().toLowerCase();
+    }
+  }
+
+  public applyEmployeeFilter(value: any) {
+    if (this.employeeDs) {
+      this.employeeDs.filter = value.trim().toLowerCase();
     }
   }
 
@@ -108,16 +134,19 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
   }
 
   public openPositionEditDialog(position: Position) {
-    const dialogRef = this.dialog.open(PositionEditDialogComponent, {
-      data: position,
-      width: ApplicationConstants.DIALOG_WIDTH
-    });
+    if (this.isActionPermit(this.EDIT_ACTION)) {
+      const dialogRef = this.dialog.open(PositionEditDialogComponent, {
+        data: position,
+        width: ApplicationConstants.DIALOG_WIDTH
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result.event === ApplicationConstants.DIALOG_ACTION_SAVE) {
-        this.onUpdatePosition(result.data);
-      }
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result.event === ApplicationConstants.DIALOG_ACTION_SAVE) {
+          this.onUpdatePosition(result.data);
+        }
+      });
+    }
+
   }
 
   private onUpdatePosition(position: Position): void {
@@ -144,6 +173,24 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
           this.showErrorNotification(errorResponse.error.message);
         });
     }
+  }
+
+  public override onClickRow(row: any): void {
+    this.clickedRow = row;
+
+    let tmp: Employee[] = [];
+    this.employees.forEach(employee => {
+      if (employee.position?.id === row.id)
+        tmp.push(employee);
+    })
+    this.updateEmployeesDs(tmp);
+
+  }
+
+  private updateEmployeesDs(employees: Employee[]): void {
+    this.employeeDs = new MatTableDataSource<Employee>(employees);
+    this.employeeDs.paginator = this.employeePaginator;
+    this.employeeDs.sort = this.employeeSort;
   }
 
 }

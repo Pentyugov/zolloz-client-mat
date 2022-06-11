@@ -17,7 +17,7 @@ export const ProjectRoutes: Routes = [
         component: ProjectsComponent,
         canActivate: [ScreenGuard],
         data: {
-          screen: 'screen$Project.Browser',
+          screen: 'screen$Projects.Browse',
           title: 'Projects',
           urls: [
             { title: 'Projects' }

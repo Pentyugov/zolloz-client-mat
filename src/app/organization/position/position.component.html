@@ -1,6 +1,7 @@
 <mat-progress-bar mode="indeterminate" value="40" *ngIf="refreshing"></mat-progress-bar>
-<div fxLayout="row wrap" >
-  <div fxFlex="100">
+<div fxLayout="row wrap">
+
+  <div fxFlex="50" fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="50" fxFlex="50">
     <mat-card>
       <mat-card-content>
         <div fxLayout="row wrap" class="align-items-center">
@@ -18,13 +19,14 @@
                fxFlex="50"
                class="text-right">
               <button mat-raised-button
+                      *ngIf="isActionPermit(CREATE_ACTION)"
                       (click)="openPositionAddDialog()"
                       color="primary">
                 {{'AddPosition' | translate}}
               </button>
 
             <button mat-raised-button
-
+                    *ngIf="isActionPermit(EDIT_ACTION)"
                     (click)="openPositionEditDialog(clickedRow)"
                     color="accent"
                     style="margin-left: 10px"
@@ -33,6 +35,7 @@
             </button>
 
             <button mat-raised-button
+                    *ngIf="isActionPermit(DELETE_ACTION)"
                     (click)="openDeleteDialog(clickedRow)"
                     color="warn"
                     style="margin-left: 10px"
@@ -45,14 +48,44 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+  <div fxFlex="50" fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="50" fxFlex="50">
+    <mat-card>
+      <mat-card-content>
+        <div fxLayout="row wrap" class="align-items-center">
+
+          <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100">
+            <h3 class="m-0">
+              <div class="d-flex">
+                <span ngDefaultControl>{{'EmployeesOfDepartment' | translate}}</span>
+              </div>
+
+            </h3>
+          </div>
+
+          <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="50" class="text-right">
+            <mat-form-field>
+              <input matInput
+                     placeholder="{{'SearchEmployee' | translate}}"
+                     (keyup)="applyEmployeeFilter($event.target.value)"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+
 </div>
 
 <div fxLayout="row wrap">
-  <div fxFlex="100">
+
+  <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
       <mat-card-content>
         <div class="table-responsive">
-          <table mat-table style="width: 100%"  matSort [dataSource]="dataSource" class="table employee-list no-wrap">
+          <table mat-table matSort [dataSource]="dataSource" class="table employee-list no-wrap">
 
             <ng-container matColumnDef="number">
               <th mat-header-cell *matHeaderCellDef>#</th>
@@ -88,4 +121,40 @@
       </mat-card-content>
     </mat-card>
   </div>
+
+  <div  fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card >
+      <mat-card-content>
+        <div class="table-rasponsive">
+          <table mat-table matSort [dataSource]="employeeDs" class="table employee-list no-wrap" style="height: 500px">
+
+            <ng-container matColumnDef="number">
+              <mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 50px"> # </mat-header-cell>
+              <mat-cell *matCellDef="let employee"> {{ employeeDs.data.indexOf(employee) + 1}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="personnelNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'PersonnelNumber' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let employee"> {{ employee.personnelNumber}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="firstName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 300px"> {{'FirstName' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let employee"> {{ employee.firstName }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="lastName">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'LastName' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let employee"> {{ employee.lastName }} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="employeeDisplayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: employeeDisplayedColumns"></mat-row>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
 </div>

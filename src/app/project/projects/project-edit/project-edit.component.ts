@@ -137,11 +137,13 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
       (response: Project) => {
         this.eventNotificationService
           .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Project: ${response.name} was updated successfully`);
+        this.close();
       }, (errorResponse: HttpErrorResponse) => {
         this.eventNotificationService
           .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+        this.close();
       }));
-    this.close();
+
   }
 
   public close() {

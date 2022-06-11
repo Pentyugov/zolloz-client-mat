@@ -123,6 +123,16 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
     return status === 10 ? 'Status.Open' : status === 20 ? 'Status.InProgress' : 'Status.Closed';
   }
 
+  public openAddDialog(editedItem: Project | null): void {
+    this.openDialog(ApplicationConstants.DIALOG_ACTION_ADD, editedItem);
+  }
+
+  public openEditDialog(editedItem: Project | null): void {
+    if (this.isActionPermit(this.EDIT_ACTION)) {
+        this.openDialog(ApplicationConstants.DIALOG_ACTION_UPDATE, editedItem);
+    }
+  }
+
   public openDialog(action: string, editedItem: Project | null): void {
     let isNewItem = false;
     if (action === ApplicationConstants.DIALOG_ACTION_ADD) {

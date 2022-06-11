@@ -55,12 +55,16 @@
             </mat-form-field>
           </div>
           <div fxFlex.gt-md="75" class="text-right">
-            <button mat-raised-button (click)="openDialog('Add', null)" color="primary">
-              {{'CreateProject' | translate}}
+            <button mat-raised-button
+                    *ngIf="isActionPermit(CREATE_ACTION)"
+                    (click)="openAddDialog(null)"
+                    color="primary">
+                    {{'CreateProject' | translate}}
             </button>
 
             <button mat-raised-button
-                    (click)="openDialog('Update', clickedRow)"
+                    *ngIf="isActionPermit(EDIT_ACTION)"
+                    (click)="openEditDialog(clickedRow)"
                     color="accent"
                     style="margin-left: 10px"
                     [disabled]="!clickedRow">
@@ -68,6 +72,7 @@
             </button>
 
             <button mat-raised-button
+                    *ngIf="isActionPermit(DELETE_ACTION)"
                     (click)="openDeleteDialog(clickedRow)"
                     color="warn"
                     style="margin-left: 10px"
@@ -127,7 +132,7 @@
                 (mouseenter)="onEnterRow(row)"
                         (mouseleave)="onLeaveRow()"
                         (click)="onClickRow(row)"
-                        (dblclick)="openDialog('Update', row)"
+                        (dblclick)="openEditDialog(row)"
                         [ngClass]="{
                         'highlight-selected-dark' : row.id === clickedRow?.id && isDarkMode,
                         'highlight-selected' : row.id === clickedRow?.id && !isDarkMode,
