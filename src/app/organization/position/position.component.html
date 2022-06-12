@@ -57,7 +57,7 @@
           <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100">
             <h3 class="m-0">
               <div class="d-flex">
-                <span ngDefaultControl>{{'EmployeesOfDepartment' | translate}}</span>
+                <span ngDefaultControl>{{'EmployeesOfPosition' | translate}} {{clickedRow?.name !== null ? ' ' + clickedRow?.name : ''}}</span>
               </div>
 
             </h3>
@@ -81,42 +81,42 @@
 
 <div fxLayout="row wrap">
 
-  <div fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
-    <mat-card>
+  <div  fxFlex.gt-lg="50" fxFlex.gt-md="50" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card >
       <mat-card-content>
-        <div class="table-responsive">
-          <table mat-table matSort [dataSource]="dataSource" class="table employee-list no-wrap">
+        <div class="table-rasponsive">
+          <table mat-table matSort [dataSource]="dataSource" class="table employee-list no-wrap" style="height: 500px">
 
             <ng-container matColumnDef="number">
-              <th mat-header-cell *matHeaderCellDef>#</th>
-              <td mat-cell class="data" *matCellDef="let position" >{{positions.indexOf(position) + 1}}</td>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> # </mat-header-cell>
+              <mat-cell *matCellDef="let employee"> {{ dataSource.data.indexOf(employee) + 1}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header class="wide">{{'Name' | translate}}</th>
-              <td mat-cell *matCellDef="let position" class="action-link data wide">{{position.name}}</td>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'Name' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let position"> {{ position.name}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="code">
-              <th mat-header-cell *matHeaderCellDef class="wide" mat-sort-header>{{'Code' | translate}}</th>
-              <td mat-cell *matCellDef="let department" class="action-link data wide">{{department.code}}</td>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'Code' | translate}} </mat-header-cell>
+              <mat-cell *matCellDef="let position"> {{ position.code }} </mat-cell>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-            <tr mat-row *matRowDef="let row; columns: columnsToDisplay" class="example-detail-row"
-                (dblclick)="openPositionEditDialog(clickedRow)"
-                (mouseenter)="onEnterRow(row)"
-                (mouseleave)="onLeaveRow()"
-                (click)="onClickRow(row)"
-                [ngClass]="{
-                        'highlight-selected-dark' : row.id === clickedRow?.id && isDarkMode,
-                        'highlight-selected' : row.id === clickedRow?.id && !isDarkMode,
-                        'highlight-mouse-on-dark' : row.id === selectedRow?.id && isDarkMode,
-                        'highlight-mouse-on' : row.id === selectedRow?.id && !isDarkMode
-                        }"
-            ></tr>
+            <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: columnsToDisplay"
+                            (dblclick)="openPositionEditDialog(clickedRow)"
+                            (mouseenter)="onEnterRow(row)"
+                            (mouseleave)="onLeaveRow()"
+                            (click)="onClickRow(row)"
+                            [ngClass]="{
+                                    'highlight-selected-dark' : row.id === clickedRow?.id && isDarkMode,
+                                    'highlight-selected' : row.id === clickedRow?.id && !isDarkMode,
+                                    'highlight-mouse-on-dark' : row.id === selectedRow?.id && isDarkMode,
+                                    'highlight-mouse-on' : row.id === selectedRow?.id && !isDarkMode
+                                    }"
+            ></mat-row>
           </table>
-          <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
       </mat-card-content>
     </mat-card>
@@ -129,7 +129,7 @@
           <table mat-table matSort [dataSource]="employeeDs" class="table employee-list no-wrap" style="height: 500px">
 
             <ng-container matColumnDef="number">
-              <mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 50px"> # </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> # </mat-header-cell>
               <mat-cell *matCellDef="let employee"> {{ employeeDs.data.indexOf(employee) + 1}} </mat-cell>
             </ng-container>
 
@@ -139,7 +139,7 @@
             </ng-container>
 
             <ng-container matColumnDef="firstName">
-              <mat-header-cell *matHeaderCellDef mat-sort-header style="max-width: 300px"> {{'FirstName' | translate}} </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'FirstName' | translate}} </mat-header-cell>
               <mat-cell *matCellDef="let employee"> {{ employee.firstName }} </mat-cell>
             </ng-container>
 

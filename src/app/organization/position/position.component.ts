@@ -73,6 +73,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
     this.subscriptions.push(
       this.employeeService.getEmployees().subscribe(
         (response: Employee[]) => {
+          this.updateEmployeesDs(response)
           this.employees = response;
         }, (errorResponse : HttpErrorResponse) => {
           this.showErrorNotification(errorResponse.error.message);
