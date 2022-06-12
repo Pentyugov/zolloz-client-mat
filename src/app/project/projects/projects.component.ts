@@ -49,7 +49,9 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
     super(router, translate, eventNotificationService, applicationService, screenService);
     this.defaultFilterPredicate = this.dataSource.filterPredicate;
     this.statusFilterPredicate = (project: Project, filter: string) => {
-      return project.status.toString().trim().toLowerCase() == filter;
+      if (project.status)
+        return project.status.toString().trim().toLowerCase() == filter;
+      return false;
     };
   }
 
@@ -63,7 +65,7 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
 
   private loadProjects(): void {
     this.subscriptions.push(
-      this.projectService.getProjects().subscribe(
+      this.projectService.getAvailableProjects().subscribe(
         (response: Project[]) => {
           this.projects = response;
           this.initDataSource(this.projects);

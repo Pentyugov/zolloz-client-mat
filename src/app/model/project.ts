@@ -6,7 +6,7 @@ export class Project {
   id: string;
   name: string;
   code: string;
-  status: number;
+  status: number | null;
   projectManager: User | null | undefined;
   contractor: Contractor | null | undefined;
   closingDate: Date;
@@ -21,7 +21,7 @@ export class Project {
     this.projectManager = null;
     this.contractor = null;
     this.participants = [];
-    this.status = 0;
+    this.status = null;
     this.closingDate = new Date();
     this.dueDate = new Date();
     this.conclusionDate = new Date();

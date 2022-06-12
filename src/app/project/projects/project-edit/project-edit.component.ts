@@ -66,11 +66,11 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
       this.editedProject = this.data.editedItem;
       this.participantsDs.data = this.editedProject.participants;
       if (this.editedProject.conclusionDate) {
-        this.conclusionDate = new Date(Date.parse(this.editedProject.conclusionDate!.toString()));
+        this.conclusionDate = new Date(this.editedProject.conclusionDate);
       }
 
       if (this.editedProject.dueDate) {
-        this.dueDate = new Date(Date.parse(this.editedProject.dueDate.toString()));
+        this.dueDate = new Date(this.editedProject.dueDate);
       }
     }
 

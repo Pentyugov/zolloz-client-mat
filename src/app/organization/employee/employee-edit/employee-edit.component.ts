@@ -61,11 +61,13 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
           this.loadDepartments();
           this.loadPositions();
           if (this.employeeToUpdate.hireDate) {
-            this.hireDate = new Date(Date.parse(this.employeeToUpdate.hireDate!.toString()));
+            // this.hireDate = new Date(Date.parse(this.employeeToUpdate.hireDate!.toString()));
+            this.hireDate = new Date(this.employeeToUpdate.hireDate);
           }
 
           if (this.employeeToUpdate.dismissalDate) {
-            this.dismissalDate = new Date(Date.parse(this.employeeToUpdate.dismissalDate.toString()));
+            // this.dismissalDate = new Date(Date.parse(this.employeeToUpdate.dismissalDate.toString()));
+            this.dismissalDate = new Date(this.employeeToUpdate.dismissalDate);
           }
         }, (errorResponse: HttpErrorResponse) => {
           this.showErrorNotification(errorResponse.error.message);

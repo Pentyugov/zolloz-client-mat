@@ -20,6 +20,10 @@ export class ProjectService {
     return this.httpClient.get<Project[]>(`${this.host}/projects/get-all-projects`);
   }
 
+  public getAvailableProjects(): Observable<Project[]> {
+    return this.httpClient.get<Project[]>(`${this.host}/projects/get-available`);
+  }
+
   public addProject(project: Project): Observable<Project> {
     return this.httpClient.post<Project>(`${this.host}/projects/add-project`, project);
   }
