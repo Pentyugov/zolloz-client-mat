@@ -3,13 +3,14 @@ import {ProjectsComponent} from "./projects/projects.component";
 import {ProjectEditComponent} from "./projects/project-edit/project-edit.component";
 import {TicketComponent} from "./ticket/ticket.component";
 import {ScreenGuard} from "../guard/screen.guard";
+import {TasksComponent} from "./task/tasks.component";
 
-export const ProjectRoutes: Routes = [
+export const WorkflowRoutes: Routes = [
   {path: '',
     children: [
       {
         path: '',
-        redirectTo: '/projects',
+        redirectTo: '/workflow',
         pathMatch: 'full'
       },
       {
@@ -31,11 +32,24 @@ export const ProjectRoutes: Routes = [
           screen: 'ProjectsEditor',
           title: 'Project editor',
           urls: [
-            { title: 'Project', url: '/projects/project'},
+            { title: 'Project', url: '/workflow/project'},
             {title: 'Add'}
           ],
         }
       },
+
+      {
+        path: 'tasks',
+        component: TasksComponent,
+        data: {
+          title: 'Tasks',
+          urls: [
+            { title: 'Tasks', url: '/workflow/tasks'},
+            {title: 'Add'}
+          ],
+        }
+      },
+
       {
         path: 'tickets',
         component: TicketComponent,

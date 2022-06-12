@@ -58,12 +58,13 @@ const MENUITEMS = [
   },
 
   {
-    state: 'projects',
+    state: 'workflow',
     name: 'MyProjects',
     type: 'sub',
     icon: 'folder',
     children: [
       { state: 'projects', name: 'Projects', type: 'link' },
+      { state: 'tasks', name: 'Tasks', type: 'link' },
       { state: 'tickets', name: 'Tickets', type: 'link' },
       { state: 'taskboard', name: 'Taskboard', type: 'link' },
       { state: 'notes', name: 'Notes', type: 'link' },

@@ -1,3 +1,5 @@
+import {User} from "../model/user";
+
 export class ApplicationConstants {
 
 //    ==============================================================
@@ -48,6 +50,12 @@ export class ApplicationConstants {
                                            'projectManager',
                                            'client',
                                            'status'];
+
+  static readonly TASK_TABLE_COLUMNS = ['number',
+    'state',
+    'priority',
+    'initiator',
+    'executor'];
 
   static readonly PROJECT_PARTICIPANTS_TABLE_COLUMNS = ['number',
                                                         'firstName',

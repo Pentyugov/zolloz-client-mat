@@ -1,0 +1,151 @@
+<div fxLayout="row wrap">
+
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card>
+      <div class="box p-20 bg-info text-center cursor-pointer" (click)="btnCategoryClick(-1)">
+        <h1 class="font-light text-white m-0">{{ totalCount }}</h1>
+        <h6 class="text-white m-0">{{'TotalProjects' | translate}}</h6>
+      </div>
+    </mat-card>
+  </div>
+
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card>
+      <div
+        class="box p-20 bg-success text-center cursor-pointer" (click)="btnCategoryClick(10)">
+        <h1 class="font-light text-white m-0">{{ Open }}</h1>
+        <h6 class="text-white m-0">{{'Projects.Status.Open' | translate}}</h6>
+      </div>
+    </mat-card>
+  </div>
+
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card>
+      <div
+        class="box p-20 bg-warning text-center cursor-pointer" (click)="btnCategoryClick(20)">
+        <h1 class="font-light text-white m-0">{{ InProgress }}</h1>
+        <h6 class="text-white m-0">{{'Projects.Status.InProgress' | translate}}</h6>
+      </div>
+    </mat-card>
+  </div>
+
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
+    <mat-card>
+      <div
+        class="box p-20 bg-danger text-center cursor-pointer" (click)="btnCategoryClick(30)">
+        <h1 class="font-light text-white m-0">{{ Closed }}</h1>
+        <h6 class="text-white m-0">{{'Projects.Status.Closed' | translate}}</h6>
+      </div>
+    </mat-card>
+  </div>
+</div>
+
+
+<div fxLayout="row wrap">
+  <div fxFlex="100">
+    <mat-card>
+      <mat-card-content>
+        <div fxLayout="row wrap" class="align-items-center">
+          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+            <mat-form-field>
+              <input
+                matInput
+                (keyup)="applyFilter($event.target.value)"
+                placeholder="{{'Projects.Search' | translate}}"
+              />
+            </mat-form-field>
+          </div>
+          <div fxFlex.gt-md="75" class="text-right">
+            <button mat-raised-button
+                    *ngIf="isActionPermit(CREATE_ACTION)"
+                    (click)="openAddDialog(null)"
+                    color="primary">
+                    {{'CreateProject' | translate}}
+            </button>
+
+            <button mat-raised-button
+                    *ngIf="isActionPermit(EDIT_ACTION)"
+                    (click)="openEditDialog(clickedRow)"
+                    color="accent"
+                    style="margin-left: 10px"
+                    [disabled]="!clickedRow">
+              <i class="fa fa-pencil"></i>
+            </button>
+
+            <button mat-raised-button
+                    *ngIf="isActionPermit(DELETE_ACTION)"
+                    (click)="openDeleteDialog(clickedRow)"
+                    color="warn"
+                    style="margin-left: 10px"
+                    [disabled]="!clickedRow">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<div fxLayout="row wrap">
+  <div fxFlex="100">
+    <mat-card>
+      <mat-card-content>
+        <div class="table-responsive">
+          <table mat-table matSort [dataSource]="dataSource" class="table ticket-list no-wrap">
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef >{{'Name' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+              {{ getMaxTextLength(element.name, 40)}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="code">
+              <th mat-header-cell *matHeaderCellDef>{{'Code' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+              {{ getMaxTextLength(element.code, 10) }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>{{'Status' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+              {{ getStatus(element.status) | translate }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="projectManager">
+              <th mat-header-cell *matHeaderCellDef>{{'ProjectManager' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+              {{ element.projectManager?.username }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="client">
+              <th mat-header-cell *matHeaderCellDef>{{'Client' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ getMaxTextLength(element.contractor?.name, 30) }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row
+                (mouseenter)="onEnterRow(row)"
+                        (mouseleave)="onLeaveRow()"
+                        (click)="onClickRow(row)"
+                        (dblclick)="openEditDialog(row)"
+                        [ngClass]="{
+                        'highlight-selected-dark' : row.id === clickedRow?.id && isDarkMode,
+                        'highlight-selected' : row.id === clickedRow?.id && !isDarkMode,
+                        'highlight-mouse-on-dark' : row.id === selectedRow?.id && isDarkMode,
+                        'highlight-mouse-on' : row.id === selectedRow?.id && !isDarkMode
+                        }"
+                        *matRowDef="let row; columns: columnsToDisplay; let entry">
+            </tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

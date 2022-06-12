@@ -189,7 +189,7 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
 }
 
 @Component({
-  selector: 'app-project-edit-save-dialog',
+  selector: 'app-workflow-edit-save-dialog',
   templateUrl: 'project-save-confirm.component.html',
   styleUrls: []
 })

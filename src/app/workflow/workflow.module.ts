@@ -11,7 +11,7 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MatInputModule} from "@angular/material/input";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
-import {ProjectRoutes} from "./project.routing";
+import {WorkflowRoutes} from "./workflow.routing";
 import { ProjectsComponent } from './projects/projects.component';
 import {ProjectEditComponent, ProjectSaveConfirmComponent} from './projects/project-edit/project-edit.component';
 import { NgxMaskModule } from 'ngx-mask';
@@ -19,6 +19,8 @@ import { ProjectAddParticipantsComponent } from './projects/project-edit/addpart
 import {ProjectDeleteDialogComponent} from "./projects/project-delete-dialog/project-delete-dialog.component";
 import { TicketComponent } from './ticket/ticket.component';
 import {NgxPermissionsModule, NgxPermissionsRestrictStubModule} from "ngx-permissions";
+import { TasksComponent } from './task/tasks.component';
+import { TaskEditComponent } from './task/tast-edit/task-edit/task-edit.component';
 
 
 @NgModule({
@@ -28,12 +30,14 @@ import {NgxPermissionsModule, NgxPermissionsRestrictStubModule} from "ngx-permis
     ProjectSaveConfirmComponent,
     ProjectAddParticipantsComponent,
     ProjectDeleteDialogComponent,
-    TicketComponent
+    TicketComponent,
+    TasksComponent,
+    TaskEditComponent
   ],
   providers: [DatePipe],
   imports: [
     CommonModule,
-    RouterModule.forChild(ProjectRoutes),
+    RouterModule.forChild(WorkflowRoutes),
     FormsModule,
     MaterialModule,
     PerfectScrollbarModule,
@@ -57,4 +61,4 @@ import {NgxPermissionsModule, NgxPermissionsRestrictStubModule} from "ngx-permis
     NgxPermissionsModule
   ]
 })
-export class ProjectModule { }
+export class WorkflowModule { }
