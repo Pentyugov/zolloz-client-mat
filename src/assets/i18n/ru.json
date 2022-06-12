@@ -223,7 +223,10 @@
   "SaveChanges" : "Сохранить изменения",
   "MyProjects": "Мои проекты",
   "ProjectDeleteMsg" : "Вы уверены что хотите удалить проект и все связанные задачи?",
-  "EmployeesOfPosition" : "Сотрудники в должности"
+  "EmployeesOfPosition" : "Сотрудники в должности",
+  "Priority.Low" : "Низкий приоритет",
+  "Priority.Medium" : "Средний приоритет",
+  "Priority.High" : "Высокий приоритет"
 
 
 }

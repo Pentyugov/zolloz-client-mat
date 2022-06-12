@@ -121,6 +121,10 @@ export class TasksComponent extends AbstractBrowser implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  public getPriority(priority: string): string {
+    return priority === this.LOW ? 'Priority.Low' : priority === this.MEDIUM ? 'Priority.Medium' : 'Priority.High';
+  }
+
   public openAddDialog(editedItem: Project | null): void {
     this.openDialog(ApplicationConstants.DIALOG_ACTION_ADD, editedItem);
   }

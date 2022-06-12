@@ -223,5 +223,8 @@
   "SaveChanges" : "Save changes",
   "MyProjects": "My projects",
   "ProjectDeleteMsg" : "Sure want to delete project and all linked tickets?",
-  "EmployeesOfPosition" : "Employees in position"
+  "EmployeesOfPosition" : "Employees in position",
+  "Priority.Low" : "Low priority",
+  "Priority.Medium" : "Medium priority",
+  "Priority.High" : "High priority"
 }

@@ -107,7 +107,7 @@
             <ng-container matColumnDef="priority">
               <th mat-header-cell *matHeaderCellDef>{{'Priority' | translate}}</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.priority }}
+                {{ getPriority(element.priority) | translate }}
               </td>
             </ng-container>
 
