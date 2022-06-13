@@ -58,6 +58,8 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
       if (this.editedTask.executionDatePlan) {
         this.executionDatePlan = new Date(this.editedTask.executionDatePlan);
       }
+    } else {
+      this.reloadTask();
     }
 
   }
@@ -74,6 +76,17 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
       }, (errorResponse: HttpErrorResponse) => {
         this.showErrorNotification(errorResponse.error.message)
       }));
+  }
+
+  // TODO realize this
+  public reloadTask(): void {
+    // this.subscriptions.push(this.taskService.get(ApplicationConstants.ROLE_TASK_EXECUTOR).subscribe(
+    //   (response: User[]) => {
+    //     this.executors = response;
+    //     this.editedTask.executor = this.executors.find(d => d.id === this.editedTask.executor?.id)
+    //   }, (errorResponse: HttpErrorResponse) => {
+    //     this.showErrorNotification(errorResponse.error.message)
+    //   }));
   }
 
   public close() {
@@ -151,6 +164,37 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
     });
   }
 
+  public reworkTaskBtnClick(): void {
+    const dialogRef = this.dialog.open(TaskExecutionDialogComponent, {
+      width: ApplicationConstants.DIALOG_WIDTH,
+      panelClass: this.isDarkMode ? 'dark' : '',
+      data: {
+        caption: 'Confirmation',
+        message: 'Tasks.ReworkTaskMsg'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (result.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
+          this.onReworkTask(result.event.comment);
+        }
+      }
+    });
+  }
+
+  public onReworkTask(comment: string): void {
+    this.subscriptions.push(this.taskService.reworkTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
+      this.eventNotificationService
+        .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
+      this.close();
+    },(errorResponse: HttpErrorResponse) => {
+      this.eventNotificationService
+        .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+      this.close();
+    }));
+  }
+
   public onExecuteTask(comment: string): void {
     this.subscriptions.push(this.taskService.executeTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
       this.eventNotificationService
@@ -189,6 +233,12 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
     return this.editedTask.started &&
       (this.editedTask.state === Task.STATE_ASSIGNED || this.editedTask.state === Task.STATE_REWORK) &&
       (this.editedTask.executor?.id === this.currentUser.id || this.authenticationService.isCurrentUserAdmin()) ;
+  }
+
+  public isReworkButtonEnabled(): boolean {
+    return this.editedTask.started && this.editedTask.state === Task.STATE_EXECUTED &&
+      (this.isCurrentUserTaskCreatorOrInitiator() ||
+        this.authenticationService.isCurrentUserAdmin()) ;
   }
 
   public isFieldsEnabled(): boolean {

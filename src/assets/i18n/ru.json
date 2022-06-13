@@ -242,6 +242,8 @@
   "Tasks.StartTask" : "Запустить задачу",
   "Tasks.ExecuteTask" : "Выполнить задачу",
   "Tasks.ExecuteTaskMsg" : "Выполнить задачу?",
+  "Tasks.StarkRework" : "На доработку",
+  "Tasks.ReworkTaskMsg" : "Отправить задачу на доработку?",
   "Tasks" : "Задачи",
   "Browser" : "Список",
   "Comment" : "Комментарий",

@@ -125,13 +125,11 @@
                 <div fxLayout="row wrap" class="align-items-center m-b-15">
                   <div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex.gt-xs="50" fxFlex="100" class="text-right">
 
-
-
                     <button mat-raised-button
-                            class="startTaskBtn"
-                            *ngIf="isStartButtonEnabled()"
-                            (click)="onUpdateTask(true)"
-                    >{{'Tasks.StartTask' | translate}}</button>
+                            color="warn"
+                            *ngIf="isReworkButtonEnabled()"
+                            (click)="reworkTaskBtnClick(true)"
+                    >{{'Tasks.StarkRework' | translate}}</button>
 
                     <button mat-raised-button
                             class="startTaskBtn"
@@ -139,7 +137,11 @@
                             (click)="executeTaskBtnClick()"
                     >{{'Tasks.ExecuteTask' | translate}}</button>
 
-
+                    <button mat-raised-button
+                            class="startTaskBtn"
+                            *ngIf="isStartButtonEnabled()"
+                            (click)="onUpdateTask(true)"
+                    >{{'Tasks.StartTask' | translate}}</button>
 
                   </div>
                 </div>
@@ -147,6 +149,7 @@
             </span>
           </mat-card-content>
         </mat-tab>
+
         <mat-tab label="History">
           <mat-card-content>
 

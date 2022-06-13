@@ -242,6 +242,8 @@
   "Tasks.StartTask" : "Start task",
   "Tasks.ExecuteTask" : "Execute task",
   "Tasks.ExecuteTaskMsg" : "Execute task?",
+  "Tasks.StarkRework" : "Send for rework",
+  "Tasks.ReworkTaskMsg" : "Send task for rework?",
   "Tasks" : "Tasks",
   "Browser" : "Browser",
   "Comment" : "Comment",
