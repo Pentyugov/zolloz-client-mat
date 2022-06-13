@@ -21,6 +21,8 @@ import { TicketComponent } from './ticket/ticket.component';
 import {NgxPermissionsModule, NgxPermissionsRestrictStubModule} from "ngx-permissions";
 import { TasksComponent } from './task/tasks.component';
 import { TaskEditComponent } from './task/tast-edit/task-edit/task-edit.component';
+import { TaskDeleteDialogComponent } from './task/task-delete-dialog/task-delete-dialog.component';
+import { TaskExecutionDialogComponent } from './task/task-execution-dialog/task-execution-dialog.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { TaskEditComponent } from './task/tast-edit/task-edit/task-edit.componen
     ProjectDeleteDialogComponent,
     TicketComponent,
     TasksComponent,
-    TaskEditComponent
+    TaskEditComponent,
+    TaskDeleteDialogComponent,
+    TaskExecutionDialogComponent
   ],
   providers: [DatePipe],
   imports: [

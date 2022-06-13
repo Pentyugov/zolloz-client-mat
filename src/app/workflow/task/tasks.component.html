@@ -4,7 +4,7 @@
     <mat-card>
       <div class="box p-20 bg-info text-center cursor-pointer" (click)="btnCategoryClick('')">
         <h1 class="font-light text-white m-0">{{ totalCount }}</h1>
-        <h6 class="text-white m-0">{{'TotalProjects' | translate}}</h6>
+        <h6 class="text-white m-0">{{'TotalTasks' | translate}}</h6>
       </div>
     </mat-card>
   </div>
@@ -14,7 +14,7 @@
       <div
         class="box p-20 bg-success text-center cursor-pointer" (click)="btnCategoryClick(LOW)">
         <h1 class="font-light text-white m-0">{{ lowPriority }}</h1>
-        <h6 class="text-white m-0">{{'Projects.Status.Open' | translate}}</h6>
+        <h6 class="text-white m-0">{{'Tasks.Priority.Low' | translate}}</h6>
       </div>
     </mat-card>
   </div>
@@ -24,7 +24,7 @@
       <div
         class="box p-20 bg-warning text-center cursor-pointer" (click)="btnCategoryClick(MEDIUM)">
         <h1 class="font-light text-white m-0">{{ mediumPriority }}</h1>
-        <h6 class="text-white m-0">{{'Projects.Status.InProgress' | translate}}</h6>
+        <h6 class="text-white m-0">{{'Tasks.Priority.Middle' | translate}}</h6>
       </div>
     </mat-card>
   </div>
@@ -34,7 +34,7 @@
       <div
         class="box p-20 bg-danger text-center cursor-pointer" (click)="btnCategoryClick(HIGH)">
         <h1 class="font-light text-white m-0">{{ highPriority }}</h1>
-        <h6 class="text-white m-0">{{'Projects.Status.Closed' | translate}}</h6>
+        <h6 class="text-white m-0">{{'Tasks.Priority.High' | translate}}</h6>
       </div>
     </mat-card>
   </div>
@@ -51,21 +51,23 @@
               <input
                 matInput
                 (keyup)="applyFilter($event.target.value)"
-                placeholder="{{'Projects.Search' | translate}}"
+                placeholder="{{'Tasks.Search' | translate}}"
               />
             </mat-form-field>
           </div>
           <div fxFlex.gt-md="75" class="text-right">
             <button mat-raised-button
                     *ngIf="isActionPermit(CREATE_ACTION)"
-                    color="primary">
-              {{'CreateProject' | translate}}
+                    color="primary"
+                    (click)="openAddDialog(null)">
+              {{'Tasks.CreateTask' | translate}}
             </button>
 
             <button mat-raised-button
                     *ngIf="isActionPermit(EDIT_ACTION)"
                     color="accent"
                     style="margin-left: 10px"
+                    (dblclick)="openEditDialog(clickedRow)"
                     [disabled]="!clickedRow">
               <i class="fa fa-pencil"></i>
             </button>
@@ -74,6 +76,7 @@
                     *ngIf="isActionPermit(DELETE_ACTION)"
                     color="warn"
                     style="margin-left: 10px"
+                    (click)="openDeleteDialog(clickedRow)"
                     [disabled]="!clickedRow">
               <i class="fas fa-trash"></i>
             </button>
@@ -110,6 +113,22 @@
                 {{ getPriority(element.priority) | translate }}
               </td>
             </ng-container>
+
+            <ng-container matColumnDef="dueDate">
+              <th mat-header-cell *matHeaderCellDef>{{'DueDate' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.executionDatePlan | date : 'dd.MM.yyyy HH:mm' }}
+              </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="executionDateFact">
+              <th mat-header-cell *matHeaderCellDef>{{'ExecutionDateFact' | translate}}</th>
+              <td mat-cell *matCellDef="let element" [ngClass]="{'overdue' : element.overdue}">
+                {{ element.executionDateFact | date : 'dd.MM.yyyy HH:mm' }}
+              </td>
+            </ng-container>
+
 
             <ng-container matColumnDef="initiator">
               <th mat-header-cell *matHeaderCellDef>{{'Initiator' | translate}}</th>

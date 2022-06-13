@@ -226,7 +226,24 @@
   "EmployeesOfPosition" : "Сотрудники в должности",
   "Priority.Low" : "Низкий приоритет",
   "Priority.Medium" : "Средний приоритет",
-  "Priority.High" : "Высокий приоритет"
-
-
+  "Priority.High" : "Высокий приоритет",
+  "TotalTasks" : "Всего задач",
+  "Number" : "Номер",
+  "Priority" : "Приоритет",
+  "State" : "Состояние",
+  "Initiator" : "Инициатор",
+  "Executor" : "Исполнитель",
+  "ExecutionDateFact" : "Дата исполнения",
+  "Tasks.Priority.Low" : "С низким приоритетом",
+  "Tasks.Priority.Middle" : "Со средним приоритетом",
+  "Tasks.Priority.High" : "С высоким приоритетом",
+  "Tasks.CreateTask" : "Создать задачу",
+  "Tasks.Search" : "Поиск по задачам",
+  "Tasks.StartTask" : "Запустить задачу",
+  "Tasks.ExecuteTask" : "Выполнить задачу",
+  "Tasks.ExecuteTaskMsg" : "Выполнить задачу?",
+  "Tasks" : "Задачи",
+  "Browser" : "Список",
+  "Comment" : "Комментарий",
+  "Confirm" : "Подтвердить"
 }

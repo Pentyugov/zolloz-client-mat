@@ -33,7 +33,7 @@ export const WorkflowRoutes: Routes = [
           title: 'Project editor',
           urls: [
             { title: 'Project', url: '/workflow/project'},
-            {title: 'Add'}
+            {title: 'Browser'}
           ],
         }
       },
@@ -45,7 +45,7 @@ export const WorkflowRoutes: Routes = [
           title: 'Tasks',
           urls: [
             { title: 'Tasks', url: '/workflow/tasks'},
-            {title: 'Add'}
+            {title: 'Browser'}
           ],
         }
       },

@@ -54,6 +54,8 @@ export class ApplicationConstants {
   static readonly TASK_TABLE_COLUMNS = ['number',
     'state',
     'priority',
+    'dueDate',
+    'executionDateFact',
     'initiator',
     'executor'];
 
@@ -102,6 +104,30 @@ export class ApplicationConstants {
   ]
 
 //    ==============================================================
+//    =                          TASKS                             =
+//    ==============================================================
+  static readonly PRIORITY_LOW:    string = 'PRIORITY$LOW';
+  static readonly PRIORITY_MEDIUM: string = 'PRIORITY$MEDIUM';
+  static readonly PRIORITY_HIGH:   string = 'PRIORITY$HIGH';
+
+  static readonly TASK_PRIORITIES = [
+    {
+      code: 'PRIORITY$LOW',
+      name: 'Priority.Low',
+    },
+
+    {
+      code: 'PRIORITY$MEDIUM',
+      name: 'Priority.Medium',
+    },
+
+    {
+      code: 'PRIORITY$HIGH',
+      name: 'Priority.High',
+    },
+  ]
+
+//    ==============================================================
 //    =                      PERMISSIONS                           =
 //    ==============================================================
   static readonly PERMISSION_READ = 'READ';
@@ -130,6 +156,9 @@ export class ApplicationConstants {
   static readonly ROLE_USER = 'USER';
   static readonly ROLE_SECRETARY = 'SECRETARY';
   static readonly ROLE_PROJECT_MANAGER = 'PROJECT_MANAGER';
+  static readonly ROLE_PROJECT_PARTICIPANT = 'PROJECT_PARTICIPANT';
+  static readonly ROLE_TASK_INITIATOR = 'TASK_INITIATOR';
+  static readonly ROLE_TASK_EXECUTOR = 'TASK_EXECUTOR';
 
 
 //    ==============================================================

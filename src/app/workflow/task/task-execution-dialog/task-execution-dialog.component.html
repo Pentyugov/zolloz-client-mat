@@ -1,0 +1,23 @@
+<h2 class="font-medium" mat-dialog-title><strong>{{caption | translate}}</strong></h2>
+
+<mat-dialog-content style="height: 240px">
+  <p>{{message | translate}}</p>
+
+    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+      <mat-label>{{'Comment' | translate}}</mat-label>
+      <textarea
+        matInput
+        name="comment"
+        maxlength="255"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="2"
+        placeholder="{{'Comment' | translate}}"
+        [(ngModel)]="comment"
+      ></textarea>
+    </mat-form-field>
+
+  <div mat-dialog-actions align="end" class="pt-3">
+    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">{{'Cancel' | translate}}</button>
+    <button mat-button (click)="doAction()" mat-flat-button color="primary">{{'Confirm' | translate}}</button>
+  </div>
+</mat-dialog-content>

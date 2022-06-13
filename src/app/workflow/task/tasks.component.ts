@@ -13,8 +13,8 @@ import {ApplicationConstants} from "../../shared/application-constants";
 import {MatTableDataSource} from "@angular/material/table";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Task} from "../../model/task";
-import {Project} from "../../model/project";
 import {TaskEditComponent} from "./tast-edit/task-edit/task-edit.component";
+import {TaskDeleteDialogComponent} from "./task-delete-dialog/task-delete-dialog.component";
 
 @Component({
   selector: 'app-task',
@@ -37,7 +37,6 @@ export class TasksComponent extends AbstractBrowser implements OnInit {
   public readonly LOW = Task.PRIORITY_LOW;
   public readonly MEDIUM = Task.PRIORITY_MEDIUM;
   public readonly HIGH = Task.PRIORITY_HIGH;
-  public readonly TOTAL = 'total';
 
   constructor(router: Router,
               translate: TranslateService,
@@ -125,24 +124,24 @@ export class TasksComponent extends AbstractBrowser implements OnInit {
     return priority === this.LOW ? 'Priority.Low' : priority === this.MEDIUM ? 'Priority.Medium' : 'Priority.High';
   }
 
-  public openAddDialog(editedItem: Project | null): void {
+  public openAddDialog(editedItem: Task | null): void {
     this.openDialog(ApplicationConstants.DIALOG_ACTION_ADD, editedItem);
   }
 
-  public openEditDialog(editedItem: Project | null): void {
+  public openEditDialog(editedItem: Task | null): void {
     if (this.isActionPermit(this.EDIT_ACTION)) {
       this.openDialog(ApplicationConstants.DIALOG_ACTION_UPDATE, editedItem);
     }
   }
 
-  public openDialog(action: string, editedItem: Project | null): void {
+  public openDialog(action: string, editedItem: Task | null): void {
     let isNewItem = false;
     if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
       isNewItem = true;
     }
     const editor = this.editor.open(TaskEditComponent, {
       width: "100%",
-      height: "75%",
+      height: "80%",
       panelClass: this.isDarkMode ? 'dark' : '',
       data: {
         editedItem: editedItem,
@@ -153,5 +152,27 @@ export class TasksComponent extends AbstractBrowser implements OnInit {
     editor.afterClosed().subscribe(() => {
       this.loadTasks();
     });
+  }
+
+  public openDeleteDialog(task: Task) {
+    this.dialog.open(TaskDeleteDialogComponent, {
+      data: task,
+      width: ApplicationConstants.DIALOG_WIDTH,
+      panelClass: this.isDarkMode ? 'dark' : ''
+    }).afterClosed().subscribe(response => {
+      if (response.event.action === ApplicationConstants.DIALOG_ACTION_DELETE) {
+        this.onDeleteTask(this.clickedRow);
+      }
+    });
+  }
+
+  public onDeleteTask(task: Task): void {
+    this.subscriptions.push(this.taskService.deleteTask(task.id).subscribe(
+      () => {
+        this.loadTasks();
+      }, (errorResponse: HttpErrorResponse) => {
+        this.showErrorNotification(errorResponse.error.message);
+      }
+    ));
   }
 }

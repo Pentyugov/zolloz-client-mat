@@ -22,10 +22,11 @@ export class Task {
   executionDatePlan: Date | null;
   executionDateFact: Date | null;
   creator: User | null;
-  executor: User | null;
+  executor: User | null | undefined;
   initiator: User | null;
   daysUntilDueDate: number;
   started: boolean;
+  overdue: boolean;
 
 
   constructor() {
@@ -42,5 +43,6 @@ export class Task {
     this.initiator = null;
     this.daysUntilDueDate = 0;
     this.started = false;
+    this.overdue = false;
   }
 }

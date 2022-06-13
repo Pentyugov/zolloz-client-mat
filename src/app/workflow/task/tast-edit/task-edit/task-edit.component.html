@@ -1,1 +1,159 @@
-<p>task-edit works!</p>
+<div fxLayout="row wrap">
+  <div fxFlex.gt-sm="100%" fxFlex="100">
+    <mat-card>
+      <mat-tab-group>
+        <mat-tab label="Details">
+          <mat-card-content>
+            <span>
+              <form #projectEditForm="ngForm">
+
+                <div fxLayout="row wrap" class="align-items-center m-b-15">
+                  <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100">
+                    <h3 class="m-0">
+                      <div class="d-flex">
+                        <span ngDefaultControl *ngIf="isNewItem()">{{'TaskCreation' | translate}}</span>
+                        <span ngDefaultControl *ngIf="!isNewItem()">{{'TaskEditor' | translate}}</span>
+                      </div>
+
+                    </h3>
+                  </div>
+                  <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100" class="text-right">
+
+                    <button mat-stroked-button color="warn" class="m-r-10"
+                            (click)="close()">{{'Cancel' | translate}}</button>
+                    <button mat-raised-button
+                            color="primary"
+                            [disabled]="projectEditForm.invalid"
+                            (click)="openSaveDialog()">{{'Save' | translate}}</button>
+                  </div>
+                </div>
+
+                <hr/>
+
+                <div fxLayout="row wrap" class="align-items-center m-t-30 m-b-15">
+
+                  <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Number' | translate}}</mat-label>
+                      <input matInput
+                             required
+                             placeholder="{{'Number' | translate}}"
+                             [disabled]="!isFieldsEnabled()"
+                             [(ngModel)]="editedTask.number"
+                             name="number"/>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Priority' | translate}}</mat-label>
+                      <mat-select placeholder="{{'Priority' | translate}}"
+                                  name="priority"
+                                  required
+                                  [disabled]="!isFieldsEnabled()"
+                                  [(ngModel)]="editedTask.priority">
+                        <mat-option *ngFor="let priority of priorities" [value]="priority.code">
+                          {{ priority.name | translate }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Description' | translate}}</mat-label>
+                      <textarea
+                        matInput
+                        name="description"
+                        maxlength="255"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="2"
+                        placeholder="{{'Description' | translate}}"
+                        [disabled]="!isFieldsEnabled()"
+                        [(ngModel)]="editedTask.description"
+
+                      ></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Comment' | translate}}</mat-label>
+                      <textarea
+                        matInput
+                        name="comment"
+                        maxlength="255"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="2"
+                        placeholder="{{'Description' | translate}}"
+                        [disabled]="!isFieldsEnabled()"
+                        [(ngModel)]="editedTask.comment"
+                      ></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'DueDate' | translate}}</mat-label>
+                      <input matInput
+                             type="date"
+                             placeholder="{{'DueDate' | translate}}"
+                             name="dueDate"
+                             [disabled]="!isFieldsEnabled()"
+                             (change)="onUpdateDueDate($event)"
+                             [valueAsDate]="executionDatePlan"/>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Executor' | translate}}</mat-label>
+                      <mat-select placeholder="{{'Executor' | translate}}"
+                                  name="executor"
+                                  [disabled]="!isFieldsEnabled()"
+                                  [(ngModel)]="editedTask.executor">
+                        <mat-option [value]="null">{{'None' | translate}}</mat-option>
+                        <mat-option *ngFor="let executor of executors" [value]="executor">
+                          {{ executor.lastName + ' ' + executor.firstName }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                </div>
+
+                <div fxLayout="row wrap" class="align-items-center m-b-15">
+                  <div fxFlex.gt-md="100" fxFlex.gt-lg="100" fxFlex.gt-xs="50" fxFlex="100" class="text-right">
+
+
+
+                    <button mat-raised-button
+                            class="startTaskBtn"
+                            *ngIf="isStartButtonEnabled()"
+                            (click)="onUpdateTask(true)"
+                    >{{'Tasks.StartTask' | translate}}</button>
+
+                    <button mat-raised-button
+                            class="startTaskBtn"
+                            *ngIf="isExecuteButtonEnabled()"
+                            (click)="executeTaskBtnClick()"
+                    >{{'Tasks.ExecuteTask' | translate}}</button>
+
+
+
+                  </div>
+                </div>
+              </form>
+            </span>
+          </mat-card-content>
+        </mat-tab>
+        <mat-tab label="History">
+          <mat-card-content>
+
+
+          </mat-card-content>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

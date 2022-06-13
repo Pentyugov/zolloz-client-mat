@@ -1,0 +1,9 @@
+<h2 class="font-medium" mat-dialog-title><strong>{{'Delete' | translate}}</strong></h2>
+
+<mat-dialog-content style="height: 130px">
+  <p>{{'TaskDeleteMsg' | translate}}</p>
+  <div mat-dialog-actions align="end" class="pt-3">
+    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">{{'Cancel' | translate}}</button>
+    <button mat-button (click)="doAction()" mat-flat-button color="primary">{{'Delete' | translate}}</button>
+  </div>
+</mat-dialog-content>
