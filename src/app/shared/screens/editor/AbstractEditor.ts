@@ -5,6 +5,7 @@ import { EventNotificationService } from '../../../service/event-notification.se
 import { ApplicationService } from '../../../service/application.service';
 import { ApplicationConstants } from '../../application-constants';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {User} from "../../../model/user";
 
 export abstract class AbstractEditor {
 
@@ -46,5 +47,22 @@ export abstract class AbstractEditor {
     this.router.navigateByUrl(path).then(() => {
       this.eventNotificationService.showSuccessNotification(this.messageTitle, this.message);
     });
+  }
+
+  public getUserName(user: User): string {
+      if (user.lastName && user.firstName)
+        return user.lastName + ' ' + user.firstName
+      if (user.username)
+        return user.username;
+      return '';
+  }
+
+  public getLocMessage(alias: string): string {
+      let result: string = '';
+      this.subscriptions.push(
+        this.translate.get(alias).subscribe(m => result = m)
+      );
+
+      return result;
   }
 }

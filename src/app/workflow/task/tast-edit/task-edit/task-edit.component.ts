@@ -18,6 +18,7 @@ import {TaskService} from "../../../../service/task.service";
 import {AuthenticationService} from "../../../../service/authentication.service";
 import {CustomHttpResponse} from "../../../../model/custom-http-response";
 import {TaskExecutionDialogComponent} from "../../task-execution-dialog/task-execution-dialog.component";
+import {CardHistory} from "../../../../model/card-history";
 
 @Component({
   selector: 'app-task-edit',
@@ -28,6 +29,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   public currentUser: User = new User();
   public editedTask: Task = new Task();
   public executors: User[] = [];
+  public cardHistory: CardHistory[] = [];
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, {static: true}) sort: MatSort = Object.create(null);
   public executionDatePlan: Date | null = null;
@@ -52,14 +54,13 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
 
   ngOnInit(): void {
     this.loadExecutors();
-
     if (!this.isNewItem()) {
       this.editedTask = this.data.editedItem;
+      this.reloadTask();
+      this.loadTaskHistory();
       if (this.editedTask.executionDatePlan) {
         this.executionDatePlan = new Date(this.editedTask.executionDatePlan);
       }
-    } else {
-      this.reloadTask();
     }
 
   }
@@ -78,15 +79,22 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
       }));
   }
 
-  // TODO realize this
+  public loadTaskHistory(): void {
+    this.subscriptions.push(this.taskService.getTaskHistory(this.editedTask.id).subscribe(
+      (response: CardHistory[]) => {
+        this.cardHistory = response;
+      }, (errorResponse: HttpErrorResponse) => {
+        this.showErrorNotification(errorResponse.error.message)
+      }));
+  }
+
   public reloadTask(): void {
-    // this.subscriptions.push(this.taskService.get(ApplicationConstants.ROLE_TASK_EXECUTOR).subscribe(
-    //   (response: User[]) => {
-    //     this.executors = response;
-    //     this.editedTask.executor = this.executors.find(d => d.id === this.editedTask.executor?.id)
-    //   }, (errorResponse: HttpErrorResponse) => {
-    //     this.showErrorNotification(errorResponse.error.message)
-    //   }));
+    this.subscriptions.push(this.taskService.getById(this.editedTask.id).subscribe(
+      (response: Task) => {
+        this.editedTask = response;
+      }, (errorResponse: HttpErrorResponse) => {
+        this.showErrorNotification(errorResponse.error.message)
+      }));
   }
 
   public close() {
@@ -117,7 +125,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
     });
   }
 
-  public onCreateTask(): void {
+  private onCreateTask(): void {
     this.subscriptions.push(this.taskService.addTask(this.editedTask).subscribe(
       (response: Task) => {
         this.eventNotificationService
@@ -145,6 +153,14 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
       }));
   }
 
+  private startTask(id: string) : void {
+    this.subscriptions.push(this.taskService.startTask(id).subscribe((response: CustomHttpResponse) => {
+      this.eventNotificationService.showInfoNotification("Success", response.message);
+    }, (errorResponse: HttpErrorResponse) => {
+      this.showErrorNotification(errorResponse.error.message);
+    }));
+  }
+
   public executeTaskBtnClick(): void {
     const dialogRef = this.dialog.open(TaskExecutionDialogComponent, {
       width: ApplicationConstants.DIALOG_WIDTH,
@@ -162,6 +178,18 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
         }
       }
     });
+  }
+
+  private onExecuteTask(comment: string): void {
+    this.subscriptions.push(this.taskService.executeTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
+      this.eventNotificationService
+        .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
+      this.close();
+    },(errorResponse: HttpErrorResponse) => {
+      this.eventNotificationService
+        .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+      this.close();
+    }));
   }
 
   public reworkTaskBtnClick(): void {
@@ -183,7 +211,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
     });
   }
 
-  public onReworkTask(comment: string): void {
+  private onReworkTask(comment: string): void {
     this.subscriptions.push(this.taskService.reworkTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
       this.eventNotificationService
         .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
@@ -195,8 +223,27 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
     }));
   }
 
-  public onExecuteTask(comment: string): void {
-    this.subscriptions.push(this.taskService.executeTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
+  public cancelTaskBtnClick(): void {
+    const dialogRef = this.dialog.open(TaskExecutionDialogComponent, {
+      width: ApplicationConstants.DIALOG_WIDTH,
+      panelClass: this.isDarkMode ? 'dark' : '',
+      data: {
+        caption: 'Confirmation',
+        message: 'Tasks.CancelTaskMsg'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (result.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
+          this.onCancelTask(result.event.comment);
+        }
+      }
+    });
+  }
+
+  private onCancelTask(comment: string): void {
+    this.subscriptions.push(this.taskService.cancelTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
       this.eventNotificationService
         .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
       this.close();
@@ -207,12 +254,35 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
     }));
   }
 
-  public startTask(id: string) : void {
-    this.taskService.startTask(id).subscribe((response: CustomHttpResponse) => {
-      this.eventNotificationService.showInfoNotification("Success", response.message);
-    }, (errorResponse: HttpErrorResponse) => {
-      this.showErrorNotification(errorResponse.error.message);
+  public finishTaskBtnClick(): void {
+    const dialogRef = this.dialog.open(TaskExecutionDialogComponent, {
+      width: ApplicationConstants.DIALOG_WIDTH,
+      panelClass: this.isDarkMode ? 'dark' : '',
+      data: {
+        caption: 'Confirmation',
+        message: 'Tasks.FinishTaskMsg'
+      }
     });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (result.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
+          this.onFinishTask(result.event.comment);
+        }
+      }
+    });
+  }
+
+  private onFinishTask(comment: string): void {
+    this.subscriptions.push(this.taskService.finishTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
+      this.eventNotificationService
+        .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
+      this.close();
+    },(errorResponse: HttpErrorResponse) => {
+      this.eventNotificationService
+        .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+      this.close();
+    }));
   }
 
   public onUpdateDueDate(event: any): void {
@@ -241,6 +311,24 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
         this.authenticationService.isCurrentUserAdmin()) ;
   }
 
+  public isCancelButtonEnabled(): boolean {
+    if (this.editedTask.started) {
+      return this.authenticationService.isCurrentUserAdmin() ||
+        this.isCurrentUserTaskCreatorOrInitiator();
+    }
+
+    return false;
+  }
+
+  public isFinishButtonEnabled(): boolean {
+    if (this.editedTask.started && this.authenticationService.isCurrentUserAdmin()) {
+      return true;
+    }
+    return this.editedTask.started &&
+      this.editedTask.state === Task.STATE_EXECUTED &&
+      this.isCurrentUserTaskCreatorOrInitiator();
+  }
+
   public isFieldsEnabled(): boolean {
     if (this.authenticationService.isCurrentUserAdmin()) {
       return true;
@@ -250,6 +338,15 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
       return this.isCurrentUserTaskCreatorOrInitiator();
     }
     return false;
+  }
+
+  public getCardHistoryResult(cardHistory: CardHistory): string {
+    let message: string;
+    if (cardHistory.result === Task.STATE_ASSIGNED)
+      message = `${this.getLocMessage(cardHistory.result)} -> ${this.getUserName(this.editedTask?.executor!)}`;
+    else
+      message = this.getLocMessage(cardHistory.result);
+    return message;
   }
 
 }

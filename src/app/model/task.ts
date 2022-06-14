@@ -5,13 +5,13 @@ export class Task {
   static PRIORITY_MEDIUM: string = 'PRIORITY$MEDIUM';
   static PRIORITY_HIGH:   string = 'PRIORITY$HIGH';
 
-  static STATE_CREATED  = "CREATED";
-  static STATE_ASSIGNED = "ASSIGNED";
-  static STATE_FINISHED = "FINISHED";
-  static STATE_CLOSED   = "CLOSED";
-  static STATE_CANCELED = "CANCELED";
-  static STATE_EXECUTED = "EXECUTED";
-  static STATE_REWORK   = "REWORK";
+  static STATE_CREATED  = "TS$CREATED";
+  static STATE_ASSIGNED = "TS$ASSIGNED";
+  static STATE_FINISHED = "TS$FINISHED";
+  static STATE_CLOSED   = "TS$CLOSED";
+  static STATE_CANCELED = "TS$CANCELED";
+  static STATE_EXECUTED = "TS$EXECUTED";
+  static STATE_REWORK   = "TS$REWORK";
 
   id: string;
   priority: string;

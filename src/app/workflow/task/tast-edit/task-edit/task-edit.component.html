@@ -2,7 +2,8 @@
   <div fxFlex.gt-sm="100%" fxFlex="100">
     <mat-card>
       <mat-tab-group>
-        <mat-tab label="Details">
+
+        <mat-tab label="{{'Tab.Details' | translate}}">
           <mat-card-content>
             <span>
               <form #projectEditForm="ngForm">
@@ -23,6 +24,7 @@
                             (click)="close()">{{'Cancel' | translate}}</button>
                     <button mat-raised-button
                             color="primary"
+                            class="m-r-10"
                             [disabled]="projectEditForm.invalid"
                             (click)="openSaveDialog()">{{'Save' | translate}}</button>
                   </div>
@@ -127,21 +129,36 @@
 
                     <button mat-raised-button
                             color="warn"
+                            class="m-r-10"
+                            *ngIf="isCancelButtonEnabled()"
+                            (click)="cancelTaskBtnClick()"
+                    >{{'Tasks.CancelTask' | translate}}</button>
+
+                    <button mat-raised-button
+                            color="warn"
+                            class="m-r-10"
                             *ngIf="isReworkButtonEnabled()"
-                            (click)="reworkTaskBtnClick(true)"
+                            (click)="reworkTaskBtnClick()"
                     >{{'Tasks.StarkRework' | translate}}</button>
 
                     <button mat-raised-button
-                            class="startTaskBtn"
+                            class="startTaskBtn m-r-10"
                             *ngIf="isExecuteButtonEnabled()"
                             (click)="executeTaskBtnClick()"
                     >{{'Tasks.ExecuteTask' | translate}}</button>
 
                     <button mat-raised-button
-                            class="startTaskBtn"
+                            class="startTaskBtn m-r-10"
                             *ngIf="isStartButtonEnabled()"
                             (click)="onUpdateTask(true)"
                     >{{'Tasks.StartTask' | translate}}</button>
+
+                    <button mat-raised-button
+                            color="accent"
+                            class="m-r-10"
+                            *ngIf="isFinishButtonEnabled()"
+                            (click)="finishTaskBtnClick()"
+                    >{{'Tasks.FinishTask' | translate}}</button>
 
                   </div>
                 </div>
@@ -150,10 +167,29 @@
           </mat-card-content>
         </mat-tab>
 
-        <mat-tab label="History">
+        <mat-tab label="{{'Tab.History' | translate}}">
           <mat-card-content>
+            <mat-card-title>{{'Task' | translate}}# {{editedTask.number}}</mat-card-title>
+            <ul class="list-unstyled m-t-40">
+              <div *ngFor="let ch of cardHistory">
+                <li class="media">
+                  <img
+                    class="m-r-15 shrink-none img-circle"
+                    src="{{ch.user.profileImage}}"
+                    width="60"
+                    alt="User image"
+                  />
 
-
+                  <div class="media-body">
+                    <h4 class="m-t-0 m-b-10 font-medium">{{getUserName(ch.user)}}</h4>
+                    <h6 class="m-t-0 m-b-10 font-medium">{{'Date' | translate}}: {{ch.createDate | date: 'dd.MM.yyyy HH:mm'}}</h6>
+                    <h5 class="m-t-0 m-b-10 font-medium">{{'Result' | translate}}: {{getCardHistoryResult(ch)}}</h5>
+                    <p *ngIf="ch.comment">{{'Comment' | translate}}: {{ch.comment}}</p>
+                  </div>
+                </li>
+                <hr />
+              </div>
+            </ul>
           </mat-card-content>
         </mat-tab>
       </mat-tab-group>

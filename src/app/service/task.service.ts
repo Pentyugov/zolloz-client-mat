@@ -20,6 +20,10 @@ export class TaskService {
     return this.httpClient.get<Task[]>(`${this.host}/task/get-all`);
   }
 
+  public getById(id: string): Observable<Task> {
+    return this.httpClient.get<Task>(`${this.host}/task/get-by-id/${id}`);
+  }
+
   public addTask(task: Task): Observable<Task> {
     return this.httpClient.post<Task>(`${this.host}/task/add-new-task`, task);
   }
