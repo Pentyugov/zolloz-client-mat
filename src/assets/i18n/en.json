@@ -128,7 +128,6 @@
   "Calendar": "Calendar",
   "Mailbox": "Mailbox",
   "Mail": "Mail",
-  "Chat": "Chat",
   "Taskboard": "Taskboard",
   "Notes": "Notes",
   "Courses": "Courses",
@@ -263,5 +262,7 @@
   "TS$CANCELED" : "Canceled",
   "TS$EXECUTED" : "Executed",
   "TS$REWORK" : "Executed",
-  "Date" : "Date"
+  "Date" : "Date",
+  "Applications" : "Applications",
+  "Chat" : "Chat"
 }

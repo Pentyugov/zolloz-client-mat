@@ -1,5 +1,3 @@
-import {User} from "../model/user";
-
 export class ApplicationConstants {
 
 //    ==============================================================
@@ -141,12 +139,24 @@ export class ApplicationConstants {
 
 
 //    ==============================================================
+//    =                         SCREENS                            =
+//    ==============================================================
+
+  static readonly SCREEN_PROJECTS = "screen$Projects";
+  static readonly SCREEN_DEPARTMENT = "screen$Department";
+  static readonly SCREEN_EMPLOYEE = "screen$Employee";
+  static readonly SCREEN_POSITION = "screen$Position";
+  static readonly SCREEN_USER = "screen$User";
+  static readonly SCREEN_TASKS = "screen$Tasks";
+  static readonly SCREEN_ROLE = "screen$Role";
+
+//    ==============================================================
 //    =                     SCREENS ACTIONS                        =
 //    ==============================================================
 
   static readonly SCREEN_ACTION_BROWSE = "Browse";
   static readonly SCREEN_ACTION_CREATE = "Create";
-  static readonly SCREEN_ACTION_EDIT = "Edit";
+  static readonly SCREEN_ACTION_EDIT   = "Edit";
   static readonly SCREEN_ACTION_DELETE = "Delete";
 
 //    ==============================================================

@@ -4,6 +4,7 @@ import {MainComponent} from "./layout/main/main.component";
 import {RegisterComponent} from "./authentication/register/register.component";
 import {AuthenticationGuard} from "./guard/authentication.guard";
 import {HomeComponent} from "./home/home.component";
+import {ApplicationsModule} from "./modules/applications/applications.module";
 
 export const AppRoutes: Routes = [
   {path: '',
@@ -24,11 +25,15 @@ export const AppRoutes: Routes = [
       },
       {
         path: 'organization',
-        loadChildren: () => import('./organization/organization.module').then((m) => m.OrganizationModule),
+        loadChildren: () => import('./modules/organization/organization.module').then((m) => m.OrganizationModule),
       },
       {
         path: 'workflow',
-        loadChildren: () => import('./workflow/workflow.module').then((m) => m.WorkflowModule),
+        loadChildren: () => import('./modules/workflow/workflow.module').then((m) => m.WorkflowModule),
+      },
+      {
+        path: 'applications',
+        loadChildren: () => import('./modules/applications/applications.module').then((m) => m.ApplicationsModule),
       }
     ]
   },

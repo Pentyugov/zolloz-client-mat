@@ -129,7 +129,6 @@
   "Calendar": "Calendar",
   "Mailbox": "Mailbox",
   "Mail": "Mail",
-  "Chat": "Chat",
   "Taskboard": "Taskboard",
   "Notes": "Notes",
   "Courses": "Courses",
@@ -263,5 +262,7 @@
   "TS$CANCELED" : "Отменена",
   "TS$EXECUTED" : "Исполнена",
   "TS$REWORK" : "На доработке",
-  "Date" : "Дата"
+  "Date" : "Дата",
+  "Applications" : "Приложения",
+  "Chat" : "Чат"
 }

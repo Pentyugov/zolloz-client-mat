@@ -26,7 +26,7 @@ html .page-wrapper {
 
   .page-content {
     padding: 15px;
-    
+
   }
   .page-container {
     max-width: $page-wrapper-boxed-width;
@@ -37,7 +37,7 @@ html .page-wrapper {
 @media (min-width: 1700px) {
   .page-wrapper {
     .page-content {
-      margin: 0 -30px;      
+      margin: 0 -30px;
     }
   }
 }
@@ -125,7 +125,12 @@ html .page-wrapper {
 *******************/
 .email-box {
   border: 1px solid $border;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 250px);
+}
+
+.chat-box {
+  border: 1px solid $border;
+  min-height: calc(100vh - 250px);
 }
 
 .email-sidebar {
@@ -247,7 +252,6 @@ html .page-wrapper {
   padding: 15px;
   background: $light;
   border-radius: 6px;
-
   img {
     vertical-align: middle;
     margin-right: 10px;

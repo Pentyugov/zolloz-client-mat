@@ -3,41 +3,28 @@ import {TranslateService} from '@ngx-translate/core';
 import {EventNotificationService} from '../../../service/event-notification.service';
 import {ApplicationService} from '../../../service/application.service';
 import {ApplicationConstants} from '../../application-constants';
-import {Subscription} from 'rxjs';
 import {ScreenService} from "../../../service/screen.service";
+import {AbstractWindow} from "../window/abstract-window";
+import {MatDialog} from "@angular/material/dialog";
 
-export abstract class AbstractBrowser {
+export abstract class AbstractBrowser extends AbstractWindow {
 
-  public messageTitle: string = '';
-  public message: string = '';
-  public refreshing: boolean = true;
   public selectedRow: any;
   public clickedRow: any;
-  public isDarkMode: boolean = false;
   public id: string = '';
   public readonly CREATE_ACTION =ApplicationConstants.SCREEN_ACTION_CREATE;
   public readonly BROWSE_ACTION =ApplicationConstants.SCREEN_ACTION_BROWSE;
   public readonly EDIT_ACTION =ApplicationConstants.SCREEN_ACTION_EDIT;
   public readonly DELETE_ACTION =ApplicationConstants.SCREEN_ACTION_DELETE;
 
-  public subscriptions: Subscription[] = [];
-  protected constructor(public router: Router,
-                        protected translate: TranslateService,
-                        protected eventNotificationService: EventNotificationService,
-                        protected applicationService: ApplicationService,
+  protected constructor(router: Router,
+                        translate: TranslateService,
+                        eventNotificationService: EventNotificationService,
+                        applicationService: ApplicationService,
+                        dialog: MatDialog,
                         protected screenService: ScreenService) {
-    this.refreshing = applicationService.getRefreshing();
-    this.subscriptions.push(applicationService.refreshing.subscribe(r => this.refreshing = r));
-    this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
-    this.subscriptions.push(applicationService.darkMode.subscribe(dm => this.isDarkMode = dm));
+    super(router, translate, eventNotificationService, applicationService, dialog);
     this.initId();
-  }
-
-  protected showErrorNotification(errorMessage: string): void {
-    this.subscriptions.push(
-      this.translate.get(ApplicationConstants.NOTIFICATION_TITLE_ERROR).subscribe(m => this.messageTitle = m)
-    );
-    this.eventNotificationService.showErrorNotification(this.messageTitle, errorMessage);
   }
 
   protected afterCommit(message: string): void {
