@@ -62,7 +62,7 @@ export class NotificationService {
 
   private onMessageReceived(receivedMessage: any) {
     if (this.horizontalHeaderComponent)
-      this.horizontalHeaderComponent.handleWsMessage();
+      this.horizontalHeaderComponent.handleNotificationMessage();
   }
 
   public notify(type: NotificationType, caption: string, description: string): void {

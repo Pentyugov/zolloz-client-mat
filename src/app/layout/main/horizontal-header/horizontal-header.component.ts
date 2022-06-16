@@ -11,6 +11,10 @@ import {Subscription} from "rxjs";
 import {UserSettings} from "../../../model/user-settings";
 import {NotificationService} from "../../../service/notification.service";
 import {Notification} from "../../../model/notification";
+import {ChatMessageService} from "../../../service/chat-message.service";
+import {EventNotificationService} from "../../../service/event-notification.service";
+import {ChatMessage} from "../../../model/chat-message";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-horizontal-header',
@@ -58,12 +62,15 @@ export class HorizontalHeaderComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private userSettings: UserSettings;
   public currentUser: User = new User;
+  public newChatMessages: ChatMessage[] = [];
 
   constructor(private translate: TranslateService,
               private authenticationService: AuthenticationService,
               private userService: UserService,
               private router: Router,
               private applicationService: ApplicationService,
+              private chatMessageService: ChatMessageService,
+              private eventNotificationService: EventNotificationService,
               private notificationService: NotificationService) {
     this.userSettings = this.applicationService.getUserSettings();
     this.setDefaultLocale();
@@ -78,20 +85,39 @@ export class HorizontalHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadNotifications();
+    this.loadNewMessages();
     this.notificationService._connectToNotificationWs(this);
+    this.chatMessageService._connectNewChatMessagesWs(this);
   }
 
   ngOnDestroy(): void {
     this.notificationService._disconnectFromNotificationWs();
+    this.chatMessageService._disconnectNewChatMessagesWs();
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  public loadNotifications() {
-    this.notificationService.getAllNotificationsForCurrentUser().subscribe(
-      (response: Notification[]) => {
-        this.notifications = response;
-      }
-    )
+  public loadNotifications(): void {
+    this.subscriptions.push(
+      this.notificationService.getAllNotificationsForCurrentUser().subscribe(
+        (response: Notification[]) => {
+          this.notifications = response;
+        }, (responseError: HttpErrorResponse) => {
+          this.showErrorNotification(responseError.error.message);
+        }
+      )
+    );
+  }
+
+  public loadNewMessages(): void {
+    this.subscriptions.push(
+      this.chatMessageService.getMessagesByStatus(ChatMessage.SEND).subscribe(
+        (response: ChatMessage[]) => {
+          this.newChatMessages = response;
+        }, (responseError: HttpErrorResponse) => {
+          this.showErrorNotification(responseError.error.message);
+        }
+      )
+    );
   }
 
   public deleteNotification(notification: Notification): void {
@@ -129,15 +155,24 @@ export class HorizontalHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  public navigate(route: string) {
+  public navigate(route: string): void {
     this.router.navigateByUrl(route).then(() => {
 
     });
   }
 
-  public handleWsMessage() {
+  public handleNotificationMessage(): void {
     this.loadNotifications();
     this.playSound();
+  }
+
+  public handleChatMessage(receivedMessage: any, showNotification: boolean = false): void {
+    let chatMessage: ChatMessage = JSON.parse(receivedMessage.body) as ChatMessage;
+    let status = chatMessage.status;
+    this.loadNewMessages();
+    if (status !== ChatMessage.READ) {
+      this.playSound();
+    }
   }
 
   public getRoundClass(notification: Notification): string {
@@ -174,6 +209,13 @@ export class HorizontalHeaderComponent implements OnInit, OnDestroy {
     this.applicationService.playSound();
   }
 
+  protected showErrorNotification(errorMessage: string): void {
+    let messageTitle: string = '';
+    this.subscriptions.push(
+      this.translate.get(ApplicationConstants.NOTIFICATION_TITLE_ERROR).subscribe(m => messageTitle = m)
+    );
+    this.eventNotificationService.showErrorNotification(messageTitle, errorMessage);
+  }
 
 
 }

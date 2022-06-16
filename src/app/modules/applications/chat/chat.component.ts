@@ -14,7 +14,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ChatMessageStatus} from "../../../enum/chat-message-status.enum";
 import {ChatService} from "../../../service/chat.service";
 import {UserSettings} from "../../../model/user-settings";
-import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
+import {PerfectScrollbarComponent, PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
+import {isUndefined} from "util";
 
 @Component({
   selector: 'app-chat',
@@ -22,6 +23,8 @@ import {PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
+  @ViewChild(PerfectScrollbarComponent) public directiveScroll: PerfectScrollbarComponent | undefined;
+
   public config: PerfectScrollbarConfigInterface = {
 
   };
@@ -119,6 +122,7 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
     let userChatMessages = this.userChatMessageMap.get(senderId);
     if (userChatMessages) {
       userChatMessages.push(message);
+      this.toBottom();
     } else {
       let newUserChatMessages: ChatMessage[] = [];
       newUserChatMessages.push(message);
@@ -145,6 +149,7 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
         this.chatService._updateMessage(chatMessage);
       }
     }
+    this.toBottom();
   }
 
   public getLastMessage(user: User): string {
@@ -173,6 +178,16 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
 
   }
 
+  public toBottom(): void {
+    if (this.directiveScroll && this.directiveScroll.directiveRef) {
+      this.directiveScroll.directiveRef.scrollToBottom(0, 100)
+    }
+  }
+
+  public isSendButtonEnabled(): boolean {
+    return this.chatMessageToSend.content.trim() !== '' && this.recipient !== null && this.recipient !== undefined;
+  }
+
   private playSound(): void {
     let audio = new Audio('assets/sounds/send-message-effect.mp3');
     audio.play();
@@ -180,6 +195,10 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
 
   public onUserChangeStatus() {
     this.getUserChatStatusMap();
+  }
+
+  public isUserOnline(user: User): boolean {
+    return this.userChatStatusMap.get(user.id) === 20;
   }
 
 

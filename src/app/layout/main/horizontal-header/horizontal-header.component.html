@@ -46,7 +46,7 @@
 <!-- ============================================================== -->
 <button [matMenuTriggerFor]="message" mat-icon-button class="m-r-5">
   <mat-icon>email</mat-icon>
-  <div class="notify" *ngIf="newMessages.length > 0">
+  <div class="notify" *ngIf="newChatMessages.length > 0">
     <span class="heartbit" ></span>
     <span class="point"></span>
   </div>
@@ -55,21 +55,21 @@
   <div class="mailbox">
     <ul>
       <li>
-        <div class="drop-title">You have {{newMessages.length}} new Messages</div>
+        <div class="drop-title">You have {{newChatMessages.length}} new Messages</div>
       </li>
       <li>
         <div class="message-center">
           <perfect-scrollbar [config]="config">
             <!-- Message -->
-            <a href="#" *ngFor="let message of newMessages">
+            <a href="#" *ngFor="let message of newChatMessages">
               <div class="user-img">
-                <img src="{{ message.useravatar }}" alt="user" class="img-circle" width="40" />
+                <img src="{{ message.sender.profileImage }}" alt="user" class="img-circle" width="40" />
                 <span class="profile-status {{ message.status }} pull-right"></span>
               </div>
               <div class="mail-content">
-                <h5>{{ message.from }}</h5>
-                <span class="mail-desc">{{ message.subject }}</span>
-                <span class="time">{{ message.time }}</span>
+                <h5>{{ message.sender.username }}</h5>
+                <span class="mail-desc">{{ message.content.slice(0, 20) + '...' }}</span>
+                <span class="time">{{ message.createDate | date : 'dd.MM.yyyy HH:mm'}}</span>
               </div>
             </a>
             <!-- Message -->

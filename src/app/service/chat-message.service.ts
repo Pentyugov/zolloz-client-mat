@@ -58,6 +58,10 @@ export class ChatMessageService {
     return this.httpClient.get<number>(`${this.host}/chat-messages/get-new-messages-count`);
   }
 
+  public getMessagesByStatus(status: number): Observable<ChatMessage[]> {
+    return this.httpClient.get<ChatMessage[]>(`${this.host}/chat-messages/get-messages-for-current-user?status=${status}`);
+  }
+
   public getUserChatMessagesMap(): Observable<Map<String, ChatMessage[]>> {
     return this.httpClient.get<Map<String, ChatMessage[]>>(`${this.host}/chat-messages/get-user-chat-messages-map`);
   }
@@ -68,7 +72,7 @@ export class ChatMessageService {
 
   private onMessageReceived(receivedMessage: any) {
     if (this.horizontalHeaderComponent)
-        this.horizontalHeaderComponent.handleWsMessage();
+        this.horizontalHeaderComponent.handleChatMessage(receivedMessage, true);
   }
 
   private errorCallBack(error: any) {

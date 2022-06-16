@@ -47,6 +47,7 @@
                 [ngClass]="{'selected-dark' : isDarkMode && user.id === recipient.id, 'selected-light' : !isDarkMode && user.id === recipient.id}"
               >
                 <img mat-list-avatar src="{{ user.profileImage }}" alt="" />
+                <span class="profile-status pull-right" [ngClass]="{'online' : isUserOnline(user), 'offline' : !isUserOnline(user)}"></span>
                 <h3 matLine>{{ getUserName(user) }}</h3>
 <!--                <p matLine class="text-muted">{{ getLastMessage(user) }}</p>-->
               </mat-list-item>
@@ -62,9 +63,9 @@
             <ng-container *ngFor="let c of messages">
 
               <ng-template [ngIf]="recipient.id !== c.recipientId" [ngIfElse]="evenblock">
-                <div class="chat-list odd">
+                <div class="chat-list odd" >
                   <div>
-                    <div class="chat-block" style="">
+                    <div class="chat-block">
                       <img src="{{ recipient.profileImage }}" class="img-circle" width="40"/>{{ c.content}}</div>
                     <span class="chat-date">{{ c.createDate | date }}</span>
                   </div>
@@ -97,7 +98,7 @@
                 (keyup.enter)="OnAddMsg()"
               />
             </mat-form-field>
-            <button mat-fab color="warn" (click)="sendMessage()">
+            <button mat-fab color="warn" (click)="sendMessage()" [disabled]="!isSendButtonEnabled()">
               <mat-icon>send</mat-icon>
             </button>
           </div>

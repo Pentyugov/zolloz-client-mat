@@ -18,3 +18,32 @@
   max-height: 600px;
   overflow-y: scroll
 }
+
+.profile-status {
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  height: 10px;
+  left: 30px;
+  position: absolute;
+  top: 1px;
+  width: 10px;
+}
+
+.online {
+  background: #26c6da;
+}
+.busy {
+  background: #fc4b6c;
+}
+.away {
+  background: #ffb22b;
+}
+.offline {
+  background: #ffb22b;
+}
+
+.pull-right {
+  margin: 5px 0 0 20px;
+  float: right;
+}
