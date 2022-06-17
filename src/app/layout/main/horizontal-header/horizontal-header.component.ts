@@ -26,37 +26,6 @@ export class HorizontalHeaderComponent implements OnInit, OnDestroy {
 
   notifications: Notification[] = [];
 
-  newMessages: Object[] = [
-    {
-      useravatar: 'assets/images/users/1.jpg',
-      status: 'online',
-      from: 'Pavan kumar',
-      subject: 'Just see the my admin!',
-      time: '9:30 AM',
-    },
-    {
-      useravatar: 'assets/images/users/2.jpg',
-      status: 'busy',
-      from: 'Sonu Nigam',
-      subject: 'I have sung a song! See you at',
-      time: '9:10 AM',
-    },
-    {
-      useravatar: 'assets/images/users/2.jpg',
-      status: 'away',
-      from: 'Arijit Sinh',
-      subject: 'I am a singer!',
-      time: '9:08 AM',
-    },
-    {
-      useravatar: 'assets/images/users/4.jpg',
-      status: 'offline',
-      from: 'Pavan kumar',
-      subject: 'Just see the my admin!',
-      time: '9:00 AM',
-    },
-  ];
-
   public selectedLocale: Locale = ApplicationConstants.APP_DEFAULT_LOCALE;
   public locales: Locale[] = ApplicationConstants.APP_LOCALES;
   private subscriptions: Subscription[] = [];
@@ -110,7 +79,7 @@ export class HorizontalHeaderComponent implements OnInit, OnDestroy {
 
   public loadNewMessages(): void {
     this.subscriptions.push(
-      this.chatMessageService.getMessagesByStatus(ChatMessage.SEND).subscribe(
+      this.chatMessageService.getNewMessages().subscribe(
         (response: ChatMessage[]) => {
           this.newChatMessages = response;
         }, (responseError: HttpErrorResponse) => {

@@ -41,8 +41,15 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
   public chatMessageToSend: ChatMessage = new ChatMessage();
   public userChatMessageMap: Map<String, ChatMessage[]> = new Map<String, ChatMessage[]>();
   public userChatStatusMap: Map<String, Number> = new Map<String, Number>();
+  public userTotalPagesMap: Map<String, Number> = new Map<String, Number>();
   private userSettings: UserSettings = new UserSettings();
   private connected: boolean = false;
+  private page = 0;
+  private totalPages: Number | undefined = 0;
+  private selectedChatId: string = '';
+
+  throttle = 300;
+
 
   constructor(router: Router,
               translate: TranslateService,
@@ -72,13 +79,46 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
   }
 
   public getUserChatMessagesMap(): void {
-    this.chatMessageService.getUserChatMessagesMap().subscribe(
-      (response) => {
-        Object.entries(response).forEach(([key, value]) => {
-          this.userChatMessageMap.set(key, value);
-        });
-      }
+    this.subscriptions.push(
+      this.chatMessageService.getUserChatMessagesMap().subscribe(
+        (response) => {
+          console.log(response);
+          Object.entries(response).forEach(([key, chatMessagePageResponse]) => {
+            this.userChatMessageMap.set(key, chatMessagePageResponse.messages);
+            this.userTotalPagesMap.set(key, chatMessagePageResponse.totalPages);
+          });
+        }
+      )
     );
+
+  }
+
+  public getNextChatMessagesPage(): void {
+    if (this.selectedChatId !== null && this.selectedChatId !== undefined && this.selectedChatId !== '') {
+      this.page++;
+      this.subscriptions.push(
+        this.chatMessageService.getNextChatMessagesPage(this.page, this.selectedChatId).subscribe(
+          (response) => {
+            let tmp: ChatMessage[] = response;
+            this.messages.forEach(m => tmp.push(m));
+            this.messages = tmp;
+          }
+        ));
+    }
+
+  }
+
+  onListScroll() {
+    if (this.componentRef && this.componentRef.directiveRef) {
+      if (this.componentRef.directiveRef.position(true).y === 0) {
+        if (this.totalPages && this.page < this.totalPages) {
+          this.getNextChatMessagesPage();
+          this.componentRef.directiveRef.scrollToY(1);
+        }
+
+      }
+    }
+
   }
 
   public getUserChatStatusMap(): void {
@@ -130,8 +170,11 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
     this.recipient = user;
     this.chatSelected = true;
     let userChatMessages = this.userChatMessageMap.get(this.recipient.id);
+    this.page = 0;
+    this.totalPages = this.userTotalPagesMap.get(this.recipient.id);
     if (userChatMessages) {
       this.messages = userChatMessages;
+      this.selectedChatId = this.messages[0].chatId;
     } else {
       let newUserChatMessages: ChatMessage[] = [];
       this.userChatMessageMap.set(this.recipient.id, newUserChatMessages);
@@ -167,6 +210,7 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
       this.chatService._sendMessage(this.chatMessageToSend);
       this.userChatMessageMap.get(this.recipient.id)?.push(this.chatMessageToSend);
       this.chatMessageToSend = new ChatMessage();
+      this.scrollToBottom();
     } else {
       this.chatMessageToSend.content = '';
     }

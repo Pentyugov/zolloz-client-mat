@@ -8,6 +8,7 @@ import * as Stomp from "stompjs";
 import {User} from "../model/user";
 import {Observable} from "rxjs";
 import {ChatMessage} from "../model/chat-message";
+import {chatMessagePageResponse} from "../model/chat-message-page-response";
 
 @Injectable({
   providedIn: 'root'
@@ -62,8 +63,16 @@ export class ChatMessageService {
     return this.httpClient.get<ChatMessage[]>(`${this.host}/chat-messages/get-messages-for-current-user?status=${status}`);
   }
 
-  public getUserChatMessagesMap(): Observable<Map<String, ChatMessage[]>> {
-    return this.httpClient.get<Map<String, ChatMessage[]>>(`${this.host}/chat-messages/get-user-chat-messages-map`);
+  public getNewMessages(): Observable<ChatMessage[]> {
+    return this.httpClient.get<ChatMessage[]>(`${this.host}/chat-messages/get-new-messages-for-current-user`);
+  }
+
+  public getUserChatMessagesMap(): Observable<Map<String, chatMessagePageResponse>> {
+    return this.httpClient.get<Map<String, chatMessagePageResponse>>(`${this.host}/chat-messages/get-user-chat-messages-map`);
+  }
+
+  public getNextChatMessagesPage(page: number, chatId: string): Observable<ChatMessage[]> {
+    return this.httpClient.get<ChatMessage[]>(`${this.host}/chat-messages/get-user-chat-messages-map-page?chatId=${chatId}&page=${page}`);
   }
 
   public getUserChatStatusMap(): Observable<Map<String, Number>> {

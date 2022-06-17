@@ -15,13 +15,14 @@ import { NgxMaskModule } from 'ngx-mask';
 import {NgxPermissionsModule, NgxPermissionsRestrictStubModule} from "ngx-permissions";
 import {ApplicationsRoutes} from "./applications.routing";
 import { ChatComponent } from './chat/chat.component';
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import { TestComponent } from './test/test.component';
 
 
 @NgModule({
   declarations: [
-
-  
-    ChatComponent
+    ChatComponent,
+    TestComponent
   ],
   providers: [DatePipe],
   imports: [
@@ -44,11 +45,13 @@ import { ChatComponent } from './chat/chat.component';
       },
     }),
     NgxPermissionsRestrictStubModule,
+    InfiniteScrollModule,
   ],
 
   exports: [
     NgxPermissionsModule
-  ]
+  ],
+  bootstrap:    [ TestComponent ]
 })
 
 

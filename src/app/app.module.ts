@@ -27,6 +27,7 @@ import {BreadcrumbComponent} from './layout/main/breadcrumb/breadcrumb.component
 import {AuthInterceptor} from "./interceptor/auth.interceptor";
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 import {NgxPermissionsModule} from "ngx-permissions";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -64,6 +65,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
     PerfectScrollbarModule,
     SimpleNotificationsModule.forRoot(),
     NgxPermissionsModule.forRoot(),
+    InfiniteScrollModule,
     RouterModule.forRoot(AppRoutes, { relativeLinkResolution: 'legacy' }),
     TranslateModule.forRoot({
       loader: {
