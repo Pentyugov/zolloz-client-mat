@@ -1,7 +1,7 @@
 <button [matMenuTriggerFor]="flags" mat-icon-button class="m-r-5">
   <i class="flag-icon flag-icon-{{ selectedLocale.icon }}"> </i>
 </button>
-<mat-menu #flags="matMenu" class="mymegamenu">
+<mat-menu #flags="matMenu">
   <button mat-menu-item *ngFor="let locale of locales" (click)="changeLanguage(locale)">
     <i class="flag-icon flag-icon-{{ locale.icon }} m-r-10"></i>
     <span>{{ locale.language }}</span>
@@ -15,7 +15,7 @@
     <span class="point"></span>
   </div>
 </button>
-<mat-menu #notification="matMenu" class="mymegamenu">
+<mat-menu #notification="matMenu">
   <div class="mailbox" >
     <ul>
       <li>
@@ -55,13 +55,13 @@
   <div class="mailbox">
     <ul>
       <li>
-        <div class="drop-title">You have {{newChatMessages.length}} new Messages</div>
+        <div class="drop-title">{{'NewMessagesCountMsg' | translate}} {{newChatMessages.length}}</div>
       </li>
       <li>
         <div class="message-center">
           <perfect-scrollbar [config]="config">
             <!-- Message -->
-            <a href="#" *ngFor="let message of newChatMessages">
+            <a href="/applications/chat" *ngFor="let message of newChatMessages">
               <div class="user-img">
                 <img src="{{ message.sender.profileImage }}" alt="user" class="img-circle" width="40" />
                 <span class="profile-status {{ message.status }} pull-right"></span>
@@ -85,7 +85,7 @@
 <button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5">
   <img [src]="currentUser.profileImage" alt="user" class="profile-pic" />
 </button>
-<mat-menu #profile="matMenu" class="mymegamenu">
+<mat-menu #profile="matMenu">
 <!--  <button mat-menu-item><mat-icon>settings</mat-icon> Settings</button>-->
   <button mat-menu-item (click)="navigate('/profile')"><mat-icon>account_box</mat-icon> {{'ProfileSettings' | translate}}</button>
 <!--  <button mat-menu-item><mat-icon>notifications_off</mat-icon> Disable notifications</button>-->

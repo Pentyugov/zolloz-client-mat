@@ -264,5 +264,7 @@
   "TS$REWORK" : "На доработке",
   "Date" : "Дата",
   "Applications" : "Приложения",
-  "Chat" : "Чат"
+  "Chat" : "Чат",
+  "NewMessagesCountMsg" : "Новых сообщений: ",
+  "SendMessage" : "Отправить сообщение"
 }

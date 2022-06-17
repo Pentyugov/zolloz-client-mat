@@ -118,5 +118,11 @@ export class ApplicationService {
 
   }
 
+  public getThemeColor(): string {
+    return this.getUserSettings().themeColor === 10 ? ApplicationConstants.THEME_COLOR_BLUE :
+           this.getUserSettings().themeColor === 20 ? ApplicationConstants.THEME_COLOR_RED  :
+                                                      ApplicationConstants.THEME_COLOR_GREEN;
+  }
+
 
 }

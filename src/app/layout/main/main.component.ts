@@ -102,6 +102,10 @@ export class MainComponent implements OnDestroy {
     );
   }
 
+  public getHeaderStyle(): string {
+    return `background-color: ${this.applicationService.getThemeColor()}`
+  }
+
 
 }
 

@@ -46,56 +46,63 @@
                 (click)="changeChatRoom(user)"
                 [ngClass]="{'selected-dark' : isDarkMode && user.id === recipient.id, 'selected-light' : !isDarkMode && user.id === recipient.id}"
               >
-                <img mat-list-avatar src="{{ user.profileImage }}" alt="" />
-                <span class="profile-status pull-right" [ngClass]="{'online' : isUserOnline(user), 'offline' : !isUserOnline(user)}"></span>
-                <h3 matLine>{{ getUserName(user) }}</h3>
-<!--                <p matLine class="text-muted">{{ getLastMessage(user) }}</p>-->
+                <img mat-list-avatar src="{{ user.profileImage }}" alt="userProfileImage"/>
+                <span class="profile-status pull-right"
+                      [ngClass]="{'online' : isUserOnline(user), 'offline' : !isUserOnline(user)}"
+                ></span>
+                  <span style="margin-left: 10px"
+                    matBadge="{{getUnreadMessageCount(user)}}"
+                    matBadgeOverlap="false"
+                    matBadgeHidden="{{getUnreadMessageCount(user) <= 0}}"
+                    matBadgeColor="warn"
+                    matBadgePosition="above after"
+                  >{{ getUserName(user) }}
+                  </span>
               </mat-list-item>
             </div>
           </mat-nav-list>
-
         </mat-sidenav>
 
+          <perfect-scrollbar style="max-width: 100%; max-height: 610px"
+                             [config]="config"
+                             [scrollIndicators]="true">
+            <mat-card-content class="chat-middle-box" style="min-height: 610px">
 
-        <perfect-scrollbar style="max-width: 100%; max-height: 600px" [config]="config">
-          <mat-card-content class="chat-middle-box" style="min-height: 600px">
+              <ng-container *ngFor="let c of messages">
 
-            <ng-container *ngFor="let c of messages">
-
-              <ng-template [ngIf]="recipient.id !== c.recipientId" [ngIfElse]="evenblock">
-                <div class="chat-list odd" >
-                  <div>
-                    <div class="chat-block">
-                      <img src="{{ recipient.profileImage }}" class="img-circle" width="40"/>{{ c.content}}</div>
-                    <span class="chat-date">{{ c.createDate | date }}</span>
+                <ng-template [ngIf]="recipient.id !== c.recipientId" [ngIfElse]="evenblock">
+                  <div class="chat-list odd" >
+                    <div>
+                      <div class="chat-block">
+                        <img src="{{ recipient.profileImage }}" class="img-circle" width="40"/>{{ c.content}}</div>
+                      <span class="chat-date">{{ c.createDate | date }}</span>
+                    </div>
                   </div>
-                </div>
+                </ng-template>
 
-              </ng-template>
-
-              <ng-template #evenblock>
-                <div class="chat-list even">
-                  <div class="chat-message">
-                    <div class="chat-block bg-light-info">{{ c.content }}</div>
-                    <span class="chat-date">{{ c.createDate | date }}</span>
+                <ng-template #evenblock>
+                  <div class="chat-list even">
+                    <div class="chat-message">
+                      <div class="chat-block bg-light-info">{{ c.content }}</div>
+                      <span class="chat-date">{{ c.createDate | date }}</span>
+                    </div>
                   </div>
-                </div>
-              </ng-template>
+                </ng-template>
 
-            </ng-container>
-          </mat-card-content>
+              </ng-container>
+            </mat-card-content>
         </perfect-scrollbar>
 
 
-        <mat-card-actions class="chat-footer">
+        <mat-card-actions class="chat-footer" *ngIf="isSendButtonVisible()">
           <div fxLayout="row" layout-align="start center">
             <mat-form-field class="mr-1 ml-1" fxFlex>
               <input
                 matInput
                 [(ngModel)]="chatMessageToSend.content"
-                placeholder="Send message"
-                #myInput
-                (keyup.enter)="OnAddMsg()"
+                placeholder="{{'SendMessage' | translate }}"
+                #messageInput
+                (keyup.enter)="sendMessage()"
               />
             </mat-form-field>
             <button mat-fab color="warn" (click)="sendMessage()" [disabled]="!isSendButtonEnabled()">

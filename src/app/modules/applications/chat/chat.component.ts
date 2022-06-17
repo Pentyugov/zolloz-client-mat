@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {ChatMessage} from "../../../model/chat-message";
 import {ApplicationService} from "../../../service/application.service";
 import {AuthenticationService} from "../../../service/authentication.service";
@@ -15,41 +15,34 @@ import {ChatMessageStatus} from "../../../enum/chat-message-status.enum";
 import {ChatService} from "../../../service/chat.service";
 import {UserSettings} from "../../../model/user-settings";
 import {PerfectScrollbarComponent, PerfectScrollbarConfigInterface} from "ngx-perfect-scrollbar";
-import {isUndefined} from "util";
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
+export class ChatComponent extends AbstractWindow implements OnDestroy {
+  @ViewChild('messageInput', { static: true }) messageInput: ElementRef = Object.create(null);
   @ViewChild(PerfectScrollbarComponent) public directiveScroll: PerfectScrollbarComponent | undefined;
+  @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
 
   public config: PerfectScrollbarConfigInterface = {
 
   };
 
-  sidePanelOpened = true;
-  msg = '';
-  selectedMessage!: ChatMessage;
-
-  messages: ChatMessage[] = [];
-
-
   // my attributes
   public chatSelected: boolean = false;
+  public sidePanelOpened = true;
+  public messages: ChatMessage[] = [];
   public users: User[] = [];
   public recipient: User = new User();
   public currentUser: User = new User();
   public chatService: ChatService;
   public chatMessageToSend: ChatMessage = new ChatMessage();
-
   public userChatMessageMap: Map<String, ChatMessage[]> = new Map<String, ChatMessage[]>();
   public userChatStatusMap: Map<String, Number> = new Map<String, Number>();
-
   private userSettings: UserSettings = new UserSettings();
-  connected: boolean = false;
-
+  private connected: boolean = false;
 
   constructor(router: Router,
               translate: TranslateService,
@@ -74,6 +67,10 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
     this.disconnect();
   }
 
+  public isOver(): boolean {
+    return window.matchMedia(`(max-width: 960px)`).matches;
+  }
+
   public getUserChatMessagesMap(): void {
     this.chatMessageService.getUserChatMessagesMap().subscribe(
       (response) => {
@@ -94,7 +91,7 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
     );
   }
 
-  private connect(){
+  private connect() {
     this.chatService._connectToChat();
     this.connected = true;
   }
@@ -122,7 +119,6 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
     let userChatMessages = this.userChatMessageMap.get(senderId);
     if (userChatMessages) {
       userChatMessages.push(message);
-      this.toBottom();
     } else {
       let newUserChatMessages: ChatMessage[] = [];
       newUserChatMessages.push(message);
@@ -149,18 +145,17 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
         this.chatService._updateMessage(chatMessage);
       }
     }
-    this.toBottom();
+
+    setTimeout(()=> {
+      this.scrollToBottom();
+    }, 0);
+
   }
 
-  public getLastMessage(user: User): string {
-    let lastMessage: string = ''
-    let tmp: ChatMessage[] | undefined = this.userChatMessageMap.get(user.id);
-    if (tmp) {
-      lastMessage = tmp[tmp.length - 1].content;
-
+  public scrollToBottom(): void {
+    if (this.componentRef && this.componentRef.directiveRef) {
+      this.componentRef.directiveRef.scrollToBottom(0, 500);
     }
-
-    return lastMessage.slice(0, 10)
   }
 
   public sendMessage(): void {
@@ -175,17 +170,15 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
     } else {
       this.chatMessageToSend.content = '';
     }
-
   }
 
-  public toBottom(): void {
-    if (this.directiveScroll && this.directiveScroll.directiveRef) {
-      this.directiveScroll.directiveRef.scrollToBottom(0, 100)
-    }
+  public isSendButtonVisible(): boolean {
+    return !!this.recipient.id;
+
   }
 
   public isSendButtonEnabled(): boolean {
-    return this.chatMessageToSend.content.trim() !== '' && this.recipient !== null && this.recipient !== undefined;
+    return this.chatMessageToSend.content.trim() !== '' && this.isSendButtonVisible()
   }
 
   private playSound(): void {
@@ -201,88 +194,18 @@ export class ChatComponent extends AbstractWindow implements OnInit, OnDestroy {
     return this.userChatStatusMap.get(user.id) === 20;
   }
 
+  public getUnreadMessageCount(user: User): number {
+    let userChatMessages = this.userChatMessageMap.get(user.id);
+    let count = 0;
+    if (userChatMessages) {
+      for (let chatMessage of userChatMessages) {
+        if (chatMessage.status !== ChatMessageStatus.READ && chatMessage.senderId !== this.currentUser.id) {
+          count++;
+        }
+      }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  @ViewChild('myInput', { static: true })
-  myInput: ElementRef = Object.create(null);
-
-  isOver(): boolean {
-    return window.matchMedia(`(max-width: 960px)`).matches;
+    return count;
   }
 
-  onSelect(message: ChatMessage): void {
-    this.selectedMessage = message;
-  }
-
-  OnAddMsg(): void {
-    // this.msg = this.myInput.nativeElement.value;
-    //
-    // if (this.msg !== '') {
-    //   this.selectedMessage.chat.push({
-    //     type: 'even',
-    //     msg: this.msg,
-    //     date: new Date(),
-    //   });
-    // }
-    //
-    // this.myInput.nativeElement.value = '';
-  }
-
-  ngOnInit(): void {
-    console.log('chat')
-  }
 }

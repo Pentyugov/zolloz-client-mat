@@ -264,5 +264,7 @@
   "TS$REWORK" : "Executed",
   "Date" : "Date",
   "Applications" : "Applications",
-  "Chat" : "Chat"
+  "Chat" : "Chat",
+  "NewMessagesCountMsg" : "New messages: ",
+  "SendMessage" : "Send message"
 }

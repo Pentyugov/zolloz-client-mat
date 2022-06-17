@@ -170,6 +170,13 @@ export class ApplicationConstants {
   static readonly ROLE_TASK_INITIATOR = 'TASK_INITIATOR';
   static readonly ROLE_TASK_EXECUTOR = 'TASK_EXECUTOR';
 
+//    ==============================================================
+//    =                     THEME COLOR                            =
+//    ==============================================================
+  static readonly THEME_COLOR_BLUE = '#1e88e5';
+  static readonly THEME_COLOR_RED = '#f44336';
+  static readonly THEME_COLOR_GREEN = '#009688';
+
 
 //    ==============================================================
 //    =                            Locales                         =

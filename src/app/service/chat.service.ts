@@ -5,6 +5,7 @@ import {ChatComponent} from "../modules/applications/chat/chat.component";
 import {AuthenticationService} from "./authentication.service";
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
+import {Observable} from "rxjs";
 
 // @Injectable({
 //   providedIn: 'root'
