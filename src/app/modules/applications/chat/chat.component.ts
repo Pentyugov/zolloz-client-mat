@@ -82,7 +82,6 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
     this.subscriptions.push(
       this.chatMessageService.getUserChatMessagesMap().subscribe(
         (response) => {
-          console.log(response);
           Object.entries(response).forEach(([key, chatMessagePageResponse]) => {
             this.userChatMessageMap.set(key, chatMessagePageResponse.messages);
             this.userTotalPagesMap.set(key, chatMessagePageResponse.totalPages);
@@ -101,17 +100,20 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
           (response) => {
             let tmp: ChatMessage[] = response;
             this.messages.forEach(m => {
-              if (this.currentUser.id === m.recipientId && m.status !== ChatMessage.READ) {
-                m.status = ChatMessage.READ;
-                this.chatService._updateMessage(m)
-              }
-              tmp.push(m)
+              this.setMessageAsRead(m);
+              tmp.push(m);
             });
             this.messages = tmp;
           }
         ));
     }
+  }
 
+  private setMessageAsRead(message: ChatMessage): void {
+    if (this.currentUser.id === message.recipientId && message.status !== ChatMessage.READ) {
+      message.status = ChatMessage.READ;
+      this.chatService._updateMessage(message)
+    }
   }
 
   public onListScroll(): void {
@@ -178,7 +180,8 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
     this.totalPages = this.userTotalPagesMap.get(this.recipient.id);
     if (userChatMessages) {
       this.messages = userChatMessages;
-      this.selectedChatId = this.messages[0].chatId;
+      this.messages.forEach(m => this.setMessageAsRead(m));
+      this.selectedChatId = this.messages[0]?.chatId;
     } else {
       let newUserChatMessages: ChatMessage[] = [];
       this.userChatMessageMap.set(this.recipient.id, newUserChatMessages);
