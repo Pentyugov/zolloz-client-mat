@@ -100,7 +100,13 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
         this.chatMessageService.getNextChatMessagesPage(this.page, this.selectedChatId).subscribe(
           (response) => {
             let tmp: ChatMessage[] = response;
-            this.messages.forEach(m => tmp.push(m));
+            this.messages.forEach(m => {
+              if (this.currentUser.id === m.recipientId && m.status !== ChatMessage.READ) {
+                m.status = ChatMessage.READ;
+                this.chatService._updateMessage(m)
+              }
+              tmp.push(m)
+            });
             this.messages = tmp;
           }
         ));
@@ -108,17 +114,15 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
 
   }
 
-  onListScroll() {
+  public onListScroll(): void {
     if (this.componentRef && this.componentRef.directiveRef) {
       if (this.componentRef.directiveRef.position(true).y === 0) {
         if (this.totalPages && this.page < this.totalPages) {
           this.getNextChatMessagesPage();
           this.componentRef.directiveRef.scrollToY(1);
         }
-
       }
     }
-
   }
 
   public getUserChatStatusMap(): void {
@@ -202,6 +206,13 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
   }
 
   public sendMessage(): void {
+    this.onSendMessage();
+
+    this.scrollToBottom();
+    this.messages = this.userChatMessageMap.get(this.recipient.id) as ChatMessage[];
+  }
+
+  private onSendMessage(): void {
     if (this.chatMessageToSend.content.trim() !== '') {
       this.chatMessageToSend.senderId = this.currentUser.id;
       this.chatMessageToSend.recipientId = this.recipient.id;
@@ -210,7 +221,6 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
       this.chatService._sendMessage(this.chatMessageToSend);
       this.userChatMessageMap.get(this.recipient.id)?.push(this.chatMessageToSend);
       this.chatMessageToSend = new ChatMessage();
-      this.scrollToBottom();
     } else {
       this.chatMessageToSend.content = '';
     }

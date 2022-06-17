@@ -70,13 +70,13 @@
             <mat-card-content class="chat-middle-box" style="min-height: 610px">
 
               <ng-container>
-                <div *ngFor="let c of messages">
-                  <ng-template [ngIf]="recipient.id !== c.recipientId" [ngIfElse]="evenblock">
+                <div *ngFor="let m of messages">
+                  <ng-template [ngIf]="recipient.id !== m.recipientId" [ngIfElse]="evenblock">
                     <div class="chat-list odd" >
                       <div>
                         <div class="chat-block">
-                          <img src="{{ recipient.profileImage }}" class="img-circle" width="40"/>{{ c.content}}</div>
-                        <span class="chat-date">{{ c.createDate | date }}</span>
+                          <img src="{{ recipient.profileImage }}" class="img-circle" width="40"/>{{ m.content}}</div>
+                        <span class="chat-date">{{ m.createDate | date }}</span>
                       </div>
                     </div>
                   </ng-template>
@@ -84,8 +84,8 @@
                   <ng-template #evenblock>
                     <div class="chat-list even">
                       <div class="chat-message">
-                        <div class="chat-block bg-light-info">{{ c.content }}</div>
-                        <span class="chat-date">{{ c.createDate | date }}</span>
+                        <div class="chat-block bg-light-info">{{ m.content }}</div>
+                        <span class="chat-date">{{ m.createDate | date }}</span>
                       </div>
                     </div>
                   </ng-template>
