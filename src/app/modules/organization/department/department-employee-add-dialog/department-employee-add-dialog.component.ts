@@ -82,7 +82,7 @@ export class DepartmentEmployeeAddDialogComponent implements OnInit, OnDestroy {
 
   private loadEmployees(): void {
     this.subscriptions.push(
-      this.employeeService.getEmployees().subscribe(
+      this.employeeService.getAll().subscribe(
         (response: Employee[]) => {
           this.initDataSource(response);
         }

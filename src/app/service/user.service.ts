@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {User} from "../model/user";
 import {environment} from "../../environments/environment.prod";
-import {HttpClient, HttpEvent} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject, Observable} from "rxjs";
 import {CustomHttpResponse} from "../model/custom-http-response";
 import {AuthenticationService} from "./authentication.service";
-import {BehaviorSubject} from "rxjs";
+import {EntityService} from "./entity.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService implements EntityService<User>{
 
   private host = environment.API_URL;
   private currentUserSource: BehaviorSubject<User>;
@@ -46,7 +46,7 @@ export class UserService {
     return this.editedUserSource.value;
   }
 
-  public getUsers(): Observable<User[]> {
+  public getAll(): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.host}/user/get-all-users`);
   }
 
@@ -70,11 +70,11 @@ export class UserService {
     return this.httpClient.put<User>(`${this.host}/user/update-user`, formData);
   }
 
-  public updateUser2(user: User): Observable<User> {
+  public update(user: User): Observable<User> {
     return this.httpClient.post<User>(`${this.host}/user/update-user`, user);
   }
 
-  public getUserById(id: String): Observable<User> {
+  public getById(id: String): Observable<User> {
     return this.httpClient.get<User>(`${this.host}/user/get-by-id/${id}`);
   }
 
@@ -86,7 +86,7 @@ export class UserService {
     return this.httpClient.post<CustomHttpResponse>(`${this.host}/user/change-password`, formData);
   }
 
-  public deleteUser(id: string): Observable<CustomHttpResponse> {
+  public delete(id: string): Observable<CustomHttpResponse> {
     return this.httpClient.delete<CustomHttpResponse>(`${this.host}/user/delete-user/${id}`);
   }
 
@@ -109,6 +109,10 @@ export class UserService {
 
   public updateUserProfileImage(formData: FormData): Observable<User> {
     return this.httpClient.post<User>(`${this.host}/user/update-profile-image`,formData);
+  }
+
+  public add(user: User): Observable<User> {
+    return this.httpClient.post<User>(`${this.host}/user/add-new-user`, user);
   }
 
 

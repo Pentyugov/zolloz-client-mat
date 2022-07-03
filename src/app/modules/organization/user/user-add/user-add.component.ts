@@ -67,7 +67,7 @@ export class UserAddComponent implements OnInit, OnDestroy {
 
   public loadRoles(): void {
     this.subscriptions.push(
-      this.roleService.getRoles().subscribe(
+      this.roleService.getAll().subscribe(
         (response: Role[]) => {
           this.roles = response;
           this.userToCreate.roles = this.roles.filter(role =>

@@ -1,7 +1,8 @@
 import {Role} from "./role";
+import {Entity} from "./entity";
+import {ApplicationConstants} from "../modules/shared/application-constants";
 
-export class User {
-  public id: string;
+export class User extends Entity {
   public firstName: string;
   public lastName: string;
   public username: string;
@@ -15,7 +16,7 @@ export class User {
   public roles: Role[];
 
   constructor() {
-    this.id = '';
+    super(ApplicationConstants.USER)
     this.firstName = '';
     this.lastName = '';
     this.username = '';

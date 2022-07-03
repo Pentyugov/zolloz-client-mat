@@ -48,7 +48,7 @@ export class EmployeeComponent extends AbstractBrowser implements OnInit, OnDest
 
   private loadEmployees(): void {
     this.subscriptions.push(
-      this.employeeService.getEmployees().subscribe(
+      this.employeeService.getAll().subscribe(
         (response: Employee[]) => {
           this.initDataSource(response);
         }, (errorResponse : HttpErrorResponse) => {
@@ -84,7 +84,7 @@ export class EmployeeComponent extends AbstractBrowser implements OnInit, OnDest
 
   private onDeleteEmployee(employee: Employee): void {
     this.applicationService.changeRefreshing(true);
-    this.subscriptions.push(this.employeeService.deleteEmployee(employee.id).subscribe(() => {
+    this.subscriptions.push(this.employeeService.delete(employee.id).subscribe(() => {
       this.afterCommit('EmployeeDeletedMsg');
       this.loadEmployees();
     }, (errorResponse: HttpErrorResponse) => {

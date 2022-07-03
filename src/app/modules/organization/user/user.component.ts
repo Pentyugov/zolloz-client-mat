@@ -64,7 +64,7 @@ export class UserComponent extends AbstractBrowser implements OnInit, OnDestroy 
 
   public loadUsers(): void {
     this.subscriptions.push(
-      this.userService.getUsers().subscribe(
+      this.userService.getAll().subscribe(
         (response: User[]) => {
           this.users = response;
           this.initDataSource(response);
@@ -103,7 +103,7 @@ export class UserComponent extends AbstractBrowser implements OnInit, OnDestroy 
 
   private onDeleteUser(): void {
     this.subscriptions.push(
-      this.userService.deleteUser(this.userToDelete.id).subscribe(
+      this.userService.delete(this.userToDelete.id).subscribe(
         (response: CustomHttpResponse) => {
           this.subscriptions.push(this.translate.get('Success' ,).subscribe(m => this.title = m));
           this.loadUsers();

@@ -60,7 +60,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
 
   public loadPositions(): void {
     this.subscriptions.push(
-      this.positionService.getPositions().subscribe(
+      this.positionService.getAll().subscribe(
         (response: Position[]) => {
           this.positions = response;
           this.initDataSource(response);
@@ -71,7 +71,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
 
   public loadEmployees(): void {
     this.subscriptions.push(
-      this.employeeService.getEmployees().subscribe(
+      this.employeeService.getAll().subscribe(
         (response: Employee[]) => {
           this.updateEmployeesDs(response)
           this.employees = response;
@@ -106,7 +106,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
 
   private onDeletePosition(position: Position): void {
     this.applicationService.changeRefreshing(true);
-    this.subscriptions.push(this.positionService.deletePosition(position.id).subscribe(() => {
+    this.subscriptions.push(this.positionService.delete(position.id).subscribe(() => {
       this.afterCommit('PositionDeletedMsg');
       this.loadPositions();
     }, (errorResponse: HttpErrorResponse) => {
@@ -152,7 +152,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
 
   private onUpdatePosition(position: Position): void {
     if (position) {
-      this.positionService.updatePosition(position).subscribe(
+      this.positionService.update(position).subscribe(
         (response: Position) => {
           this.loadPositions()
           this.eventNotificationService
@@ -165,7 +165,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
 
   private onCreatePosition(position: Position): void {
     if (position) {
-      this.positionService.addPosition(position).subscribe(
+      this.positionService.add(position).subscribe(
         (response: Position) => {
           this.loadPositions()
           this.eventNotificationService

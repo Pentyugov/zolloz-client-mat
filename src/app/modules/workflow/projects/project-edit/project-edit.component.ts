@@ -121,7 +121,7 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
   }
 
   public onCreateProject(): void {
-    this.subscriptions.push(this.projectService.addProject(this.editedProject).subscribe(
+    this.subscriptions.push(this.projectService.add(this.editedProject).subscribe(
       (response: Project) => {
         this.eventNotificationService
           .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Project: ${response.name} was created successfully`);
@@ -133,7 +133,7 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
   }
 
   public onUpdateProject(): void {
-    this.subscriptions.push(this.projectService.updateProject(this.editedProject).subscribe(
+    this.subscriptions.push(this.projectService.update(this.editedProject).subscribe(
       (response: Project) => {
         this.eventNotificationService
           .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Project: ${response.name} was updated successfully`);

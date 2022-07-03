@@ -68,7 +68,7 @@ export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy 
 
   private getRoles(showNotification: boolean = false): void {
     this.refreshing = true;
-    this.roleService.getRoles().subscribe(
+    this.roleService.getAll().subscribe(
       (response: Role[]) => {
         this.roles = response;
         this.initDataSource(response);
@@ -106,7 +106,7 @@ export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy 
 
   private onCreateRole(role: Role): void {
     if (role) {
-      this.roleService.addRole(role).subscribe(
+      this.roleService.add(role).subscribe(
         (response: Role) => {
           this.getRoles();
           this.eventNotificationService
@@ -120,7 +120,7 @@ export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy 
 
   private onUpdateRole(role: Role): void {
       if (role) {
-        this.roleService.updateRole(role).subscribe((response) => {
+        this.roleService.update(role).subscribe((response) => {
           this.getRoles();
           this.eventNotificationService
             .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Role: ${response.name} was updated successfully`);
@@ -133,7 +133,7 @@ export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy 
 
   private onDeleteRole(role: Role): void {
     if (role) {
-      this.roleService.deleteRole(role.id).subscribe(() => {
+      this.roleService.delete(role.id).subscribe(() => {
         this.getRoles();
         this.eventNotificationService
           .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Role: ${role.name} was updated successfully`);

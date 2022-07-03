@@ -54,7 +54,7 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
   ngOnInit(): void {
 
     this.subscriptions.push(
-      this.employeeService.getEmployeeById(this.id).subscribe(
+      this.employeeService.getById(this.id).subscribe(
         (response: Employee) => {
           this.employeeToUpdate = response;
           this.loadUsers();
@@ -147,7 +147,7 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
 
   private loadPositions(): void {
     this.subscriptions.push(
-      this.positionService.getPositions().subscribe(
+      this.positionService.getAll().subscribe(
         (response: Position[]) => {
           this.positions = response;
           this.employeeToUpdate.position = this.positions.find(p => p.id === this.employeeToUpdate.position?.id)
@@ -160,7 +160,7 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
 
   private onUpdateEmployee(): void {
     this.subscriptions.push(
-      this.employeeService.updateEmployee(this.employeeToUpdate).subscribe(
+      this.employeeService.update(this.employeeToUpdate).subscribe(
         () => {
           this.afterCommit('EmployeeSavedMsg', '/organization/employees');
         },

@@ -1,9 +1,10 @@
 import {Department} from "./department";
 import {Position} from "./position";
 import {User} from "./user";
+import {Entity} from "./entity";
+import {ApplicationConstants} from "../modules/shared/application-constants";
 
-export class Employee {
-  id: string;
+export class Employee extends Entity {
   firstName: string;
   lastName: string;
   middleName: string;
@@ -19,7 +20,7 @@ export class Employee {
   department: Department | null | undefined;
 
   constructor() {
-    this.id = '';
+    super(ApplicationConstants.EMPLOYEE)
     this.firstName = '';
     this.lastName = '';
     this.middleName = '';

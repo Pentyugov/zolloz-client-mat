@@ -1,15 +1,10 @@
-import { Injectable } from '@angular/core';
 import {ChatMessage} from "../model/chat-message";
 import {environment} from "../../environments/environment";
 import {ChatComponent} from "../modules/applications/chat/chat.component";
 import {AuthenticationService} from "./authentication.service";
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import {Observable} from "rxjs";
 
-// @Injectable({
-//   providedIn: 'root'
-// })
 export class ChatService {
 
   private webSocketEndPoint = environment.WS_URL;

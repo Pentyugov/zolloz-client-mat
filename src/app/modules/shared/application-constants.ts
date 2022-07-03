@@ -6,6 +6,11 @@ export class ApplicationConstants {
   static readonly CONTRACTOR = 'Contractor';
   static readonly TASK = 'Task';
   static readonly DEPARTMENT = 'Department';
+  static readonly EMPLOYEE = 'Employee';
+  static readonly POSITION = 'Position';
+  static readonly PROJECT = 'Project';
+  static readonly ROLE = 'Role';
+  static readonly USER = 'User';
 
 //    ==============================================================
 //    =                        Dialog params                       =

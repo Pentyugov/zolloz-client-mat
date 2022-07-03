@@ -4,6 +4,7 @@ import { Role } from "../model/role";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { CustomHttpResponse } from "../model/custom-http-response";
+import {EntityService} from "./entity.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,35 +12,31 @@ import { CustomHttpResponse } from "../model/custom-http-response";
 @Injectable({
   providedIn: 'root'
 })
-export class RoleService {
+export class RoleService implements EntityService<Role>{
 
   private host = environment.API_URL;
 
   constructor(private httpClient: HttpClient) {
   }
 
-  public addRole(role: Role): Observable<Role> {
-    return this.httpClient.post<Role>(`${this.host}/role/add-new-role`, role);
-  }
-
-  public updateRole(role: Role): Observable<Role> {
-    return this.httpClient.put<Role>(`${this.host}/role/update-role`, role);
-  }
-
-  public getRoles(): Observable<Role[]> {
+  public getAll(): Observable<Role[]> {
     return this.httpClient.get<Role[]>(`${this.host}/role/get-all-roles`);
   }
 
-  public deleteRole(id: string): Observable<CustomHttpResponse> {
+  public getById(id: string): Observable<Role> {
+    return this.httpClient.get<Role>(`${this.host}/role/get-by-id/${id}`);
+  }
+
+  public add(role: Role): Observable<Role> {
+    return this.httpClient.post<Role>(`${this.host}/role/add-new-role`, role);
+  }
+
+  public update(role: Role): Observable<Role> {
+    return this.httpClient.put<Role>(`${this.host}/role/update-role`, role);
+  }
+
+  public delete(id: string): Observable<CustomHttpResponse> {
     return this.httpClient.delete<CustomHttpResponse>(`${this.host}/role/delete-role/${id}`);
   }
 
-  public cloneRole(roleToClone: Role): Role {
-    let role = new Role();
-    role.id = roleToClone.id;
-    role.name = roleToClone.name;
-    role.description = roleToClone.description;
-    role.permissions = roleToClone.permissions;
-    return role;
-  }
 }

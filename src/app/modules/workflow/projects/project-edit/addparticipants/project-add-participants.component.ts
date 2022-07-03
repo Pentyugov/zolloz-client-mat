@@ -83,7 +83,7 @@ export class ProjectAddParticipantsComponent implements OnInit, OnDestroy {
 
   private loadUsers(): void {
     this.subscriptions.push(
-      this.userService.getUsers().subscribe(
+      this.userService.getAll().subscribe(
         (response: User[]) => {
           this.initDataSource(response);
         }

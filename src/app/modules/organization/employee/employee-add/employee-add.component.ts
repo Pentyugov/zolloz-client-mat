@@ -87,7 +87,7 @@ export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDe
 
   private onSaveEmployee(): void {
     this.subscriptions.push(
-      this.employeeService.addEmployee(this.employeeToCreate).subscribe(
+      this.employeeService.add(this.employeeToCreate).subscribe(
         () => {
           this.afterCommit('EmployeeSavedMsg', '/organization/employees');
         },
@@ -138,7 +138,7 @@ export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDe
 
   private loadPositions(): void {
     this.subscriptions.push(
-      this.positionService.getPositions().subscribe(
+      this.positionService.getAll().subscribe(
         (response: Position[]) => {
           this.positions = response;
           this.employeeToCreate.position = this.positions.find(p => p.id === this.employeeToCreate.position?.id)

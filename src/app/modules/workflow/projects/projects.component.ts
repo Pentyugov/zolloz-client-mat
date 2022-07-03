@@ -166,9 +166,8 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   }
 
   public onDeleteProject(project: Project): void {
-    this.subscriptions.push(this.projectService.deleteProject(project.id).subscribe(
-      (response: Project) => {
-
+    this.subscriptions.push(this.projectService.delete(project.id).subscribe(
+      () => {
         this.loadProjects();
       }, (errorResponse: HttpErrorResponse) => {
         this.showErrorNotification(errorResponse.error.message);

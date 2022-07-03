@@ -1,9 +1,10 @@
 import {User} from "./user";
 import {Ticket} from "./ticket";
 import {Contractor} from "./contractor";
+import {Entity} from "./entity";
+import {ApplicationConstants} from "../modules/shared/application-constants";
 
-export class Project {
-  id: string;
+export class Project extends Entity {
   name: string;
   code: string;
   status: number | null;
@@ -15,7 +16,7 @@ export class Project {
   participants: User[] = [];
 
   constructor() {
-    this.id = '';
+    super(ApplicationConstants.PROJECT)
     this.name = '';
     this.code = '';
     this.projectManager = null;

@@ -70,7 +70,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   public loadEditedUser(): void {
     this.subscriptions.push(
-      this.userService.getUserById(this.id).subscribe(
+      this.userService.getById(this.id).subscribe(
         (response: User) => {
           this.editedUser = response;
           this.usernameTitle = this.editedUser.username;
@@ -82,7 +82,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   public loadRoles(): void {
     this.subscriptions.push(
-      this.roleService.getRoles().subscribe(
+      this.roleService.getAll().subscribe(
         (response: Role[]) => {
           this.roles = response;
           this.rolesDataSource.data = this.roles;
@@ -115,7 +115,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   public onUpdateUser() {
     this.applicationService.changeRefreshing(true);
     this.subscriptions.push(
-      this.userService.updateUser2(this.editedUser).subscribe(
+      this.userService.update(this.editedUser).subscribe(
         (response: User) => {
           this.editedUser = response;
           this.applicationService.changeRefreshing(false);

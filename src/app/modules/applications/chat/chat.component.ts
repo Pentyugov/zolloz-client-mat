@@ -148,7 +148,7 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
   }
 
   private getUsers(): void {
-    this.subscriptions.push(this.userService.getUsers().subscribe(
+    this.subscriptions.push(this.userService.getAll().subscribe(
       (response: User[]) => {
         this.users = response;
       }, (errorResponse: HttpErrorResponse) => {
