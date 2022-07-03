@@ -14,7 +14,7 @@ import {EventNotificationCaptionEnum} from "../../../../enum/event-notification-
 import {HttpErrorResponse} from "@angular/common/http";
 import {EventNotificationService} from "../../../../service/event-notification.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ApplicationConstants} from "../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 import {Router} from "@angular/router";
 
 @Component({

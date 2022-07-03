@@ -4,7 +4,7 @@ import {ProjectEditComponent} from "./projects/project-edit/project-edit.compone
 import {TicketComponent} from "./ticket/ticket.component";
 import {ScreenGuard} from "../../guard/screen.guard";
 import {TasksComponent} from "./task/tasks.component";
-import {ApplicationConstants} from "../../shared/application-constants";
+import {ApplicationConstants} from "../shared/application-constants";
 
 export const WorkflowRoutes: Routes = [
   {path: '',

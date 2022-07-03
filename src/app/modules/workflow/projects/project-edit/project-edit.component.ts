@@ -1,5 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
-import {AbstractEditor} from "../../../../shared/screens/editor/abstract-editor";
+import {AbstractEditor} from "../../../shared/editor/abstract-editor";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../../service/event-notification.service";
@@ -8,7 +8,7 @@ import {Project} from "../../../../model/project";
 import {MatTableDataSource} from "@angular/material/table";
 import {User} from "../../../../model/user";
 import {ProjectService} from "../../../../service/project.service";
-import {ApplicationConstants} from "../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Contractor} from "../../../../model/contractor";
 import {UserService} from "../../../../service/user.service";
@@ -18,19 +18,20 @@ import {EventNotificationCaptionEnum} from "../../../../enum/event-notification-
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {ProjectAddParticipantsComponent} from "./addparticipants/project-add-participants.component";
+import {SaveDialogComponent} from "../../../shared/dialog/save-dialog/save-dialog.component";
 
 @Component({
   templateUrl: './project-edit.component.html',
 })
 export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDestroy {
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
 
   public editedProject: Project = new Project();
   public projectManagers: User[] = [];
   public contractors: Contractor[] = [];
   public participantsDs: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   public participantsDisplayedColumns = ApplicationConstants.PROJECT_PARTICIPANTS_TABLE_COLUMNS;
-  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
-  @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   public conclusionDate: Date | null = null;
   public dueDate: Date | null = null;
   public dialog_data: any;
@@ -45,7 +46,6 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
               private userService: UserService,
               private projectService: ProjectService,
               private contractorService: ContractorService,
-
               public dialogRef: MatDialogRef<ProjectEditComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     super(router, translate, eventNotificationService, applicationService, dialog);
@@ -78,8 +78,8 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
     this.loadProjectManagers();
   }
 
-  openSaveDialog() {
-    const dialogRef = this.dialog.open(ProjectSaveConfirmComponent, {
+  public openSaveDialog() {
+    const dialogRef = this.dialog.open(SaveDialogComponent, {
       width: ApplicationConstants.DIALOG_WIDTH,
       panelClass: this.isDarkMode ? 'dark' : ''
     });
@@ -178,7 +178,7 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
   }
 
   public loadContractors(): void {
-    this.subscriptions.push(this.contractorService.getContractors().subscribe((response: Contractor[]) => {
+    this.subscriptions.push(this.contractorService.getAll().subscribe((response: Contractor[]) => {
       this.contractors = response;
       this.editedProject.contractor = this.contractors.find(d => d.id === this.editedProject.contractor?.id)
     }, (errorResponse: HttpErrorResponse) => {
@@ -188,26 +188,3 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
 
 }
 
-@Component({
-  selector: 'app-workflow-edit-save-dialog',
-  templateUrl: 'project-save-confirm.component.html',
-  styleUrls: []
-})
-export class ProjectSaveConfirmComponent {
-  constructor(private translate: TranslateService,
-              public dialogRef: MatDialogRef<ProjectSaveConfirmComponent>) {
-
-  }
-
-  doAction(): void {
-    this.dialogRef.close({
-      event: ApplicationConstants.DIALOG_ACTION_SAVE
-    });
-  }
-
-  closeDialog(): void {
-    this.dialogRef.close({
-      event: ApplicationConstants.DIALOG_ACTION_CANCEL
-    });
-  }
-}

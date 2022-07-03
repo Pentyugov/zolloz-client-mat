@@ -10,7 +10,7 @@ import {Subscription} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Employee} from "../../../../model/employee";
 import {MatTableDataSource} from "@angular/material/table";
-import {ApplicationConstants} from "../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {DepartmentEmployeeAddDialogComponent} from "../department-employee-add-dialog/department-employee-add-dialog.component";
@@ -101,7 +101,7 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
   private onSaveDepartment(): void {
     this.applicationService.changeRefreshing(true);
     this.subscriptions.push(
-      this.departmentService.addDepartment(this.department).subscribe(
+      this.departmentService.add(this.department).subscribe(
         (response: Department) => {
           this.department = response;
           if (this.employeeDs.data.length > 0) {
@@ -155,7 +155,7 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
 
   private loadDepartments(): void {
     this.subscriptions.push(
-      this.departmentService.getDepartments().subscribe(
+      this.departmentService.getAll().subscribe(
         (response: Department[]) => {
           this.departmentList = response;
         },

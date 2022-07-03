@@ -1,0 +1,43 @@
+<mat-card class="oh text-center little-profile" style="height: 400px" >
+
+  <img
+    mat-card-image
+    src="../../../../../assets/images/background/user-info-background.jpg"
+    class="profile-bg-height"
+    alt="Photo of a Shiba Inu"
+  />
+  <mat-card-content>
+    <div class="pro-img">
+      <img [src]="currentUser?.profileImage" width="100" alt="user" />
+    </div>
+    <h3 class="m-b-0">{{userInfo.fullName}}</h3>
+    <h6 class="m-t-0 text-muted">{{userInfo.position}}</h6>
+    <mat-card-actions>
+
+
+      <ngx-uploadcare-widget
+        [hidden]="true"
+        images-only="true"
+        #fileInput
+        public-key="0023b247fac8f6e0fb7e"
+        tabs="file camera url gdrive gphotos instagram vk"
+        data-locale="ru"
+        effects="crop, rotate, blur"
+        (on-progress)="onProgress($event)"
+        (on-upload-complete)="onUploadComplete($event)"
+      >
+      </ngx-uploadcare-widget>
+
+      <button mat-raised-button
+              (click)="openUploadFileDialog()"
+              [disabled]="applicationService.getRefreshing()"
+              color="primary">{{'ChooseImage' | translate}}</button>
+
+      <button mat-button
+              (click)="deleteProfileImage()"
+              [disabled]="applicationService.getRefreshing()"
+              color="warn">{{'Delete' | translate}}</button>
+    </mat-card-actions>
+
+  </mat-card-content>
+</mat-card>

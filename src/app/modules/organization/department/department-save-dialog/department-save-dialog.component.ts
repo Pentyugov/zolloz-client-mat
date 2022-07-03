@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Department} from "../../../../model/department";
-import {ApplicationConstants} from "../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 
 @Component({
   selector: 'app-department-save-dialog',

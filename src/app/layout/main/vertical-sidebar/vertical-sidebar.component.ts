@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MenuItems } from '../../../shared/menu-item/menu-items';
+import { MenuItems } from '../../../modules/shared/menu-item/menu-items';
 import {AuthenticationService} from "../../../service/authentication.service";
 import {User} from "../../../model/user";
 import {UserService} from "../../../service/user.service";

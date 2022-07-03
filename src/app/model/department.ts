@@ -1,5 +1,8 @@
-export class Department {
-  id: string;
+import {Entity} from "./entity";
+import {ApplicationConstants} from "../modules/shared/application-constants";
+
+export class Department extends Entity{
+
   name: string;
   code: string;
   head: boolean;
@@ -7,7 +10,7 @@ export class Department {
   parentDepartment: Department | null | undefined;
 
   constructor() {
-    this.id = '';
+    super(ApplicationConstants.DEPARTMENT)
     this.name = '';
     this.code = '';
     this.head = false;

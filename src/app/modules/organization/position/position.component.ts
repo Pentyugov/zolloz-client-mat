@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AbstractBrowser} from '../../../shared/screens/browser/AbstractBrowser';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {EventNotificationService} from '../../../service/event-notification.service';
@@ -8,7 +7,7 @@ import {PositionService} from "../../../service/position.service";
 import {Position} from "../../../model/position";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {ApplicationConstants} from "../../../shared/application-constants";
+import {ApplicationConstants} from "../../shared/application-constants";
 import {MatTableDataSource} from "@angular/material/table";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
@@ -19,6 +18,7 @@ import {PositionEditDialogComponent} from "./position-edit-dialog/position-edit-
 import {ScreenService} from "../../../service/screen.service";
 import {Employee} from "../../../model/employee";
 import {EmployeeService} from "../../../service/employee.service";
+import {AbstractBrowser} from "../../shared/browser/AbstractBrowser";
 
 @Component({
   selector: 'app-position',

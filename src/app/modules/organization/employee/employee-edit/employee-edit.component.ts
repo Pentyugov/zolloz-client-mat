@@ -12,11 +12,11 @@ import {TranslateService} from '@ngx-translate/core';
 import {MatDialog} from '@angular/material/dialog';
 import {EventNotificationService} from '../../../../service/event-notification.service';
 import {EmployeePrefillDialogComponent} from '../employee-prefill-dialog/employee-prefill-dialog.component';
-import {ApplicationConstants} from '../../../../shared/application-constants';
+import {ApplicationConstants} from '../../../shared/application-constants';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {EmployeeSaveDialogComponent} from '../employee-save-dialog/employee-save-dialog.component';
-import {AbstractEditor} from '../../../../shared/screens/editor/abstract-editor';
+import {AbstractEditor} from '../../../shared/editor/abstract-editor';
 
 @Component({
   selector: 'app-employee-edit',
@@ -134,7 +134,7 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
 
   private loadDepartments(): void {
     this.subscriptions.push(
-      this.departmentService.getDepartments().subscribe(
+      this.departmentService.getAll().subscribe(
         (response: Department[]) => {
           this.departments = response;
           this.employeeToUpdate.department = this.departments.find(d => d.id === this.employeeToUpdate.department?.id)

@@ -5,11 +5,12 @@ import { Task } from "../model/task";
 import {Observable} from "rxjs";
 import {CustomHttpResponse} from "../model/custom-http-response";
 import {CardHistory} from "../model/card-history";
+import {EntityService} from "./entity.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class TaskService {
+export class TaskService implements EntityService<Task>{
 
   private host = environment.API_URL;
 
@@ -24,12 +25,16 @@ export class TaskService {
     return this.httpClient.get<Task>(`${this.host}/task/get-by-id/${id}`);
   }
 
-  public addTask(task: Task): Observable<Task> {
+  public add(task: Task): Observable<Task> {
     return this.httpClient.post<Task>(`${this.host}/task/add-new-task`, task);
   }
 
-  public updateTask(task: Task): Observable<Task> {
+  public update(task: Task): Observable<Task> {
     return this.httpClient.post<Task>(`${this.host}/task/update-task`, task);
+  }
+
+  public delete(id: string): Observable<CustomHttpResponse> {
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/task/delete-task/${id}`);
   }
 
   public getPriorityTaskForUser(priority: number): Observable<Task[]> {
@@ -42,10 +47,6 @@ export class TaskService {
 
   public getTasksPageForCurrentUser(page: number): Observable<Task[]> {
     return this.httpClient.get<Task[]>(`${this.host}/task/get-task-page-for-current-user?page=${page}`);
-  }
-
-  public deleteTask(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/task/delete-task/${id}`);
   }
 
   public startTask(id: string): Observable<CustomHttpResponse> {

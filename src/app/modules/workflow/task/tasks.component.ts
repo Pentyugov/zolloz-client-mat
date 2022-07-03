@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AbstractBrowser} from "../../../shared/screens/browser/AbstractBrowser";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";
@@ -9,24 +8,21 @@ import {MatDialog} from "@angular/material/dialog";
 import {TaskService} from "../../../service/task.service";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {ApplicationConstants} from "../../../shared/application-constants";
-import {MatTableDataSource} from "@angular/material/table";
-import {HttpErrorResponse} from "@angular/common/http";
+import {ApplicationConstants} from "../../shared/application-constants";
 import {Task} from "../../../model/task";
-import {TaskEditComponent} from "./tast-edit/task-edit/task-edit.component";
-import {TaskDeleteDialogComponent} from "./task-delete-dialog/task-delete-dialog.component";
+import {TaskEditComponent} from "./tast-edit/task-edit.component";
+import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
 
 @Component({
   selector: 'app-task',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss']
 })
-export class TasksComponent extends AbstractBrowser implements OnInit {
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator = Object.create(null);
-  @ViewChild(MatSort, {static: true}) sort: MatSort = Object.create(null);
+export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
+  @ViewChild(MatPaginator, {static: false}) override paginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, {static: true}) override sort: MatSort = Object.create(null);
   public columnsToDisplay = ApplicationConstants.TASK_TABLE_COLUMNS;
-  public tasks: Task[] = [];
-  public dataSource: MatTableDataSource<Task> = new MatTableDataSource<Task>([]);
+
   private readonly defaultFilterPredicate?: (data: Task, filter: string) => boolean;
   private readonly statusFilterPredicate?: (data: Task, filter: string) => boolean;
   private isDefaultPredicate: boolean = true;
@@ -42,11 +38,19 @@ export class TasksComponent extends AbstractBrowser implements OnInit {
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
-              screenService: ScreenService,
               dialog: MatDialog,
-              protected editor: MatDialog,
-              protected taskService: TaskService) {
-    super(router, translate, eventNotificationService, applicationService,dialog, screenService);
+              editor: MatDialog,
+              screenService: ScreenService,
+              private taskService: TaskService,) {
+    super(router,
+      translate,
+      eventNotificationService,
+      applicationService,
+      dialog,
+      TaskEditComponent,
+      taskService,
+      editor,
+      screenService);
 
     this.defaultFilterPredicate = this.dataSource.filterPredicate;
     this.statusFilterPredicate = (task: Task, filter: string) => {
@@ -58,27 +62,12 @@ export class TasksComponent extends AbstractBrowser implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadTasks();
+    this.loadEntities();
   }
 
-  private loadTasks(): void {
-    this.subscriptions.push(
-      this.taskService.getAll().subscribe(
-        (response: Task[]) => {
-          this.tasks = response;
-          this.initDataSource(this.tasks);
-          this.initFilters();
-        }, (errorResponse: HttpErrorResponse) => {
-          this.showErrorNotification(errorResponse.error.message);
-        }
-      ));
-  }
-
-
-  private initDataSource(tasks: Task[]): void {
-    this.dataSource.data = tasks;
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+  override afterLoadEntities() {
+    super.afterLoadEntities();
+    this.initFilters();
   }
 
   private initFilters(): void {
@@ -113,66 +102,9 @@ export class TasksComponent extends AbstractBrowser implements OnInit {
     this.dataSource.filter = '';
   }
 
-  public applyFilter(filterValue: string): void {
-    if (!this.isDefaultPredicate) {
-      this.changePredicate(this.defaultFilterPredicate);
-    }
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
 
   public getPriority(priority: string): string {
     return priority === this.LOW ? 'Priority.Low' : priority === this.MEDIUM ? 'Priority.Medium' : 'Priority.High';
   }
 
-  public openAddDialog(editedItem: Task | null): void {
-    this.openDialog(ApplicationConstants.DIALOG_ACTION_ADD, editedItem);
-  }
-
-  public openEditDialog(editedItem: Task | null): void {
-    if (this.isActionPermit(this.EDIT_ACTION)) {
-      this.openDialog(ApplicationConstants.DIALOG_ACTION_UPDATE, editedItem);
-    }
-  }
-
-  public openDialog(action: string, editedItem: Task | null): void {
-    let isNewItem = false;
-    if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
-      isNewItem = true;
-    }
-    const editor = this.editor.open(TaskEditComponent, {
-      width: "100%",
-      height: "800px",
-      panelClass: this.isDarkMode ? 'dark' : '',
-      data: {
-        editedItem: editedItem,
-        isNewItem: isNewItem
-      }
-    });
-
-    editor.afterClosed().subscribe(() => {
-      this.loadTasks();
-    });
-  }
-
-  public openDeleteDialog(task: Task) {
-    this.dialog.open(TaskDeleteDialogComponent, {
-      data: task,
-      width: ApplicationConstants.DIALOG_WIDTH,
-      panelClass: this.isDarkMode ? 'dark' : ''
-    }).afterClosed().subscribe(response => {
-      if (response.event.action === ApplicationConstants.DIALOG_ACTION_DELETE) {
-        this.onDeleteTask(this.clickedRow);
-      }
-    });
-  }
-
-  public onDeleteTask(task: Task): void {
-    this.subscriptions.push(this.taskService.deleteTask(task.id).subscribe(
-      () => {
-        this.loadTasks();
-      }, (errorResponse: HttpErrorResponse) => {
-        this.showErrorNotification(errorResponse.error.message);
-      }
-    ));
-  }
 }

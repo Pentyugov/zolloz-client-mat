@@ -8,13 +8,13 @@ import {TranslateService} from "@ngx-translate/core";
 import {ApplicationService} from "../../../service/application.service";
 import {UserSettings} from "../../../model/user-settings";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ApplicationConstants} from "../../../shared/application-constants";
+import {ApplicationConstants} from "../../shared/application-constants";
 import {CustomHttpResponse} from "../../../model/custom-http-response";
 import {EventNotificationService} from "../../../service/event-notification.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {AbstractBrowser} from "../../../shared/screens/browser/AbstractBrowser";
 import {Router} from "@angular/router";
 import {ScreenService} from "../../../service/screen.service";
+import {AbstractBrowser} from "../../shared/browser/AbstractBrowser";
 
 @Component({
   selector: 'app-user',

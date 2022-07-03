@@ -12,10 +12,10 @@ import {MatSort} from "@angular/material/sort";
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicationService} from "../../../service/application.service";
 import {UserSettings} from "../../../model/user-settings";
-import {ApplicationConstants} from "../../../shared/application-constants";
-import {AbstractBrowser} from "../../../shared/screens/browser/AbstractBrowser";
+import {ApplicationConstants} from "../../shared/application-constants";
 import {Router} from "@angular/router";
 import {ScreenService} from "../../../service/screen.service";
+import {AbstractBrowser} from "../../shared/browser/AbstractBrowser";
 
 @Component({
   selector: 'app-role',

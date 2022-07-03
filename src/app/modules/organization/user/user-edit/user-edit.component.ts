@@ -15,7 +15,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../../service/event-notification.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {ApplicationConstants} from "../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 
 @Component({
   selector: 'app-user-edit',

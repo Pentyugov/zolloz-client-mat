@@ -5,7 +5,7 @@ import {AuthenticationService} from "../../../service/authentication.service";
 import {User} from "../../../model/user";
 import {Router} from "@angular/router";
 import {ApplicationService} from "../../../service/application.service";
-import {ApplicationConstants, Locale} from "../../../shared/application-constants";
+import {ApplicationConstants, Locale} from "../../../modules/shared/application-constants";
 import {UserService} from "../../../service/user.service";
 import {Subscription} from "rxjs";
 import {UserSettings} from "../../../model/user-settings";

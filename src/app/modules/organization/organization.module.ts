@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
-import {DepartmentComponent, DepartmentDeleteDialogComponent} from './department/department.component';
+import {DepartmentComponent} from './department/department.component';
 import {RouterModule} from "@angular/router";
 import {OrganizationRoutes} from "./organization.routing";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -20,7 +20,9 @@ import {UcWidgetModule} from "ngx-uploadcare-widget";
 import {UserAddComponent, UserAddDialogComponent} from './user/user-add/user-add.component';
 import {DepartmentEditComponent} from './department/department-edit/department-edit.component';
 import {DepartmentAddComponent} from './department/department-add/department-add.component';
-import {DepartmentEmployeeAddDialogComponent} from "./department/department-employee-add-dialog/department-employee-add-dialog.component";
+import {
+  DepartmentEmployeeAddDialogComponent
+} from "./department/department-employee-add-dialog/department-employee-add-dialog.component";
 import {DepartmentSaveDialogComponent} from './department/department-save-dialog/department-save-dialog.component';
 import {EmployeeAddComponent} from './employee/employee-add/employee-add.component';
 import {EmployeeSaveDialogComponent} from './employee/employee-save-dialog/employee-save-dialog.component';
@@ -30,8 +32,10 @@ import {EmployeeDeleteDialogComponent} from './employee/employee-delete-dialog/e
 import {PositionComponent} from './position/position.component';
 import {PositionDeleteDialogComponent} from './position/position-delete-dialog/position-delete-dialog.component';
 import {PositionAddDialogComponent} from './position/position-add-dialog/position-add-dialog.component';
-import { PositionEditDialogComponent } from './position/position-edit-dialog/position-edit-dialog.component';
+import {PositionEditDialogComponent} from './position/position-edit-dialog/position-edit-dialog.component';
 import {NgxMaskModule} from "ngx-mask";
+import {ContractorComponent} from './contractor/contractor.component';
+import {ContractorEditComponent} from './contractor/contrator-edit/contractor-edit.component';
 
 
 @NgModule({
@@ -48,7 +52,6 @@ import {NgxMaskModule} from "ngx-mask";
     UserAddComponent,
     DepartmentEditComponent,
     DepartmentAddComponent,
-    DepartmentDeleteDialogComponent,
     DepartmentEmployeeAddDialogComponent,
     DepartmentSaveDialogComponent,
     EmployeeAddComponent,
@@ -60,6 +63,8 @@ import {NgxMaskModule} from "ngx-mask";
     PositionDeleteDialogComponent,
     PositionAddDialogComponent,
     PositionEditDialogComponent,
+    ContractorComponent,
+    ContractorEditComponent,
   ],
   providers: [DatePipe],
     imports: [

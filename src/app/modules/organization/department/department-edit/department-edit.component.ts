@@ -12,7 +12,7 @@ import {EmployeeService} from "../../../../service/employee.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DepartmentSaveDialogComponent} from "../department-save-dialog/department-save-dialog.component";
-import {ApplicationConstants} from "../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 import {DepartmentEmployeeAddDialogComponent} from "../department-employee-add-dialog/department-employee-add-dialog.component";
 import {HttpErrorResponse} from "@angular/common/http";
 import {Subscription} from "rxjs";
@@ -104,7 +104,7 @@ export class DepartmentEditComponent implements OnInit {
   private onSaveDepartment(): void {
     this.applicationService.changeRefreshing(true);
     this.subscriptions.push(
-      this.departmentService.updateDepartment(this.department).subscribe(
+      this.departmentService.update(this.department).subscribe(
         (response: Department) => {
           this.department = response;
             this.employeeDs.data.forEach(employee => employee.department = this.department);
@@ -176,7 +176,7 @@ export class DepartmentEditComponent implements OnInit {
 
   private loadDepartment(): void {
     this.subscriptions.push(
-      this.departmentService.getDepartmentById(this.id).subscribe(
+      this.departmentService.getById(this.id).subscribe(
         (response: Department) => {
           this.department= response;
           this.updateDepartmentsList();

@@ -1,0 +1,222 @@
+<div fxLayout="row wrap">
+  <div fxFlex.gt-sm="100%" fxFlex="100">
+    <mat-card>
+        <mat-card-content>
+          <span>
+            <form #contractorEditForm="ngForm">
+
+              <div fxLayout="row wrap" class="align-items-center m-b-15">
+                <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100">
+                  <h3 class="m-0">
+                    <div class="d-flex">
+                      <span ngDefaultControl *ngIf="isNewItem()">{{'Contractor.Creation' | translate}}</span>
+                      <span ngDefaultControl *ngIf="!isNewItem()">{{'Contractor.Editor' | translate}}</span>
+                    </div>
+
+                  </h3>
+                </div>
+                <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100" class="text-right">
+
+                  <button mat-stroked-button color="warn" class="m-r-10"
+                          (click)="close()">{{'Cancel' | translate}}</button>
+                  <button mat-raised-button
+                          color="primary"
+                          class="m-r-10"
+                          [disabled]="contractorEditForm.invalid"
+                          (click)="openSaveDialog()">{{'Save' | translate}}</button>
+                </div>
+              </div>
+
+              <hr/>
+
+              <div fxLayout="row wrap" class="align-items-center m-t-30 m-b-15">
+
+                <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                    <mat-label>{{'Name' | translate}}</mat-label>
+                    <input matInput
+                           required
+                           placeholder="{{'Name' | translate}}"
+                           [(ngModel)]="entity.name"
+                           name="name"/>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                    <mat-label>{{'FullName' | translate}}</mat-label>
+                    <input matInput
+                           placeholder="{{'FullName' | translate}}"
+                           [(ngModel)]="entity.fullName"
+                           name="fullName"/>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-md="33" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                    <mat-label>{{'Okpo' | translate}}</mat-label>
+                    <input matInput
+                           minlength="8"
+                           maxlength="10"
+                           placeholder="{{'Okpo' | translate}}"
+                           [(ngModel)]="entity.okpo"
+                           name="okpo"/>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-md="33" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                    <mat-label>{{'Kpp' | translate}}</mat-label>
+                    <input matInput
+                           mask="00-00-00-000"
+                           placeholder="{{'Kpp' | translate}}"
+                           [(ngModel)]="entity.kpp"
+                           name="kpp"/>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-md="33" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                    <mat-label>{{'Inn' | translate}}</mat-label>
+                    <input matInput
+                           mask="00-00-00000-0"
+                           placeholder="{{'Inn' | translate}}"
+                           [(ngModel)]="entity.inn"
+                           name="inn"/>
+                  </mat-form-field>
+                </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'PostalAddress' | translate}}</mat-label>
+                      <textarea
+                        matInput
+                        name="postalAddress"
+                        maxlength="300"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="3"
+                        placeholder="{{'PostalAddress' | translate}}"
+                        [(ngModel)]="entity.postalAddress"
+                      ></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'LegalAddress' | translate}}</mat-label>
+                      <textarea
+                        matInput
+                        name="LegalAddress"
+                        maxlength="300"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="3"
+                        placeholder="{{'legalAddress' | translate}}"
+                        [(ngModel)]="entity.legalAddress"
+                      ></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="33" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'PhoneNumber' | translate}}</mat-label>
+                        <input matInput
+                           mask="+0 (000)-000-00-00"
+                           placeholder="{{'PhoneNumber' | translate}}"
+                           name="phone"
+                           [(ngModel)]="entity.phone" />
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="33" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Email' | translate}}</mat-label>
+                      <input matInput
+                             placeholder="{{'Email' | translate}}"
+                             [(ngModel)]="entity.email"
+                             name="email"/>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="33" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Fax' | translate}}</mat-label>
+                      <input matInput
+                             placeholder="{{'Fax' | translate}}"
+                             [(ngModel)]="entity.fax"
+                             name="fax"/>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Website' | translate}}</mat-label>
+                      <input matInput
+                             placeholder="{{'website' | translate}}"
+                             [(ngModel)]="entity.website"
+                             name="Website"/>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Comment' | translate}}</mat-label>
+                      <textarea
+                        matInput
+                        name="legalAddress"
+                        maxlength="1000"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="3"
+                        placeholder="{{'Comment' | translate}}"
+                        [(ngModel)]="entity.comment"
+                      ></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.gt-md="25">
+                    <mat-checkbox color="primary"
+                                  class="m-r-10 m-t-10"
+                                  [(ngModel)]="entity.isOrganization"
+                    >{{'IsOrganization' | translate}}
+                    </mat-checkbox>
+                    <br/>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.gt-md="25">
+                    <mat-checkbox color="primary"
+                                  class="m-r-10 m-t-10"
+                                  [(ngModel)]="entity.customer"
+                    >{{'Customer' | translate}}
+                    </mat-checkbox>
+                    <br/>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.gt-md="25">
+                    <mat-checkbox color="nonResident"
+                                  class="m-r-10 m-t-10"
+                                  [(ngModel)]="entity.nonResident"
+                    >{{'NonResident' | translate}}
+                    </mat-checkbox>
+                    <br/>
+                  </div>
+
+                  <div fxFlex="25" fxFlex.gt-md="25">
+                    <mat-checkbox color="supplier"
+                                  class="m-r-10 m-t-10"
+                                  [(ngModel)]="entity.supplier"
+                    >{{'Supplier' | translate}}
+                    </mat-checkbox>
+                    <br/>
+                  </div>
+
+
+
+
+              </div>
+
+            </form>
+          </span>
+        </mat-card-content>
+
+    </mat-card>
+  </div>
+</div>

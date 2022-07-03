@@ -7,7 +7,7 @@ import {Subscription} from "rxjs";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {User} from "../../../../../model/user";
 import {UserService} from "../../../../../service/user.service";
-import {ApplicationConstants} from "../../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../../shared/application-constants";
 
 @Component({
   selector: 'app-add-participants',

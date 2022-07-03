@@ -1,5 +1,7 @@
-export class Contractor {
-  id: string;
+import {Entity} from "./entity";
+import {ApplicationConstants} from "../modules/shared/application-constants";
+
+export class Contractor extends Entity {
   name: string;
   fullName: string;
   okpo: string;
@@ -17,9 +19,8 @@ export class Contractor {
   customer: boolean;
   isOrganization: boolean;
 
-
   constructor() {
-    this.id = '';
+    super(ApplicationConstants.CONTRACTOR);
     this.name = '';
     this.fullName = '';
     this.okpo = '';
@@ -36,6 +37,5 @@ export class Contractor {
     this.supplier = false;
     this.customer = false;
     this.isOrganization = false;
-
   }
 }

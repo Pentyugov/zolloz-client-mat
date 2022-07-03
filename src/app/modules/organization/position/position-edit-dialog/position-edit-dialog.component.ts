@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit, Optional} from '@angular/core';
-import {AbstractDialog} from "../../../../shared/screens/dialog/abstractDialog";
+import {AbstractDialog} from "../../../shared/dialog/abstractDialog";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {ApplicationConstants} from "../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 
 @Component({
   selector: 'app-position-edit-dialog',

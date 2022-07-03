@@ -5,15 +5,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { Employee } from '../../../model/employee';
 import { EventNotificationService } from '../../../service/event-notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ApplicationConstants } from '../../../shared/application-constants';
+import { ApplicationConstants } from '../../shared/application-constants';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { EmployeeDeleteDialogComponent } from './employee-delete-dialog/employee-delete-dialog.component';
-import { AbstractBrowser } from '../../../shared/screens/browser/AbstractBrowser';
 import { Router } from '@angular/router';
 import {ScreenService} from "../../../service/screen.service";
+import {AbstractBrowser} from "../../shared/browser/AbstractBrowser";
 
 @Component({
   selector: 'app-employee',

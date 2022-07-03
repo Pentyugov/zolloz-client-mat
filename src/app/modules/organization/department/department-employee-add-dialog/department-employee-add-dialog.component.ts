@@ -6,7 +6,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {EmployeeService} from "../../../../service/employee.service";
-import {ApplicationConstants} from "../../../../shared/application-constants";
+import {ApplicationConstants} from "../../../shared/application-constants";
 import {Subscription} from "rxjs";
 
 @Component({

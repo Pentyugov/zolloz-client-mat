@@ -11,11 +11,11 @@ import {PositionService} from '../../../../service/position.service';
 import {Department} from '../../../../model/department';
 import {Position} from '../../../../model/position';
 import {MatDialog} from '@angular/material/dialog';
-import {ApplicationConstants} from '../../../../shared/application-constants';
+import {ApplicationConstants} from '../../../shared/application-constants';
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {EmployeeSaveDialogComponent} from '../employee-save-dialog/employee-save-dialog.component';
-import {AbstractEditor} from '../../../../shared/screens/editor/abstract-editor';
+import {AbstractEditor} from '../../../shared/editor/abstract-editor';
 import {EmployeePrefillDialogComponent} from "../employee-prefill-dialog/employee-prefill-dialog.component";
 
 @Component({
@@ -124,7 +124,7 @@ export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDe
 
   private loadDepartments(): void {
     this.subscriptions.push(
-      this.departmentService.getDepartments().subscribe(
+      this.departmentService.getAll().subscribe(
         (response: Department[]) => {
           this.departments = response;
           this.employeeToCreate.department = this.departments.find(d => d.id === this.employeeToCreate.department?.id)

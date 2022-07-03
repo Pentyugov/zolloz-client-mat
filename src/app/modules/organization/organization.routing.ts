@@ -11,7 +11,8 @@ import {EmployeeAddComponent} from "./employee/employee-add/employee-add.compone
 import {EmployeeEditComponent} from "./employee/employee-edit/employee-edit.component";
 import { PositionComponent } from './position/position.component';
 import {ScreenGuard} from "../../guard/screen.guard";
-import {ApplicationConstants} from "../../shared/application-constants";
+import {ApplicationConstants} from "../shared/application-constants";
+import {ContractorComponent} from "./contractor/contractor.component";
 
 export const OrganizationRoutes: Routes = [
   {path: '',
@@ -101,6 +102,20 @@ export const OrganizationRoutes: Routes = [
             { title: 'Organization', url: '/organization'},
             { title: 'Employees', url: '/organization/employees'},
             {title: 'Edit'}
+          ],
+        }
+      },
+
+      {
+        path: 'contractors',
+        component: ContractorComponent,
+        canActivate: [ScreenGuard],
+        data: {
+          screen: ApplicationConstants.SCREEN_CONTRACTOR + '.' + ApplicationConstants.SCREEN_ACTION_BROWSE,
+          title: 'Contractors',
+          urls: [
+            { title: 'Organization', url: '/organization' },
+            { title: 'Contractors' }
           ],
         }
       },

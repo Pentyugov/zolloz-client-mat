@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AbstractBrowser} from "../../../shared/screens/browser/AbstractBrowser";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";
@@ -10,13 +9,12 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {ApplicationConstants} from "../../../shared/application-constants";
+import {ApplicationConstants} from "../../shared/application-constants";
 import {MatDialog} from "@angular/material/dialog";
 import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {ProjectDeleteDialogComponent} from "./project-delete-dialog/project-delete-dialog.component";
-import {NgxPermissionsService} from "ngx-permissions";
-import {AuthenticationService} from "../../../service/authentication.service";
 import {ScreenService} from "../../../service/screen.service";
+import {AbstractBrowser} from "../../shared/browser/AbstractBrowser";
 
 @Component({
   selector: 'app-projects',

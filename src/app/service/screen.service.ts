@@ -3,7 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ApplicationService} from "./application.service";
-import {ApplicationConstants} from "../shared/application-constants";
+import {ApplicationConstants} from "../modules/shared/application-constants";
 import {ScreenPermissions} from "../model/screen-permissions";
 
 @Injectable({

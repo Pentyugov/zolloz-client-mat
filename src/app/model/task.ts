@@ -1,6 +1,8 @@
 import {User} from "./user";
+import {Entity} from "./entity";
+import {ApplicationConstants} from "../modules/shared/application-constants";
 
-export class Task {
+export class Task extends Entity {
   static PRIORITY_LOW:    string = 'PRIORITY$LOW';
   static PRIORITY_MEDIUM: string = 'PRIORITY$MEDIUM';
   static PRIORITY_HIGH:   string = 'PRIORITY$HIGH';
@@ -13,7 +15,6 @@ export class Task {
   static STATE_EXECUTED = "TS$EXECUTED";
   static STATE_REWORK   = "TS$REWORK";
 
-  id: string;
   priority: string;
   number: string;
   description: string;
@@ -30,7 +31,7 @@ export class Task {
 
 
   constructor() {
-    this.id = '';
+    super(ApplicationConstants.TASK);
     this.priority = '';
     this.number = '';
     this.description = '';

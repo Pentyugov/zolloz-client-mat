@@ -1,0 +1,117 @@
+<!--<p>test</p>-->
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="refreshing"></mat-progress-bar>
+<div fxLayout="row wrap" >
+  <div fxFlex="100">
+    <mat-card>
+      <mat-card-content>
+        <div fxLayout="row wrap" class="align-items-center">
+          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="50">
+            <mat-form-field>
+              <input matInput
+                     placeholder="{{'SearchDepartment' | translate}}"
+                     (keyup)="applyFilter($event.target.value)"
+              />
+            </mat-form-field>
+          </div>
+          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="50" class="text-right">
+            <button mat-raised-button
+                    *ngIf="isActionPermit(CREATE_ACTION)"
+                    color="primary"
+                    (click)="openAddDialog(null)">
+              {{'Tasks.CreateTask' | translate}}
+            </button>
+
+            <button mat-raised-button
+                    *ngIf="isActionPermit(EDIT_ACTION)"
+                    color="accent"
+                    style="margin-left: 10px"
+                    (click)="openEditDialog(clickedRow)"
+                    [disabled]="!clickedRow">
+              <i class="fa fa-pencil"></i>
+            </button>
+
+            <button mat-raised-button
+                    *ngIf="isActionPermit(DELETE_ACTION)"
+                    color="warn"
+                    style="margin-left: 10px"
+                    (click)="openDeleteDialog(clickedRow)"
+                    [disabled]="!clickedRow">
+              <i class="fas fa-trash"></i>
+            </button>
+
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<!--static readonly CONTRACTOR_TABLE_COLUMNS = ['fullName',-->
+<!--'inn',-->
+<!--'postalAddress',-->
+<!--'phone',-->
+<!--'email'];-->
+
+<div fxLayout="row wrap">
+  <div fxFlex="100">
+    <mat-card>
+      <mat-card-content>
+        <div class="table-responsive">
+          <table mat-table matSort [dataSource]="dataSource" class="table ticket-list no-wrap">
+
+            <ng-container matColumnDef="fullName">
+              <th mat-header-cell *matHeaderCellDef >{{'FullName' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.fullName}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="inn">
+              <th mat-header-cell *matHeaderCellDef>{{'Inn' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.inn | translate}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="postalAddress">
+              <th mat-header-cell *matHeaderCellDef>{{'PostalAddress' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.postalAddress | translate }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef>{{'Phone' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.phone | translate }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>{{'Email' | translate}}</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.email | translate}}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row
+                (mouseenter)="onEnterRow(row)"
+                (mouseleave)="onLeaveRow()"
+                (click)="onClickRow(row)"
+                (dblclick)="openEditDialog(row)"
+                [ngClass]="{
+                        'highlight-selected-dark' : row.id === clickedRow?.id && isDarkMode,
+                        'highlight-selected' : row.id === clickedRow?.id && !isDarkMode,
+                        'highlight-mouse-on-dark' : row.id === selectedRow?.id && isDarkMode,
+                        'highlight-mouse-on' : row.id === selectedRow?.id && !isDarkMode
+                        }"
+                *matRowDef="let row; columns: columnsToDisplay; let entry">
+            </tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

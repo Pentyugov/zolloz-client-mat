@@ -67,7 +67,7 @@
                     *ngIf="isActionPermit(EDIT_ACTION)"
                     color="accent"
                     style="margin-left: 10px"
-                    (dblclick)="openEditDialog(clickedRow)"
+                    (click)="openEditDialog(clickedRow)"
                     [disabled]="!clickedRow">
               <i class="fa fa-pencil"></i>
             </button>

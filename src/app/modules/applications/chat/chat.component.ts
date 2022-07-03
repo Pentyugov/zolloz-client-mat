@@ -4,7 +4,7 @@ import {ApplicationService} from "../../../service/application.service";
 import {AuthenticationService} from "../../../service/authentication.service";
 import {UserService} from "../../../service/user.service";
 import {ChatMessageService} from "../../../service/chat-message.service";
-import {AbstractWindow} from "../../../shared/screens/window/abstract-window";
+import {AbstractWindow} from "../../shared/window/abstract-window";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";

@@ -21,7 +21,7 @@ export const AppRoutes: Routes = [
       },
       {
         path: 'profile',
-        loadChildren: () => import('./profile/profile.module').then((m) => m.ProfileModule),
+        loadChildren: () => import('./modules/profile/profile.module').then((m) => m.ProfileModule),
       },
       {
         path: 'organization',

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ApplicationConstants, Locale} from "../shared/application-constants";
+import {ApplicationConstants, Locale} from "../modules/shared/application-constants";
 import {BehaviorSubject, Observable} from "rxjs";
 import {UserSettings} from "../model/user-settings";
 import {HttpClient} from "@angular/common/http";
