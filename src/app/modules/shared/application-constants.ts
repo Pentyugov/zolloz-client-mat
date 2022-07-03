@@ -46,7 +46,7 @@ export class ApplicationConstants {
                                               'code',
                                               'head'];
 
-  static readonly CONTRACTOR_TABLE_COLUMNS = ['fullName',
+  static readonly CONTRACTOR_TABLE_COLUMNS = ['name',
                                               'inn',
                                               'postalAddress',
                                               'phone',

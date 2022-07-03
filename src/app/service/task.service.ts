@@ -30,7 +30,7 @@ export class TaskService implements EntityService<Task>{
   }
 
   public update(task: Task): Observable<Task> {
-    return this.httpClient.post<Task>(`${this.host}/task/update-task`, task);
+    return this.httpClient.put<Task>(`${this.host}/task/update-task`, task);
   }
 
   public delete(id: string): Observable<CustomHttpResponse> {

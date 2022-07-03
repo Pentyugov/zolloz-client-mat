@@ -23,7 +23,7 @@ export class RoleService {
   }
 
   public updateRole(role: Role): Observable<Role> {
-    return this.httpClient.post<Role>(`${this.host}/role/update-role`, role);
+    return this.httpClient.put<Role>(`${this.host}/role/update-role`, role);
   }
 
   public getRoles(): Observable<Role[]> {

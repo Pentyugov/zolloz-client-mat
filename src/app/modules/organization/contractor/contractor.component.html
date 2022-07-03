@@ -18,7 +18,7 @@
                     *ngIf="isActionPermit(CREATE_ACTION)"
                     color="primary"
                     (click)="openAddDialog(null)">
-              {{'Tasks.CreateTask' | translate}}
+              {{'Contractor.Create' | translate}}
             </button>
 
             <button mat-raised-button
@@ -46,12 +46,6 @@
   </div>
 </div>
 
-<!--static readonly CONTRACTOR_TABLE_COLUMNS = ['fullName',-->
-<!--'inn',-->
-<!--'postalAddress',-->
-<!--'phone',-->
-<!--'email'];-->
-
 <div fxLayout="row wrap">
   <div fxFlex="100">
     <mat-card>
@@ -59,10 +53,10 @@
         <div class="table-responsive">
           <table mat-table matSort [dataSource]="dataSource" class="table ticket-list no-wrap">
 
-            <ng-container matColumnDef="fullName">
-              <th mat-header-cell *matHeaderCellDef >{{'FullName' | translate}}</th>
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef >{{'Name' | translate}}</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.fullName}}
+                {{ element.name}}
               </td>
             </ng-container>
 

@@ -222,6 +222,7 @@
   "Contractors" : "Contractors",
   "Contractor.Editor" : "Contractor editor",
   "Contractor.Creation" : "Contractor editor",
+  "Contractor.Create" : "Add contractor",
   "SaveChanges" : "Save changes",
   "MyProjects": "My projects",
   "ProjectDeleteMsg" : "Sure want to delete project and all linked tickets?",

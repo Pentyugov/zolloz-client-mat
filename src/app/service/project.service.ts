@@ -4,7 +4,6 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Project} from "../model/project";
 import {User} from "../model/user";
-import {Role} from "../model/role";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +28,7 @@ export class ProjectService {
   }
 
   public updateProject(project: Project): Observable<Project> {
-    return this.httpClient.post<Project>(`${this.host}/projects/update-project`, project);
+    return this.httpClient.put<Project>(`${this.host}/projects/update-project`, project);
   }
 
   public deleteProject(id: String): Observable<Project> {

@@ -19,7 +19,7 @@ export class PositionService {
   }
 
   public updatePosition(position: Position): Observable<Position> {
-    return this.httpClient.post<Position>(`${this.host}/position/update-position`, position);
+    return this.httpClient.put<Position>(`${this.host}/position/update-position`, position);
   }
 
   public getPositions(): Observable<Position[]> {

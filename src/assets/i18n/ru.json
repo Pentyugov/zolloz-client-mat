@@ -222,6 +222,7 @@
   "Contractors" : "Контрагенты",
   "Contractor.Editor" : "Редактирование контагента",
   "Contractor.Creation" : "Добавление контагента",
+  "Contractor.Create" : "Добавить",
   "SaveChanges" : "Сохранить изменения",
   "MyProjects": "Мои проекты",
   "ProjectDeleteMsg" : "Вы уверены что хотите удалить проект и все связанные задачи?",

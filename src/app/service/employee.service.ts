@@ -20,11 +20,11 @@ export class EmployeeService {
   }
 
   public updateEmployee(employee: Employee): Observable<Employee> {
-    return this.httpClient.post<Employee>(`${this.host}/employee/update-employee`, employee);
+    return this.httpClient.put<Employee>(`${this.host}/employee/update-employee`, employee);
   }
 
   public updateAllEmployees(employees: Employee[]): Observable<Employee[]> {
-    return this.httpClient.post<Employee[]>(`${this.host}/employee/update-all-employees`, employees);
+    return this.httpClient.put<Employee[]>(`${this.host}/employee/update-all-employees`, employees);
   }
 
   public getEmployees(): Observable<Employee[]> {

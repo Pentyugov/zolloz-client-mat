@@ -29,7 +29,7 @@ export class ContractorService implements EntityService<Contractor> {
   }
 
   update(entity: Contractor): Observable<Contractor> {
-    return this.httpClient.post<Contractor>(`${this.host}/contractors/update-contractor`, entity);
+    return this.httpClient.put<Contractor>(`${this.host}/contractors/update`, entity);
   }
 
   delete(id: String): Observable<CustomHttpResponse> {

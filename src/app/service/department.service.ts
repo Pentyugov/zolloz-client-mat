@@ -29,7 +29,7 @@ export class DepartmentService implements EntityService<Department>{
   }
 
   public update(department: Department): Observable<Department> {
-    return this.httpClient.post<Department>(`${this.host}/department/update-department`, department);
+    return this.httpClient.put<Department>(`${this.host}/department/update-department`, department);
   }
 
   public delete(id: string): Observable<CustomHttpResponse> {
