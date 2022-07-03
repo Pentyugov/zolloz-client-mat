@@ -1,33 +1,33 @@
-import {Component, Inject, OnInit, Optional, ViewChild} from '@angular/core';
-import {AbstractEditor} from "../../../../../shared/screens/editor/abstract-editor";
-import {User} from "../../../../../model/user";
-import {ApplicationConstants} from "../../../../../shared/application-constants";
+import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {User} from "../../../../model/user";
+import {ApplicationConstants} from "../../../shared/application-constants";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
-import {EventNotificationService} from "../../../../../service/event-notification.service";
-import {ApplicationService} from "../../../../../service/application.service";
+import {EventNotificationService} from "../../../../service/event-notification.service";
+import {ApplicationService} from "../../../../service/application.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {UserService} from "../../../../../service/user.service";
-import {Task} from "../../../../../model/task";
-import {ProjectSaveConfirmComponent} from "../../../projects/project-edit/project-edit.component";
-import {EventNotificationCaptionEnum} from "../../../../../enum/event-notification-caption.enum";
+import {UserService} from "../../../../service/user.service";
+import {Task} from "../../../../model/task";
+import {EventNotificationCaptionEnum} from "../../../../enum/event-notification-caption.enum";
 import {HttpErrorResponse} from "@angular/common/http";
-import {TaskService} from "../../../../../service/task.service";
-import {AuthenticationService} from "../../../../../service/authentication.service";
-import {CustomHttpResponse} from "../../../../../model/custom-http-response";
-import {TaskExecutionDialogComponent} from "../../task-execution-dialog/task-execution-dialog.component";
-import {CardHistory} from "../../../../../model/card-history";
+import {TaskService} from "../../../../service/task.service";
+import {AuthenticationService} from "../../../../service/authentication.service";
+import {CustomHttpResponse} from "../../../../model/custom-http-response";
+import {TaskExecutionDialogComponent} from "../task-execution-dialog/task-execution-dialog.component";
+import {CardHistory} from "../../../../model/card-history";
+import {SaveDialogComponent} from "../../../shared/dialog/save-dialog/save-dialog.component";
+import {AbstractEditor} from "../../../shared/editor/abstract-editor";
 
 @Component({
   selector: 'app-task-edit',
   templateUrl: './task-edit.component.html',
   styleUrls: ['./task-edit.component.scss']
 })
-export class TaskEditComponent extends AbstractEditor implements OnInit {
+export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestroy {
   public currentUser: User = new User();
-  public editedTask: Task = new Task();
+  public entity: Task = new Task();
   public executors: User[] = [];
   public cardHistory: CardHistory[] = [];
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator = Object.create(null);
@@ -53,18 +53,22 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadExecutors();
     if (!this.isNewItem()) {
-      this.editedTask = this.data.editedItem;
+      this.entity = this.data.entity;
       this.reloadTask();
       this.loadTaskHistory();
-      if (this.editedTask.executionDatePlan) {
-        this.executionDatePlan = new Date(this.editedTask.executionDatePlan);
+      if (this.entity.executionDatePlan) {
+        this.executionDatePlan = new Date(this.entity.executionDatePlan);
       }
     } else {
-      this.editedTask.creator = this.currentUser;
+      this.entity.creator = this.currentUser;
     }
 
+    this.loadExecutors();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   public isNewItem(): boolean {
@@ -75,14 +79,14 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
     this.subscriptions.push(this.userService.getAllWithRole(ApplicationConstants.ROLE_TASK_EXECUTOR).subscribe(
       (response: User[]) => {
         this.executors = response;
-        this.editedTask.executor = this.executors.find(d => d.id === this.editedTask.executor?.id)
+        this.entity.executor = this.executors.find(d => d.id === this.entity.executor?.id)
       }, (errorResponse: HttpErrorResponse) => {
         this.showErrorNotification(errorResponse.error.message)
       }));
   }
 
   public loadTaskHistory(): void {
-    this.subscriptions.push(this.taskService.getTaskHistory(this.editedTask.id).subscribe(
+    this.subscriptions.push(this.taskService.getTaskHistory(this.entity.id).subscribe(
       (response: CardHistory[]) => {
         this.cardHistory = response;
       }, (errorResponse: HttpErrorResponse) => {
@@ -91,9 +95,9 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   public reloadTask(): void {
-    this.subscriptions.push(this.taskService.getById(this.editedTask.id).subscribe(
+    this.subscriptions.push(this.taskService.getById(this.entity.id).subscribe(
       (response: Task) => {
-        this.editedTask = response;
+        this.entity = response;
       }, (errorResponse: HttpErrorResponse) => {
         this.showErrorNotification(errorResponse.error.message)
       }));
@@ -107,8 +111,8 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
     });
   }
 
-  openSaveDialog() {
-    const dialogRef = this.dialog.open(ProjectSaveConfirmComponent, {
+  public openSaveDialog() {
+    const dialogRef = this.dialog.open(SaveDialogComponent, {
       width: ApplicationConstants.DIALOG_WIDTH,
       panelClass: this.isDarkMode ? 'dark' : ''
     });
@@ -128,7 +132,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   private onCreateTask(): void {
-    this.subscriptions.push(this.taskService.addTask(this.editedTask).subscribe(
+    this.subscriptions.push(this.taskService.add(this.entity).subscribe(
       (response: Task) => {
         this.eventNotificationService
           .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Task: ${response.number} was created successfully`);
@@ -140,13 +144,13 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   public onUpdateTask(startTask: boolean = false): void {
-    this.subscriptions.push(this.taskService.updateTask(this.editedTask).subscribe(
+    this.subscriptions.push(this.taskService.update(this.entity).subscribe(
       (response: Task) => {
         if (startTask) {
           this.startTask(response.id);
         }
         this.eventNotificationService
-          .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Project: ${response.number} was updated successfully`);
+          .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Task: ${response.number} was updated successfully`);
         this.close();
       }, (errorResponse: HttpErrorResponse) => {
         this.eventNotificationService
@@ -183,7 +187,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   private onExecuteTask(comment: string): void {
-    this.subscriptions.push(this.taskService.executeTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
+    this.subscriptions.push(this.taskService.executeTask(this.entity.id, comment).subscribe((response: CustomHttpResponse) => {
       this.eventNotificationService
         .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
       this.close();
@@ -214,7 +218,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   private onReworkTask(comment: string): void {
-    this.subscriptions.push(this.taskService.reworkTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
+    this.subscriptions.push(this.taskService.reworkTask(this.entity.id, comment).subscribe((response: CustomHttpResponse) => {
       this.eventNotificationService
         .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
       this.close();
@@ -245,7 +249,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   private onCancelTask(comment: string): void {
-    this.subscriptions.push(this.taskService.cancelTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
+    this.subscriptions.push(this.taskService.cancelTask(this.entity.id, comment).subscribe((response: CustomHttpResponse) => {
       this.eventNotificationService
         .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
       this.close();
@@ -276,7 +280,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   private onFinishTask(comment: string): void {
-    this.subscriptions.push(this.taskService.finishTask(this.editedTask.id, comment).subscribe((response: CustomHttpResponse) => {
+    this.subscriptions.push(this.taskService.finishTask(this.entity.id, comment).subscribe((response: CustomHttpResponse) => {
       this.eventNotificationService
         .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
       this.close();
@@ -289,32 +293,32 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
 
   public onUpdateDueDate(event: any): void {
     this.executionDatePlan = new Date(Date.parse(event.target.value))
-    this.editedTask.executionDatePlan = this.executionDatePlan;
+    this.entity.executionDatePlan = this.executionDatePlan;
   }
 
   public isStartButtonEnabled(): boolean {
-    return !this.editedTask.started && (this.authenticationService.isCurrentUserAdmin() || this.isCurrentUserTaskCreatorOrInitiator());
+    return !this.entity.started && (this.authenticationService.isCurrentUserAdmin() || this.isCurrentUserTaskCreatorOrInitiator());
   }
 
   public isCurrentUserTaskCreatorOrInitiator(): boolean {
-    return this.currentUser.id === this.editedTask.creator?.id ||
-           this.currentUser.id === this.editedTask.initiator?.id;
+    return this.currentUser.id === this.entity.creator?.id ||
+           this.currentUser.id === this.entity.initiator?.id;
   }
 
   public isExecuteButtonEnabled(): boolean {
-    return this.editedTask.started &&
-      (this.editedTask.state === Task.STATE_ASSIGNED || this.editedTask.state === Task.STATE_REWORK) &&
-      (this.editedTask.executor?.id === this.currentUser.id || this.authenticationService.isCurrentUserAdmin()) ;
+    return this.entity.started &&
+      (this.entity.state === Task.STATE_ASSIGNED || this.entity.state === Task.STATE_REWORK) &&
+      (this.entity.executor?.id === this.currentUser.id || this.authenticationService.isCurrentUserAdmin()) ;
   }
 
   public isReworkButtonEnabled(): boolean {
-    return this.editedTask.started && this.editedTask.state === Task.STATE_EXECUTED &&
+    return this.entity.started && this.entity.state === Task.STATE_EXECUTED &&
       (this.isCurrentUserTaskCreatorOrInitiator() ||
         this.authenticationService.isCurrentUserAdmin()) ;
   }
 
   public isCancelButtonEnabled(): boolean {
-    if (this.editedTask.started) {
+    if (this.entity.started) {
       return this.authenticationService.isCurrentUserAdmin() ||
         this.isCurrentUserTaskCreatorOrInitiator();
     }
@@ -323,11 +327,11 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
   }
 
   public isFinishButtonEnabled(): boolean {
-    if (this.editedTask.started && this.authenticationService.isCurrentUserAdmin()) {
+    if (this.entity.started && this.authenticationService.isCurrentUserAdmin()) {
       return true;
     }
-    return this.editedTask.started &&
-      this.editedTask.state === Task.STATE_EXECUTED &&
+    return this.entity.started &&
+      this.entity.state === Task.STATE_EXECUTED &&
       this.isCurrentUserTaskCreatorOrInitiator();
   }
 
@@ -336,16 +340,23 @@ export class TaskEditComponent extends AbstractEditor implements OnInit {
       return true;
     }
 
-    if (this.editedTask.state !== Task.STATE_ASSIGNED && this.editedTask.state !== Task.STATE_REWORK) {
+    if (this.entity.state !== Task.STATE_ASSIGNED && this.entity.state !== Task.STATE_REWORK) {
       return this.isCurrentUserTaskCreatorOrInitiator();
     }
     return false;
   }
 
+  public isExecutorFieldEnabled(): boolean {
+    if (this.isNewItem())
+      return true;
+
+    return !this.entity.started;
+  }
+
   public getCardHistoryResult(cardHistory: CardHistory): string {
     let message: string;
     if (cardHistory.result === Task.STATE_ASSIGNED)
-      message = `${this.getLocMessage(cardHistory.result)} -> ${this.getUserName(this.editedTask?.executor!)}`;
+      message = `${this.getLocMessage(cardHistory.result)} -> ${this.getUserName(this.entity?.executor!)}`;
     else
       message = this.getLocMessage(cardHistory.result);
     return message;
