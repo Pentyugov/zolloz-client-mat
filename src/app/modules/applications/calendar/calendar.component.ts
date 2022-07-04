@@ -129,7 +129,7 @@ export class CalendarComponent extends AbstractWindow implements OnInit, OnDestr
       this.events.push(event);
       this.dialogRef = Object.create(null);
       this.refresh.next(event);
-      console.log(event)
+      this.onUpdateCalendarEvent(event);
     });
   }
 

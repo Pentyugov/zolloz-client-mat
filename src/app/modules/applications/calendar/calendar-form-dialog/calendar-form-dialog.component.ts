@@ -31,7 +31,7 @@ export class CalendarFormDialogComponent {
   public minDate: moment.Moment | undefined;
   public maxDate: moment.Moment | undefined;
   public stepHour = 1;
-  public stepMinute = 1;
+  public stepMinute = 30;
   public stepSecond = 1;
   public color: ThemePalette = 'primary';
   public startDateForm = new FormControl(new Date());
