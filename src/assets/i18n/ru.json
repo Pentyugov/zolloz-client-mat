@@ -126,7 +126,6 @@
   "Slider": "Slider",
   "Slide Toggle": "Slide Toggle",
   "Apps": "Apps",
-  "Calendar": "Calendar",
   "Mailbox": "Mailbox",
   "Mail": "Mail",
   "Taskboard": "Taskboard",
@@ -286,6 +285,12 @@
   "IsOrganization" : "Организация",
   "Customer" : "Заказчик",
   "NonResident" : "Не резидент",
-  "Supplier" : "Поставщик"
-
+  "Supplier" : "Поставщик",
+  "Calendar" : "Календарь",
+  "Calendar.AddEvent" : "Добавить событие",
+  "Calendar.Month" : "Месяц",
+  "Calendar.Week" : "Неделя",
+  "Calendar.Day" : "День",
+  "Calendar.StartDate" : "Начало",
+  "Calendar.EndDate" : "Окончание"
 }

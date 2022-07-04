@@ -125,7 +125,6 @@
   "Slider": "Slider",
   "Slide Toggle": "Slide Toggle",
   "Apps": "Apps",
-  "Calendar": "Calendar",
   "Mailbox": "Mailbox",
   "Mail": "Mail",
   "Taskboard": "Taskboard",
@@ -286,5 +285,12 @@
   "IsOrganization" : "Organization",
   "Customer" : "Customer",
   "NonResident" : "Non resident",
-  "Supplier" : "Supplier"
+  "Supplier" : "Supplier",
+  "Calendar" : "Calendar",
+  "Calendar.AddEvent" : "Add event",
+  "Calendar.Month" : "Month",
+  "Calendar.Week" : "Week",
+  "Calendar.Day" : "Day",
+  "Calendar.StartDate" : "Start date",
+  "Calendar.EndDate" : "End date"
 }

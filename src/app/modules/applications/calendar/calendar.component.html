@@ -1,9 +1,9 @@
 <mat-card>
   <mat-card-content>
     <div class="d-flex align-items-center">
-      <h3 class="m-t-0">Angular Calendar</h3>
+      <h3 class="m-t-0">{{'Calendar' | translate}}</h3>
       <div class="ml-auto">
-        <button mat-raised-button color="primary" (click)="addEvent()">Add Event</button>
+        <button mat-raised-button color="primary" (click)="addEvent()">{{'Calendar.AddEvent' | translate}}</button>
       </div>
     </div>
   </mat-card-content>
@@ -20,9 +20,9 @@
         <!-- Event View -->
         <!-- ============================================================== -->
         <div fxShow="false" fxShow.gt-xs>
-          <button mat-button (click)="view = 'month'" [class.active]="view === 'month'">Month</button>
-          <button mat-button (click)="view = 'week'"  [class.active]="view === 'week'">Week</button>
-          <button mat-button (click)="view = 'day'"   [class.active]="view === 'day'">Day</button>
+          <button mat-button (click)="view = 'month'" [class.active]="view === 'month'">{{'Calendar.Month' | translate}}</button>
+          <button mat-button (click)="view = 'week'"  [class.active]="view === 'week'">{{'Calendar.Week' | translate}}</button>
+          <button mat-button (click)="view = 'day'"   [class.active]="view === 'day'">{{'Calendar.Day' | translate}}</button>
         </div>
         <!-- ============================================================== -->
         <!-- Event month, week, day -->

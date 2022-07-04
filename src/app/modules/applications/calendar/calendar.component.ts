@@ -1,13 +1,18 @@
-import {Component, Inject} from '@angular/core';
-import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {CalendarFormDialogComponent} from "./calendar-form-dialog/calendar-form-dialog.component";
 import {DOCUMENT} from "@angular/common";
 import {CalendarEvent} from "angular-calendar";
-import {addHours, isSameDay, isSameMonth, startOfDay,} from 'date-fns';
-import {CalendarDialogComponent} from "./calendar-dialog/calendar-dialog.component";
-import {Subject, Subscription} from "rxjs";
+import {isSameDay, isSameMonth,} from 'date-fns';
+import {Subject} from "rxjs";
 import {CalendarService} from "../../../service/calendar.service";
 import {ZollozCalendarEvent, ZollozCalendarEventAction} from "../../../model/event";
+import {TranslateService} from "@ngx-translate/core";
+import {AbstractWindow} from "../../shared/window/abstract-window";
+import {Router} from "@angular/router";
+import {EventNotificationService} from "../../../service/event-notification.service";
+import {ApplicationService} from "../../../service/application.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 const colors: any = {
   red: {
@@ -29,81 +34,64 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent {
+export class CalendarComponent extends AbstractWindow implements OnInit, OnDestroy {
 
-  private subscriptions: Subscription[] = [];
-  dialogRef: MatDialogRef<CalendarDialogComponent> = Object.create(null);
-  dialogRef2: MatDialogRef<CalendarFormDialogComponent> = Object.create(null)
+  dialogRef: MatDialogRef<CalendarFormDialogComponent> = Object.create(null)
 
   view = 'month';
   viewDate: Date = new Date();
 
   activeDayIsOpen = true;
 
-  lastCloseResult = '';
   refresh: Subject<any> = new Subject();
-
-  config: MatDialogConfig = {
-    disableClose: false,
-    width: '',
-    height: '',
-    position: {
-      top: '',
-      bottom: '',
-      left: '',
-      right: '',
-    },
-    data: {
-      action: '',
-      event: [],
-    },
-  };
 
   actions: ZollozCalendarEventAction[] = [
     {
       label: '<i class="fa fa-eye act"></i>',
-      onClick: ({ event }: { event: ZollozCalendarEvent }): void => {
+      name: 'open',
+      onClick: ({event}: { event: ZollozCalendarEvent }): void => {
         this.handleEvent('Open', event);
       },
     },
     {
       label: '<i class="ti-pencil act"></i>',
-      onClick: ({ event }: { event: ZollozCalendarEvent }): void => {
+      name: 'edit',
+      onClick: ({event}: { event: ZollozCalendarEvent }): void => {
         this.handleEvent('Edit', event);
       },
     },
     {
       label: '<i class="ti-close act"></i>',
-      onClick: ({ event }: { event: ZollozCalendarEvent }): void => {
+      name: 'delete',
+      onClick: ({event}: { event: ZollozCalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
         this.handleEvent('Deleted', event);
       },
     },
   ];
 
-  events: CalendarEvent[] = [
-    {
-      start: startOfDay(new Date()),
-      end: addHours(startOfDay(new Date()), 2),
-      title: 'A 3 day event',
-      color: colors.red,
-      actions: this.actions,
-      draggable: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      }
-    }
-  ];
+  public events: ZollozCalendarEvent[] = [];
 
-
-  constructor(public dialog: MatDialog,
+  constructor(router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
+              dialog: MatDialog,
               public calendarService: CalendarService,
               @Inject(DOCUMENT) doc: any) {
+    super(router, translate, eventNotificationService, applicationService, dialog);
 
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  ngOnInit(): void {
+    this.loadCalendarEvents();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe())
+  }
+
+  public dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -118,41 +106,34 @@ export class CalendarComponent {
   }
 
   public handleEvent(action: string, event: ZollozCalendarEvent): void {
-    this.config.data = { event, action };
-    this.dialogRef = this.dialog.open(CalendarDialogComponent, this.config);
+    if (action === 'update') {
+      this.onUpdateCalendarEvent(event);
+    }
 
-    this.dialogRef.afterClosed().subscribe((result: string) => {
-      this.lastCloseResult = result;
-      this.dialogRef = Object.create(null);
-      this.refresh.next(result);
-      // this.onUpdateCalendarEvent(event);
-
-    });
   }
 
   public addEvent(): void {
-    this.dialogRef2 = this.dialog.open(CalendarFormDialogComponent, {
+    this.dialogRef = this.dialog.open(CalendarFormDialogComponent, {
       panelClass: 'calendar-form-dialog',
       data: {
         action: 'add',
         date: new Date(),
       },
     });
-    this.dialogRef2.afterClosed().subscribe((res) => {
-      if (!res) {
+    this.dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
         return;
       }
-      const dialogAction = res.action;
-      const responseEvent = res.event;
-      responseEvent.actions = this.actions;
-      this.events.push(responseEvent);
-      this.dialogRef2 = Object.create(null);
-      this.refresh.next(responseEvent);
-      // this.onAddCalendarEvent(responseEvent);
+      const event = result.event;
+      event.actions = this.actions;
+      this.events.push(event);
+      this.dialogRef = Object.create(null);
+      this.refresh.next(event);
+      console.log(event)
     });
   }
 
-  public eventTimesChanged({ event, newStart, newEnd }: any): void {
+  public eventTimesChanged({event, newStart, newEnd}: any): void {
     event.start = newStart;
     event.end = newEnd;
     this.events = this.events.map((iEvent) => {
@@ -165,13 +146,25 @@ export class CalendarComponent {
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
+    this.handleEvent('update', event);
+  }
+
+  private loadCalendarEvents(): void {
+    this.subscriptions.push(
+      this.calendarService.getAllForCurrentUser().subscribe((response: ZollozCalendarEvent[]) => {
+        this.events = response;
+        console.log(this.events[0])
+        this.setAllowedActionForEvents();
+      }, (errorResponse: HttpErrorResponse) => {
+        this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)
+      })
+    );
   }
 
   private onAddCalendarEvent(event: ZollozCalendarEvent): void {
     event.actions = [];
     this.subscriptions.push(
-      this.calendarService.add(event).subscribe(()=> {
+      this.calendarService.add(event).subscribe(() => {
         console.log('created');
       })
     );
@@ -180,10 +173,36 @@ export class CalendarComponent {
   private onUpdateCalendarEvent(event: ZollozCalendarEvent): void {
     event.actions = [];
     this.subscriptions.push(
-      this.calendarService.update(event).subscribe(()=> {
-        console.log('updated');
+      this.calendarService.update(event).subscribe(() => {
+
       })
     );
+  }
+
+  private setAllowedActionForEvents(): void {
+    this.events.forEach(e => {
+      if (e.type === ZollozCalendarEvent.TYPE_CUSTOM) {
+        e.actions = this.actions;
+      } else {
+        const openAction = this.getAction('open');
+        if (openAction) {
+          e.actions = [];
+          e.actions.push(openAction)
+        }
+      }
+    });
+  }
+
+  private getAction(name: string): ZollozCalendarEventAction | undefined {
+    let action;
+
+    this.actions.forEach(a => {
+      if (a.name === name) {
+        action = a;
+      }
+    });
+
+    return action;
   }
 
 }

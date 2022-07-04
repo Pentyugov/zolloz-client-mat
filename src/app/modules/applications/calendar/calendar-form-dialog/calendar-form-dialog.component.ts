@@ -1,8 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import {Component, Inject, ViewChild} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CalendarEvent } from 'angular-calendar';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {ZollozCalendarEvent} from "../../../../model/event";
+import {ThemePalette} from "@angular/material/core";
+import * as moment from 'moment';
+import {TranslateService} from "@ngx-translate/core";
 
 interface DialogData {
   event?: CalendarEvent;
@@ -16,6 +19,24 @@ interface DialogData {
   styleUrls: ['./calendar-form-dialog.component.scss'],
 })
 export class CalendarFormDialogComponent {
+  @ViewChild('startDate') startDate: any;
+  @ViewChild('andDate') andDate: any;
+
+  public date: moment.Moment | undefined;
+  public disabled = false;
+  public showSpinners = true;
+  public showSeconds = false;
+  public touchUi = false;
+  public enableMeridian = false;
+  public minDate: moment.Moment | undefined;
+  public maxDate: moment.Moment | undefined;
+  public stepHour = 1;
+  public stepMinute = 1;
+  public stepSecond = 1;
+  public color: ThemePalette = 'primary';
+  public startDateForm = new FormControl(new Date());
+  public endDateForm = new FormControl(new Date());
+
   event: any;
   dialogTitle: string;
   eventForm: FormGroup;
@@ -23,6 +44,7 @@ export class CalendarFormDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<CalendarFormDialogComponent>,
               @Inject(MAT_DIALOG_DATA) private data: DialogData,
+              public translate: TranslateService,
               private formBuilder: FormBuilder) {
     this.event = data.event;
     this.action = data.action;
@@ -38,9 +60,10 @@ export class CalendarFormDialogComponent {
   buildEventForm(event: any): any {
     return new FormGroup({
       _id:   new FormControl(event._id),
+      type:  new FormControl(event.type),
       title: new FormControl(event.title),
-      start: new FormControl(event.start),
-      end:   new FormControl(event.end),
+      start: this.startDateForm,
+      end:   this.endDateForm,
       allDay: new FormControl(event.allDay),
       color: this.formBuilder.group({
         primary: new FormControl(event.color.primary),

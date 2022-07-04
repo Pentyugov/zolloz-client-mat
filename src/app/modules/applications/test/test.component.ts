@@ -1,14 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-// const nisPackage = require("../../package.json");
+import {AbstractWindow} from "../../shared/window/abstract-window";
+import {Router} from "@angular/router";
+import {TranslateService} from "@ngx-translate/core";
+import {EventNotificationService} from "../../../service/event-notification.service";
+import {ApplicationService} from "../../../service/application.service";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss']
 })
-export class TestComponent implements OnInit {
+export class TestComponent extends AbstractWindow implements OnInit {
   ngOnInit(): void {
     console.log('test started');
   }
 
+  constructor(router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
+              dialog: MatDialog) {
+    super(router, translate, eventNotificationService, applicationService, dialog);
+
+  }
 }

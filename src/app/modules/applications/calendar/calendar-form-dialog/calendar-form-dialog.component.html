@@ -1,4 +1,4 @@
-<h4 class="m-t-0 p-l-5">Add</h4>
+<h4 class="m-t-0 p-l-5">{{'Name' | translate}}</h4>
 
 <div class="event-dialog-wrapper">
   <div mat-dialog-content class="p-16 m-0">
@@ -25,30 +25,46 @@
         </div>
 
         <div fxLayout="row" fxLayout.lt-sm="column" fxFlex="100">
-          <mat-form-field fxFlex>
-            <input
-              matInput
-              [matDatepicker]="startDateDP"
-              placeholder="Start Date"
-              name="startDate"
-              formControlName="start"
-            />
-            <mat-datepicker-toggle matSuffix [for]="startDateDP"></mat-datepicker-toggle>
-            <mat-datepicker #startDateDP></mat-datepicker>
+
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="startDate"
+                   placeholder="{{'Calendar.StartDate' | translate}}"
+                   [formControl]="startDateForm"
+                   [min]="minDate" [max]="maxDate"
+                   [disabled]="disabled">
+            <mat-datepicker-toggle matSuffix [for]="startDate">
+            </mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #startDate
+                                     [showSpinners]="showSpinners"
+                                     [showSeconds]="showSeconds"
+                                     [stepHour]="stepHour" [stepMinute]="stepMinute"
+                                     [stepSecond]="stepSecond"
+                                     [touchUi]="touchUi"
+                                     [color]="color">
+            </ngx-mat-datetime-picker>
           </mat-form-field>
+
           <span fxFlex="16px"></span>
 
-          <mat-form-field fxFlex>
-            <input
-              matInput
-              [matDatepicker]="endDateDP"
-              placeholder="End Date"
-              name="endDate"
-              formControlName="end"
-            />
-            <mat-datepicker-toggle matSuffix [for]="endDateDP"></mat-datepicker-toggle>
-            <mat-datepicker #endDateDP></mat-datepicker>
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="endDate"
+                   placeholder="{{'Calendar.EndDate' | translate}}"
+                   [formControl]="endDateForm"
+                   [min]="minDate" [max]="maxDate"
+                   [disabled]="disabled">
+            <mat-datepicker-toggle matSuffix [for]="endDate">
+            </mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #endDate
+                                     [showSpinners]="showSpinners"
+                                     [showSeconds]="showSeconds"
+                                     [stepHour]="stepHour" [stepMinute]="stepMinute"
+                                     [stepSecond]="stepSecond"
+                                     [touchUi]="touchUi"
+                                     [color]="color">
+            </ngx-mat-datetime-picker>
           </mat-form-field>
+
+
         </div>
 
         <button

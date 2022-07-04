@@ -41,6 +41,7 @@ export class ZollozCalendarEvent extends Entity implements CalendarEvent {
     this.user = new User();
     this.start = new Date();
     this.title = '';
+    this.actions = [];
   }
 
   public static fillFromData(data: any): ZollozCalendarEvent {
@@ -76,6 +77,7 @@ export class ZollozCalendarEvent extends Entity implements CalendarEvent {
 
 export interface ZollozCalendarEventAction {
   id?: string | number;
+  name: string;
   label: string;
   cssClass?: string;
   a11yLabel?: string;

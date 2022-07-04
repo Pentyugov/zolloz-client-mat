@@ -22,6 +22,7 @@ import { CalendarFormDialogComponent } from './calendar/calendar-form-dialog/cal
 import { CalendarDialogComponent } from './calendar/calendar-dialog/calendar-dialog.component';
 import { CalendarModule, DateAdapter, CalendarDateFormatter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-material-components/datetime-picker";
 
 
 @NgModule({
@@ -58,6 +59,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     }),
     NgxPermissionsRestrictStubModule,
     InfiniteScrollModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
   ],
 
   exports: [
