@@ -77,6 +77,7 @@ const MENUITEMS = [
     screen: '',
     children: [
       { state: 'chat', name: 'Chat', type: 'link', screen: 'screen$Chat.Browse' },
+      { state: 'calendar', name: 'Calendar', type: 'link', screen: 'screen$Calendar.Browse' },
       { state: 'test', name: 'Test', type: 'link', screen: 'screen$Test.Browse' },
     ],
   },
