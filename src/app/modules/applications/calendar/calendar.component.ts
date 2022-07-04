@@ -65,7 +65,7 @@ export class CalendarComponent extends AbstractWindow implements OnInit, OnDestr
       name: 'delete',
       onClick: ({event}: { event: ZollozCalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
+        this.handleEvent('Delete', event);
       },
     },
   ];
@@ -174,7 +174,7 @@ export class CalendarComponent extends AbstractWindow implements OnInit, OnDestr
     event.actions = [];
     this.subscriptions.push(
       this.calendarService.update(event).subscribe(() => {
-
+        this.loadCalendarEvents();
       })
     );
   }

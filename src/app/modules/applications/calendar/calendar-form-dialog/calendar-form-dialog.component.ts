@@ -1,11 +1,10 @@
 import {Component, Inject, ViewChild} from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CalendarEvent } from 'angular-calendar';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {CalendarEvent} from 'angular-calendar';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ZollozCalendarEvent} from "../../../../model/event";
-import {ThemePalette} from "@angular/material/core";
-import * as moment from 'moment';
 import {TranslateService} from "@ngx-translate/core";
+import {CalendarConfig} from "../../../shared/config/calendar.config";
 
 interface DialogData {
   event?: CalendarEvent;
@@ -22,20 +21,9 @@ export class CalendarFormDialogComponent {
   @ViewChild('startDate') startDate: any;
   @ViewChild('andDate') andDate: any;
 
-  public date: moment.Moment | undefined;
-  public disabled = false;
-  public showSpinners = true;
-  public showSeconds = false;
-  public touchUi = false;
-  public enableMeridian = false;
-  public minDate: moment.Moment | undefined;
-  public maxDate: moment.Moment | undefined;
-  public stepHour = 1;
-  public stepMinute = 30;
-  public stepSecond = 1;
-  public color: ThemePalette = 'primary';
-  public startDateForm = new FormControl(new Date());
-  public endDateForm = new FormControl(new Date());
+  public calendarConfig: CalendarConfig = new CalendarConfig();
+  public startDateForm = new FormControl(new Date().setMinutes(0));
+  public endDateForm = new FormControl(new Date().setMinutes(0));
 
   event: any;
   dialogTitle: string;
@@ -46,6 +34,7 @@ export class CalendarFormDialogComponent {
               @Inject(MAT_DIALOG_DATA) private data: DialogData,
               public translate: TranslateService,
               private formBuilder: FormBuilder) {
+    this.prepareDate();
     this.event = data.event;
     this.action = data.action;
     if (this.action === 'edit') {
@@ -55,6 +44,18 @@ export class CalendarFormDialogComponent {
       this.event = ZollozCalendarEvent.fillFromData(data);
     }
     this.eventForm = this.buildEventForm(this.event);
+  }
+
+  private prepareDate(): void {
+    const startDate = new Date();
+    const endDate = new Date();
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+    endDate.setMinutes(30);
+    endDate.setSeconds(0);
+
+    this.startDateForm = new FormControl(startDate);
+    this.endDateForm = new FormControl(endDate);
   }
 
   buildEventForm(event: any): any {
@@ -73,6 +74,12 @@ export class CalendarFormDialogComponent {
         location: new FormControl(event.meta.location),
         notes: new FormControl(event.meta.notes),
       }),
+
+      resizable: this.formBuilder.group({
+        beforeStart: new FormControl(true),
+        afterEnd: new FormControl(true),
+      }),
+
       draggable: new FormControl(true),
     });
   }

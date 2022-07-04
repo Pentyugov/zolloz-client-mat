@@ -31,18 +31,18 @@
             <input matInput [ngxMatDatetimePicker]="startDate"
                    placeholder="{{'Calendar.StartDate' | translate}}"
                    [formControl]="startDateForm"
-                   [min]="minDate" [max]="maxDate"
-                   [disabled]="disabled">
+                   [min]="calendarConfig.minDate" [max]="calendarConfig.maxDate"
+                   [disabled]="calendarConfig.disabled">
             <mat-datepicker-toggle matSuffix [for]="startDate">
             </mat-datepicker-toggle>
             <ngx-mat-datetime-picker #startDate
-                                     [showSpinners]="showSpinners"
-                                     [showSeconds]="showSeconds"
-                                     [stepHour]="stepHour"
-                                     [stepMinute]="stepMinute"
-                                     [stepSecond]="stepSecond"
-                                     [touchUi]="touchUi"
-                                     [color]="color">
+                                     [showSpinners]="calendarConfig.showSpinners"
+                                     [showSeconds]="calendarConfig.showSeconds"
+                                     [stepHour]="calendarConfig.stepHour"
+                                     [stepMinute]="calendarConfig.stepMinute"
+                                     [stepSecond]="calendarConfig.stepSecond"
+                                     [touchUi]="calendarConfig.touchUi"
+                                     [color]="calendarConfig.color">
             </ngx-mat-datetime-picker>
           </mat-form-field>
 
@@ -52,17 +52,17 @@
             <input matInput [ngxMatDatetimePicker]="endDate"
                    placeholder="{{'Calendar.EndDate' | translate}}"
                    [formControl]="endDateForm"
-                   [min]="minDate" [max]="maxDate"
-                   [disabled]="disabled">
+                   [min]="calendarConfig.minDate" [max]="calendarConfig.maxDate"
+                   [disabled]="calendarConfig.disabled">
             <mat-datepicker-toggle matSuffix [for]="endDate">
             </mat-datepicker-toggle>
             <ngx-mat-datetime-picker #endDate
-                                     [showSpinners]="showSpinners"
-                                     [showSeconds]="showSeconds"
-                                     [stepHour]="stepHour" [stepMinute]="stepMinute"
-                                     [stepSecond]="stepSecond"
-                                     [touchUi]="touchUi"
-                                     [color]="color">
+                                     [showSpinners]="calendarConfig.showSpinners"
+                                     [showSeconds]="calendarConfig.showSeconds"
+                                     [stepHour]="calendarConfig.stepHour" [stepMinute]="calendarConfig.stepMinute"
+                                     [stepSecond]="calendarConfig.stepSecond"
+                                     [touchUi]="calendarConfig.touchUi"
+                                     [color]="calendarConfig.color">
             </ngx-mat-datetime-picker>
           </mat-form-field>
 
