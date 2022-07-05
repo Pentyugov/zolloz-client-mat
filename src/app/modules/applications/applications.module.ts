@@ -11,18 +11,17 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {MatInputModule} from "@angular/material/input";
 import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 import {UcWidgetModule} from "ngx-uploadcare-widget";
-import { NgxMaskModule } from 'ngx-mask';
+import {NgxMaskModule} from 'ngx-mask';
 import {NgxPermissionsModule, NgxPermissionsRestrictStubModule} from "ngx-permissions";
 import {ApplicationsRoutes} from "./applications.routing";
-import { ChatComponent } from './chat/chat.component';
+import {ChatComponent} from './chat/chat.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
-import { TestComponent } from './test/test.component';
-import { CalendarComponent } from './calendar/calendar.component';
-import { CalendarFormDialogComponent } from './calendar/calendar-form-dialog/calendar-form-dialog.component';
-import { CalendarDialogComponent } from './calendar/calendar-dialog/calendar-dialog.component';
-import { CalendarModule, DateAdapter, CalendarDateFormatter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import {TestComponent} from './test/test.component';
+import {CalendarComponent} from './calendar/calendar.component';
+import {CalendarModule, DateAdapter} from 'angular-calendar';
+import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-material-components/datetime-picker";
+import {CalendarEditComponent} from './calendar/calendar-edit/calendar-edit.component';
 
 
 @NgModule({
@@ -30,8 +29,7 @@ import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-mater
     ChatComponent,
     TestComponent,
     CalendarComponent,
-    CalendarFormDialogComponent,
-    CalendarDialogComponent
+    CalendarEditComponent
   ],
   providers: [DatePipe],
   imports: [

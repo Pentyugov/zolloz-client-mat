@@ -71,7 +71,7 @@ export class UserService implements EntityService<User>{
   }
 
   public update(user: User): Observable<User> {
-    return this.httpClient.post<User>(`${this.host}/user/update-user`, user);
+    return this.httpClient.put<User>(`${this.host}/user/update-user`, user);
   }
 
   public getById(id: String): Observable<User> {

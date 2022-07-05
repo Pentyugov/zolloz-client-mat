@@ -1,6 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {CalendarFormDialogComponent} from "./calendar-form-dialog/calendar-form-dialog.component";
 import {DOCUMENT} from "@angular/common";
 import {CalendarEvent} from "angular-calendar";
 import {isSameDay, isSameMonth,} from 'date-fns';
@@ -8,11 +7,14 @@ import {Subject} from "rxjs";
 import {CalendarService} from "../../../service/calendar.service";
 import {ZollozCalendarEvent, ZollozCalendarEventAction} from "../../../model/event";
 import {TranslateService} from "@ngx-translate/core";
-import {AbstractWindow} from "../../shared/window/abstract-window";
 import {Router} from "@angular/router";
 import {EventNotificationService} from "../../../service/event-notification.service";
 import {ApplicationService} from "../../../service/application.service";
 import {HttpErrorResponse} from "@angular/common/http";
+import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
+import {ScreenService} from "../../../service/screen.service";
+import {CalendarEditComponent} from "./calendar-edit/calendar-edit.component";
+import {ApplicationConstants} from "../../shared/application-constants";
 
 const colors: any = {
   red: {
@@ -34,9 +36,9 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent extends AbstractWindow implements OnInit, OnDestroy {
+export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> implements OnInit, OnDestroy {
 
-  dialogRef: MatDialogRef<CalendarFormDialogComponent> = Object.create(null)
+  dialogRef: MatDialogRef<CalendarEditComponent> = Object.create(null)
 
   view = 'month';
   viewDate: Date = new Date();
@@ -77,10 +79,19 @@ export class CalendarComponent extends AbstractWindow implements OnInit, OnDestr
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
               dialog: MatDialog,
+              editor: MatDialog,
+              screenService: ScreenService,
               public calendarService: CalendarService,
               @Inject(DOCUMENT) doc: any) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
-
+    super(router,
+      translate,
+      eventNotificationService,
+      applicationService,
+      dialog,
+      CalendarEditComponent,
+      calendarService,
+      editor,
+      screenService);
   }
 
   ngOnInit(): void {
@@ -106,16 +117,43 @@ export class CalendarComponent extends AbstractWindow implements OnInit, OnDestr
   }
 
   public handleEvent(action: string, event: ZollozCalendarEvent): void {
-    if (action === 'update') {
-      this.onUpdateCalendarEvent(event);
+    if (action === 'open') {
+      this.openEditDialog(event);
     }
 
   }
 
-  public addEvent(): void {
-    this.dialogRef = this.dialog.open(CalendarFormDialogComponent, {
+  public override openAddDialog(entity: ZollozCalendarEvent | null): void {
+    this.openDialog(ApplicationConstants.DIALOG_ACTION_ADD, entity);
+  }
+
+  public override openEditDialog(entity: ZollozCalendarEvent | null): void {
+    this.openDialog(ApplicationConstants.DIALOG_ACTION_UPDATE, entity);
+  }
+
+  public override openDialog(action: string, entity: ZollozCalendarEvent | null): void {
+    let isNewItem = false;
+    if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
+      isNewItem = true;
+    }
+    const editor = this.editor.open(this.editorComponent, {
+      panelClass: this.isDarkMode ? 'dark' : 'calendar-form-dialog',
+      data: {
+        entity: entity,
+        isNewItem: isNewItem
+      }
+    });
+
+    editor.afterClosed().subscribe(() => {
+        this.loadCalendarEvents();
+    });
+  }
+
+  public openEditor(event: ZollozCalendarEvent | null): void {
+    this.dialogRef = this.dialog.open(CalendarEditComponent, {
       panelClass: 'calendar-form-dialog',
       data: {
+        event: event,
         action: 'add',
         date: new Date(),
       },
@@ -129,7 +167,6 @@ export class CalendarComponent extends AbstractWindow implements OnInit, OnDestr
       this.events.push(event);
       this.dialogRef = Object.create(null);
       this.refresh.next(event);
-      this.onUpdateCalendarEvent(event);
     });
   }
 
@@ -153,28 +190,9 @@ export class CalendarComponent extends AbstractWindow implements OnInit, OnDestr
     this.subscriptions.push(
       this.calendarService.getAllForCurrentUser().subscribe((response: ZollozCalendarEvent[]) => {
         this.events = response;
-        console.log(this.events[0])
         this.setAllowedActionForEvents();
       }, (errorResponse: HttpErrorResponse) => {
         this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)
-      })
-    );
-  }
-
-  private onAddCalendarEvent(event: ZollozCalendarEvent): void {
-    event.actions = [];
-    this.subscriptions.push(
-      this.calendarService.add(event).subscribe(() => {
-        console.log('created');
-      })
-    );
-  }
-
-  private onUpdateCalendarEvent(event: ZollozCalendarEvent): void {
-    event.actions = [];
-    this.subscriptions.push(
-      this.calendarService.update(event).subscribe(() => {
-        this.loadCalendarEvents();
       })
     );
   }

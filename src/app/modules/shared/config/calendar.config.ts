@@ -15,4 +15,20 @@ export class CalendarConfig {
   stepSecond = 1;
   color: ThemePalette = 'primary';
 
+
+  static readonly color: any = {
+    red: {
+      primary: '#fc4b6c',
+      secondary: '#f9e7eb',
+    },
+    blue: {
+      primary: '#1e88e5',
+      secondary: '#D1E8FF',
+    },
+    yellow: {
+      primary: '#ffb22b',
+      secondary: '#FDF1BA',
+    },
+  }
+
 }

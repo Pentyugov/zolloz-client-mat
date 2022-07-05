@@ -2,27 +2,29 @@
 
 <div class="event-dialog-wrapper">
   <div mat-dialog-content class="p-16 m-0">
-    <form name="eventForm" [formGroup]="eventForm" class="event-form" fxFlex>
+    <form class="event-form" fxFlex>
       <div fxLayout="row wrap" fxLayout.lt-sm="column">
-        <div fxFlex="100">
-          <mat-form-field class="full-width">
-            <input matInput name="title" formControlName="title" placeholder="Add Title" required />
-          </mat-form-field>
-        </div>
 
         <div fxLayout="row" fxLayout.lt-sm="column" fxFlex="100" formGroupName="color">
           <mat-form-field fxFlex>
-            <input
-              matInput
-              placeholder="Change Color"
-              type="color"
-              formControlName="primary"
-              (colorPickerChange)="
-                eventForm.patchValue({ color: { primary: event.color.primary } })
-              "
-            />
+            <input matInput placeholder="Change Color" type="color" [(ngModel)]="entity.color!.primary">
           </mat-form-field>
+        </div>
 
+        <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+          <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+            <mat-label>{{'Description' | translate}}</mat-label>
+            <textarea
+              matInput
+              required
+              name="title"
+              maxlength="255"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="2"
+              placeholder="{{'Title' | translate}}"
+              [(ngModel)]="entity.title"
+            ></textarea>
+          </mat-form-field>
         </div>
 
         <div fxLayout="row" fxLayout.lt-sm="column" fxFlex="100">
@@ -31,7 +33,8 @@
             <input matInput [ngxMatDatetimePicker]="startDate"
                    placeholder="{{'Calendar.StartDate' | translate}}"
                    [formControl]="startDateForm"
-                   [min]="calendarConfig.minDate" [max]="calendarConfig.maxDate"
+                   [min]="calendarConfig.minDate"
+                   [max]="calendarConfig.maxDate"
                    [disabled]="calendarConfig.disabled">
             <mat-datepicker-toggle matSuffix [for]="startDate">
             </mat-datepicker-toggle>
@@ -66,17 +69,15 @@
             </ngx-mat-datetime-picker>
           </mat-form-field>
 
-
         </div>
 
         <button
           mat-raised-button
           color="primary"
-          (click)="dialogRef.close({ action: 'save', event: eventForm.value })"
-          [disabled]="eventForm.invalid"
           aria-label="SAVE"
+          (click)="openSaveDialog()"
         >
-          Save
+          {{'Save' | translate}}
         </button>
       </div>
     </form>

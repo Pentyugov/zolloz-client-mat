@@ -30,7 +30,7 @@ export class ContractorComponent extends NewAbstractBrowser<Contractor> implemen
                         dialog: MatDialog,
                         editor: MatDialog,
                         screenService: ScreenService,
-                        private contractorService: ContractorService,) {
+                        private contractorService: ContractorService) {
     super(router,
       translate,
       eventNotificationService,

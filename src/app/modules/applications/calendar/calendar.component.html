@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center">
       <h3 class="m-t-0">{{'Calendar' | translate}}</h3>
       <div class="ml-auto">
-        <button mat-raised-button color="primary" (click)="addEvent()">{{'Calendar.AddEvent' | translate}}</button>
+        <button mat-raised-button color="primary" (click)="openAddDialog(null)">{{'Calendar.AddEvent' | translate}}</button>
       </div>
     </div>
   </mat-card-content>
@@ -65,7 +65,7 @@
         [refresh]="refresh"
         [activeDayIsOpen]="activeDayIsOpen"
         (dayClicked)="dayClicked($event.day)"
-        (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventClicked)="handleEvent('open', $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
       >
       </mwl-calendar-month-view>
@@ -75,7 +75,7 @@
         [viewDate]="viewDate"
         [events]="events"
         [refresh]="refresh"
-        (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventClicked)="handleEvent('open', $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
       >
       </mwl-calendar-week-view>
@@ -85,7 +85,7 @@
         [viewDate]="viewDate"
         [events]="events"
         [refresh]="refresh"
-        (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventClicked)="handleEvent('open', $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
       >
       </mwl-calendar-day-view>

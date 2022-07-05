@@ -6,7 +6,7 @@
         <mat-tab label="{{'Tab.Details' | translate}}">
           <mat-card-content>
             <span>
-              <form #projectEditForm="ngForm">
+              <form #taskEditForm="ngForm">
 
                 <div fxLayout="row wrap" class="align-items-center m-b-15">
                   <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100">
@@ -25,7 +25,7 @@
                     <button mat-raised-button
                             color="primary"
                             class="m-r-10"
-                            [disabled]="projectEditForm.invalid"
+                            [disabled]="taskEditForm.invalid"
                             (click)="openSaveDialog()">{{'Save' | translate}}</button>
                   </div>
                 </div>

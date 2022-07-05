@@ -3,6 +3,7 @@ import {startOfDay} from 'date-fns';
 import {Entity} from "./entity";
 import {ApplicationConstants} from "../modules/shared/application-constants";
 import {User} from "./user";
+import {CalendarConfig} from "../modules/shared/config/calendar.config";
 
 
 export class ZollozCalendarEvent extends Entity implements CalendarEvent {
@@ -42,6 +43,7 @@ export class ZollozCalendarEvent extends Entity implements CalendarEvent {
     this.start = new Date();
     this.title = '';
     this.actions = [];
+    this.color = CalendarConfig.color.blue;
   }
 
   public static fillFromData(data: any): ZollozCalendarEvent {
