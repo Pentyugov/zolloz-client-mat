@@ -151,7 +151,7 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
       panelClass: this.isDarkMode ? 'dark' : ''
     }).afterClosed().subscribe(response => {
       if (response.event.action === ApplicationConstants.DIALOG_ACTION_DELETE) {
-        this.onDeleteEntity(this.clickedRow);
+        this.onDeleteEntity(entity);
       }
     });
   }
@@ -159,7 +159,7 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
   public onDeleteEntity(entity: T): void {
     this.applicationService.changeRefreshing(true);
     this.subscriptions.push(
-      this.entityService.delete(this.clickedRow.id).subscribe(
+      this.entityService.delete(entity.id).subscribe(
         () => {
           this.subscriptions.push(this.translate.get(ApplicationConstants.NOTIFICATION_TITLE_SUCCESS).subscribe(m => {
             this.messageTitle = m;

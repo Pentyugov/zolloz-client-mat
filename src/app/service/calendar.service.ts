@@ -33,14 +33,11 @@ export class CalendarService implements EntityService<ZollozCalendarEvent>{
   }
 
   public delete(id: String): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/calendar/update-event/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/calendar/delete-event/${id}`);
   }
 
   public getAllForCurrentUser(): Observable<ZollozCalendarEvent[]> {
     return this.httpClient.get<ZollozCalendarEvent[]>(`${this.host}/calendar/get-all-for-current-user`);
   }
-
-
-
 
 }

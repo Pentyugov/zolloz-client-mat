@@ -19,6 +19,7 @@ export class ZollozCalendarEvent extends Entity implements CalendarEvent {
   start: Date;
   end?: Date;
   title: string;
+  description: string;
   color?: {
     primary: string;
     secondary: string;
@@ -42,8 +43,10 @@ export class ZollozCalendarEvent extends Entity implements CalendarEvent {
     this.user = new User();
     this.start = new Date();
     this.title = '';
+    this.description = '';
     this.actions = [];
     this.color = CalendarConfig.color.blue;
+    this.draggable = false;
   }
 
   public static fillFromData(data: any): ZollozCalendarEvent {
@@ -55,6 +58,7 @@ export class ZollozCalendarEvent extends Entity implements CalendarEvent {
     calendarEvent.id = data._id || '';
     calendarEvent.type = ZollozCalendarEvent.TYPE_CUSTOM;
     calendarEvent.title = data.title || '';
+    calendarEvent.description = data.description || '';
     calendarEvent.color = {
       primary: (data.color && data.color.primary) || ZollozCalendarEvent.COLOR_PRIMARY,
       secondary: (data.color && data.color.secondary) || ZollozCalendarEvent.COLOR_SECONDARY,

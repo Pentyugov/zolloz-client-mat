@@ -13,16 +13,28 @@
 
         <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+            <mat-label>{{'Title' | translate}}</mat-label>
+            <input matInput
+                   required
+                   maxlength="50"
+                   placeholder="{{'Title' | translate}}"
+                   [(ngModel)]="entity.title"
+                   name="title"/>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+          <mat-form-field appearance="outline" class="p-r-15 m-r-15">
             <mat-label>{{'Description' | translate}}</mat-label>
             <textarea
               matInput
               required
-              name="title"
+              name="description"
               maxlength="255"
               cdkTextareaAutosize
               cdkAutosizeMinRows="2"
-              placeholder="{{'Title' | translate}}"
-              [(ngModel)]="entity.title"
+              placeholder="{{'Description' | translate}}"
+              [(ngModel)]="entity.description"
             ></textarea>
           </mat-form-field>
         </div>
@@ -35,7 +47,7 @@
                    [formControl]="startDateForm"
                    [min]="calendarConfig.minDate"
                    [max]="calendarConfig.maxDate"
-                   [disabled]="calendarConfig.disabled">
+                   [disabled]="!isItemEditable()">
             <mat-datepicker-toggle matSuffix [for]="startDate">
             </mat-datepicker-toggle>
             <ngx-mat-datetime-picker #startDate
@@ -55,8 +67,9 @@
             <input matInput [ngxMatDatetimePicker]="endDate"
                    placeholder="{{'Calendar.EndDate' | translate}}"
                    [formControl]="endDateForm"
-                   [min]="calendarConfig.minDate" [max]="calendarConfig.maxDate"
-                   [disabled]="calendarConfig.disabled">
+                   [min]="calendarConfig.minDate"
+                   [max]="calendarConfig.maxDate"
+                   [disabled]="!isItemEditable()">
             <mat-datepicker-toggle matSuffix [for]="endDate">
             </mat-datepicker-toggle>
             <ngx-mat-datetime-picker #endDate

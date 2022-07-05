@@ -16,21 +16,6 @@ import {ScreenService} from "../../../service/screen.service";
 import {CalendarEditComponent} from "./calendar-edit/calendar-edit.component";
 import {ApplicationConstants} from "../../shared/application-constants";
 
-const colors: any = {
-  red: {
-    primary: '#fc4b6c',
-    secondary: '#f9e7eb',
-  },
-  blue: {
-    primary: '#1e88e5',
-    secondary: '#D1E8FF',
-  },
-  yellow: {
-    primary: '#ffb22b',
-    secondary: '#FDF1BA',
-  },
-};
-
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -39,35 +24,25 @@ const colors: any = {
 export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> implements OnInit, OnDestroy {
 
   dialogRef: MatDialogRef<CalendarEditComponent> = Object.create(null)
-
   view = 'month';
   viewDate: Date = new Date();
-
   activeDayIsOpen = true;
-
   refresh: Subject<any> = new Subject();
 
   actions: ZollozCalendarEventAction[] = [
     {
-      label: '<i class="fa fa-eye act"></i>',
-      name: 'open',
-      onClick: ({event}: { event: ZollozCalendarEvent }): void => {
-        this.handleEvent('Open', event);
-      },
-    },
-    {
       label: '<i class="ti-pencil act"></i>',
-      name: 'edit',
+      name: ApplicationConstants.SCREEN_ACTION_EDIT,
       onClick: ({event}: { event: ZollozCalendarEvent }): void => {
-        this.handleEvent('Edit', event);
+        this.handleEvent(ApplicationConstants.SCREEN_ACTION_EDIT, event);
       },
     },
     {
       label: '<i class="ti-close act"></i>',
-      name: 'delete',
+      name: ApplicationConstants.SCREEN_ACTION_DELETE,
       onClick: ({event}: { event: ZollozCalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Delete', event);
+        this.handleEvent(ApplicationConstants.SCREEN_ACTION_DELETE, event);
       },
     },
   ];
@@ -95,7 +70,7 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
   }
 
   ngOnInit(): void {
-    this.loadCalendarEvents();
+    this.loadEntities();
   }
 
   ngOnDestroy(): void {
@@ -105,7 +80,7 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
   public dayClicked({date, events}: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen) ||
         events.length === 0
       ) {
         this.activeDayIsOpen = false;
@@ -117,10 +92,12 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
   }
 
   public handleEvent(action: string, event: ZollozCalendarEvent): void {
-    if (action === 'open') {
+    if (action === ApplicationConstants.SCREEN_ACTION_EDIT) {
       this.openEditDialog(event);
     }
-
+    if (action === ApplicationConstants.SCREEN_ACTION_DELETE) {
+      this.openDeleteDialog(event);
+    }
   }
 
   public override openAddDialog(entity: ZollozCalendarEvent | null): void {
@@ -145,28 +122,7 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
     });
 
     editor.afterClosed().subscribe(() => {
-        this.loadCalendarEvents();
-    });
-  }
-
-  public openEditor(event: ZollozCalendarEvent | null): void {
-    this.dialogRef = this.dialog.open(CalendarEditComponent, {
-      panelClass: 'calendar-form-dialog',
-      data: {
-        event: event,
-        action: 'add',
-        date: new Date(),
-      },
-    });
-    this.dialogRef.afterClosed().subscribe((result) => {
-      if (!result) {
-        return;
-      }
-      const event = result.event;
-      event.actions = this.actions;
-      this.events.push(event);
-      this.dialogRef = Object.create(null);
-      this.refresh.next(event);
+        this.loadEntities();
     });
   }
 
@@ -186,29 +142,32 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
     this.handleEvent('update', event);
   }
 
-  private loadCalendarEvents(): void {
+  public override loadEntities(): void {
     this.subscriptions.push(
       this.calendarService.getAllForCurrentUser().subscribe((response: ZollozCalendarEvent[]) => {
-        this.events = response;
-        this.setAllowedActionForEvents();
+        this.events = this.convertEvents(response);
       }, (errorResponse: HttpErrorResponse) => {
         this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)
       })
     );
   }
 
-  private setAllowedActionForEvents(): void {
-    this.events.forEach(e => {
+  private convertEvents(events: ZollozCalendarEvent[]): ZollozCalendarEvent[] {
+    events.forEach(e => {
+      e.start = new Date(e.start);
+      e.end = new Date(e.end!);
       if (e.type === ZollozCalendarEvent.TYPE_CUSTOM) {
         e.actions = this.actions;
       } else {
-        const openAction = this.getAction('open');
+        const openAction = this.getAction(ApplicationConstants.SCREEN_ACTION_EDIT);
         if (openAction) {
           e.actions = [];
           e.actions.push(openAction)
         }
       }
     });
+
+    return events;
   }
 
   private getAction(name: string): ZollozCalendarEventAction | undefined {

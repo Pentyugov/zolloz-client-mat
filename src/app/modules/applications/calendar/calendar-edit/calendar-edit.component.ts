@@ -49,6 +49,8 @@ export class CalendarEditComponent extends AbstractEditor implements OnInit, OnD
     if (!this.isNewItem()) {
       this.entity = this._data.entity;
       this.reloadEvent();
+    } else {
+      this.prepareDate();
     }
   }
 
@@ -122,6 +124,10 @@ export class CalendarEditComponent extends AbstractEditor implements OnInit, OnD
 
   public isNewItem(): boolean {
     return this._data.isNewItem;
+  }
+
+  public isItemEditable(): boolean {
+    return this.entity.type === ZollozCalendarEvent.TYPE_CUSTOM;
   }
 
   private prepareDate(): void {
