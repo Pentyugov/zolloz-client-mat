@@ -1,7 +1,7 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DOCUMENT} from "@angular/common";
-import {CalendarEvent} from "angular-calendar";
+import {CalendarEvent, DAYS_OF_WEEK} from "angular-calendar";
 import {isSameDay, isSameMonth,} from 'date-fns';
 import {Subject} from "rxjs";
 import {CalendarService} from "../../../service/calendar.service";
@@ -15,6 +15,8 @@ import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
 import {ScreenService} from "../../../service/screen.service";
 import {CalendarEditComponent} from "./calendar-edit/calendar-edit.component";
 import {ApplicationConstants} from "../../shared/application-constants";
+import {EventNotificationCaptionEnum} from "../../../enum/event-notification-caption.enum";
+import ru from '@angular/common/locales/ru';
 
 @Component({
   selector: 'app-calendar',
@@ -22,7 +24,10 @@ import {ApplicationConstants} from "../../shared/application-constants";
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> implements OnInit, OnDestroy {
-
+  public editAction = ApplicationConstants.SCREEN_ACTION_EDIT;
+  public deleteAction = ApplicationConstants.SCREEN_ACTION_DELETE;
+  public updateAction = ApplicationConstants.SCREEN_ACTION_UPDATE;
+  weekStartsOn: number = DAYS_OF_WEEK.MONDAY
   dialogRef: MatDialogRef<CalendarEditComponent> = Object.create(null)
   view = 'month';
   viewDate: Date = new Date();
@@ -32,17 +37,17 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
   actions: ZollozCalendarEventAction[] = [
     {
       label: '<i class="ti-pencil act"></i>',
-      name: ApplicationConstants.SCREEN_ACTION_EDIT,
+      name: this.editAction,
       onClick: ({event}: { event: ZollozCalendarEvent }): void => {
-        this.handleEvent(ApplicationConstants.SCREEN_ACTION_EDIT, event);
+        this.handleEvent(this.editAction, event);
       },
     },
     {
       label: '<i class="ti-close act"></i>',
-      name: ApplicationConstants.SCREEN_ACTION_DELETE,
+      name: this.deleteAction,
       onClick: ({event}: { event: ZollozCalendarEvent }): void => {
         this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent(ApplicationConstants.SCREEN_ACTION_DELETE, event);
+        this.handleEvent(this.deleteAction, event);
       },
     },
   ];
@@ -92,11 +97,14 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
   }
 
   public handleEvent(action: string, event: ZollozCalendarEvent): void {
-    if (action === ApplicationConstants.SCREEN_ACTION_EDIT) {
+    if (action === this.editAction) {
       this.openEditDialog(event);
     }
-    if (action === ApplicationConstants.SCREEN_ACTION_DELETE) {
+    if (action === this.deleteAction) {
       this.openDeleteDialog(event);
+    }
+    if (action === this.updateAction) {
+      this.onUpdateEvent(event);
     }
   }
 
@@ -126,6 +134,18 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
     });
   }
 
+  private onUpdateEvent(event: ZollozCalendarEvent): void {
+    event.actions = [];
+    this.subscriptions.push(this.calendarService.update(event).subscribe(
+      () => {
+        this.eventNotificationService
+          .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Event was updated successfully`);
+      }, (errorResponse: HttpErrorResponse) => {
+        this.eventNotificationService
+          .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+      }));
+  }
+
   public eventTimesChanged({event, newStart, newEnd}: any): void {
     event.start = newStart;
     event.end = newEnd;
@@ -139,7 +159,7 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
       }
       return iEvent;
     });
-    this.handleEvent('update', event);
+    this.handleEvent(this.updateAction, event);
   }
 
   public override loadEntities(): void {
@@ -159,7 +179,7 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
       if (e.type === ZollozCalendarEvent.TYPE_CUSTOM) {
         e.actions = this.actions;
       } else {
-        const openAction = this.getAction(ApplicationConstants.SCREEN_ACTION_EDIT);
+        const openAction = this.getAction(this.editAction);
         if (openAction) {
           e.actions = [];
           e.actions.push(openAction)

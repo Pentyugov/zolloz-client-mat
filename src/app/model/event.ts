@@ -46,7 +46,7 @@ export class ZollozCalendarEvent extends Entity implements CalendarEvent {
     this.description = '';
     this.actions = [];
     this.color = CalendarConfig.color.blue;
-    this.draggable = false;
+    this.draggable = true;
   }
 
   public static fillFromData(data: any): ZollozCalendarEvent {

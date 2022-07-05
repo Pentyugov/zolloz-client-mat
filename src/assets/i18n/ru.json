@@ -292,5 +292,9 @@
   "Calendar.Week" : "Неделя",
   "Calendar.Day" : "День",
   "Calendar.StartDate" : "Начало",
-  "Calendar.EndDate" : "Окончание"
+  "Calendar.EndDate" : "Окончание",
+  "Calendar.Editor" : "Редактирование события",
+  "Calendar.Title" : "Наименование",
+  "Calendar.Description" : "Описание",
+  "Calendar.ChooseColor" : "Выберите цвет"
 }

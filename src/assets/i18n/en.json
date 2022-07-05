@@ -292,5 +292,9 @@
   "Calendar.Week" : "Week",
   "Calendar.Day" : "Day",
   "Calendar.StartDate" : "Start date",
-  "Calendar.EndDate" : "End date"
+  "Calendar.EndDate" : "End date",
+  "Calendar.Editor" : "Event editor",
+  "Calendar.Title" : "Title",
+  "Calendar.Description" : "Description",
+  "Calendar.ChooseColor" : "Choose color"
 }

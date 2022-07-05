@@ -1,4 +1,4 @@
-<h4 class="m-t-0 p-l-5">{{'Name' | translate}}</h4>
+<h4 class="m-t-0 p-l-5">{{'Calendar.Editor' | translate}}</h4>
 
 <div class="event-dialog-wrapper">
   <div mat-dialog-content class="p-16 m-0">
@@ -7,17 +7,20 @@
 
         <div fxLayout="row" fxLayout.lt-sm="column" fxFlex="100" formGroupName="color">
           <mat-form-field fxFlex>
-            <input matInput placeholder="Change Color" type="color" [(ngModel)]="entity.color!.primary">
+            <input matInput
+                   placeholder="{{'Calendar.ChooseColor' | translate}}"
+                   type="color"
+                   [(ngModel)]="entity.color!.primary">
           </mat-form-field>
         </div>
 
         <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field appearance="outline" class="p-r-15 m-r-15">
-            <mat-label>{{'Title' | translate}}</mat-label>
+            <mat-label>{{'Calendar.Title' | translate}}</mat-label>
             <input matInput
                    required
                    maxlength="50"
-                   placeholder="{{'Title' | translate}}"
+                   placeholder="{{'Calendar.Title' | translate}}"
                    [(ngModel)]="entity.title"
                    name="title"/>
           </mat-form-field>
@@ -25,15 +28,14 @@
 
         <div fxFlex="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
           <mat-form-field appearance="outline" class="p-r-15 m-r-15">
-            <mat-label>{{'Description' | translate}}</mat-label>
+            <mat-label>{{'Calendar.Description' | translate}}</mat-label>
             <textarea
               matInput
-              required
               name="description"
               maxlength="255"
               cdkTextareaAutosize
               cdkAutosizeMinRows="2"
-              placeholder="{{'Description' | translate}}"
+              placeholder="{{'Calendar.Description' | translate}}"
               [(ngModel)]="entity.description"
             ></textarea>
           </mat-form-field>
@@ -44,6 +46,7 @@
           <mat-form-field>
             <input matInput [ngxMatDatetimePicker]="startDate"
                    placeholder="{{'Calendar.StartDate' | translate}}"
+                   (dateChange)="updateDuration()"
                    [formControl]="startDateForm"
                    [min]="calendarConfig.minDate"
                    [max]="calendarConfig.maxDate"
@@ -66,6 +69,7 @@
           <mat-form-field>
             <input matInput [ngxMatDatetimePicker]="endDate"
                    placeholder="{{'Calendar.EndDate' | translate}}"
+                   (dateChange)="updateDuration()"
                    [formControl]="endDateForm"
                    [min]="calendarConfig.minDate"
                    [max]="calendarConfig.maxDate"

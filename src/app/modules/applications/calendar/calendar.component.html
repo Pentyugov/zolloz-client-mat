@@ -13,9 +13,7 @@
   <mat-card-content>
     <mat-toolbar color="primary" class="no-shadow">
       <mat-toolbar-row>
-        <span fxFlex fxShow="false" fxShow.gt-xs>{{
-          viewDate | calendarDate: view + 'ViewTitle':'en'
-          }}</span>
+        <span fxFlex fxShow="false" fxShow.gt-xs>{{viewDate | calendarDate: view + 'ViewTitle':'fr' : weekStartsOn}}</span>
         <!-- ============================================================== -->
         <!-- Event View -->
         <!-- ============================================================== -->
@@ -65,7 +63,7 @@
         [refresh]="refresh"
         [activeDayIsOpen]="activeDayIsOpen"
         (dayClicked)="dayClicked($event.day)"
-        (eventClicked)="handleEvent('open', $event.event)"
+        (eventClicked)="handleEvent(editAction, $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
       >
       </mwl-calendar-month-view>
@@ -75,7 +73,7 @@
         [viewDate]="viewDate"
         [events]="events"
         [refresh]="refresh"
-        (eventClicked)="handleEvent('open', $event.event)"
+        (eventClicked)="handleEvent(editAction, $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
       >
       </mwl-calendar-week-view>
@@ -85,7 +83,7 @@
         [viewDate]="viewDate"
         [events]="events"
         [refresh]="refresh"
-        (eventClicked)="handleEvent('open', $event.event)"
+        (eventClicked)="handleEvent(editAction, $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
       >
       </mwl-calendar-day-view>

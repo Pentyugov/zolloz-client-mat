@@ -86,6 +86,7 @@ export class CalendarEditComponent extends AbstractEditor implements OnInit, OnD
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.event === ApplicationConstants.DIALOG_ACTION_SAVE) {
+          this.updateDuration();
           if (this.isNewItem()) {
             this.onCreateEvent();
           } else {
@@ -95,6 +96,11 @@ export class CalendarEditComponent extends AbstractEditor implements OnInit, OnD
         }
       }
     });
+  }
+
+  public updateDuration(): void {
+    this.entity.start = this.startDateForm.value;
+    this.entity.end = this.endDateForm.value;
   }
 
   private onCreateEvent(): void {

@@ -178,6 +178,7 @@ export class ApplicationConstants {
   static readonly SCREEN_ACTION_CREATE = "Create";
   static readonly SCREEN_ACTION_EDIT   = "Edit";
   static readonly SCREEN_ACTION_DELETE = "Delete";
+  static readonly SCREEN_ACTION_UPDATE = 'Update';
 
 //    ==============================================================
 //    =                            ROLES                           =
