@@ -1,15 +1,16 @@
 <div
   class="login-register"
-  style="background-image: url(assets/images/background/login-background-4.jpg)"
+  style="background-image: url(../../../assets/images/background/login-background-5.jpg)"
 >
-  <div class="login-register-box">
+  <img alt="homepage" src="assets/images/icon/spinner-blue.png" class="logoSpin" width="250" height="250">
+  <img alt="homepage" src="assets/images/background/login-background-logo-3.png" class="login-background-logo" width="40%" height="250">
+  <div class="login-register-box login-card">
     <mat-card>
       <mat-card-content>
         <form [formGroup]="registerForm" (ngSubmit)="onRegister(registerForm.value)">
-          <div class="text-center">
-            <img alt="homepage" src="assets/images/icon/zolloz-logo.png" width="270" height="100"/>
-          </div>
+
           <div fxLayout="row wrap">
+
 
             <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
               <mat-form-field style="width: 100%">

@@ -12,7 +12,7 @@ $green-app-warn: mat.define-palette(mat.$pink-palette);
 // Create the theme object (a Sass map containing all of the palettes).
 $green-app-theme: mat.define-light-theme($green-app-primary, $green-app-accent, $green-app-warn);
 $themecolor: #009688;
-$themecolor-alt: #009688;
+$themecolor-alt: #019688;
 $white: #fff;
 #snav {
   .mat-nav-list .mat-list-item {

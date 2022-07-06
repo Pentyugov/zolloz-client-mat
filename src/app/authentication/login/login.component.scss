@@ -1,0 +1,36 @@
+.logoSpin {
+ position: absolute;
+  top: 30%;
+  left: 35%;
+  z-index: 1;
+  animation-name: spin;
+  animation-duration: 5000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  transform: rotate(3deg);
+  transform: rotate(0.3rad);
+  transform: rotate(3grad);
+  transform: rotate(.03turn);
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(-360deg);
+  }
+}
+
+.login-card {
+  position: absolute;
+  left: 60%;
+}
+
+.login-background-logo {
+  position: absolute;
+  top: 37%;
+  left: 5%;
+  z-index: 10;
+}
+
