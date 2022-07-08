@@ -40,7 +40,7 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
                         public editor: MatDialog,
                         public screenService: ScreenService) {
     super(router, translate, eventNotificationService, applicationService, dialog);
-    this.initId();
+    // this.initId();
   }
 
   protected afterCommit(message: string): void {

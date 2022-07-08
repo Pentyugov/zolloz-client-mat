@@ -51,7 +51,7 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
       taskService,
       editor,
       screenService);
-
+    this.id = 'screen$Tasks';
     this.defaultFilterPredicate = this.dataSource.filterPredicate;
     this.statusFilterPredicate = (task: Task, filter: string) => {
       if (task.priority)

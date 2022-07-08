@@ -45,6 +45,7 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
                      protected projectEditor: MatDialog) {
 
     super(router, translate, eventNotificationService, applicationService, dialog, screenService);
+    this.id = 'screen$Projects'
     this.defaultFilterPredicate = this.dataSource.filterPredicate;
     this.statusFilterPredicate = (project: Project, filter: string) => {
       if (project.status)

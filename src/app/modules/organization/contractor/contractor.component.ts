@@ -40,6 +40,8 @@ export class ContractorComponent extends NewAbstractBrowser<Contractor> implemen
       contractorService,
       editor,
       screenService);
+
+    this.id = 'screen$Contractor';
   }
 
   ngOnInit(): void {

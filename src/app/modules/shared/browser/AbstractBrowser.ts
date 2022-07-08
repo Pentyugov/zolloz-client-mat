@@ -63,7 +63,7 @@ export abstract class AbstractBrowser extends AbstractWindow {
   }
 
   public initId(): void {
-    this.id = "screen$" + this.constructor.name.replace("Component", "");
+    // this.id = "screen$" + this.constructor.name.replace("Component", "");
   }
 
   public openEditorByUrl(url: string): void {

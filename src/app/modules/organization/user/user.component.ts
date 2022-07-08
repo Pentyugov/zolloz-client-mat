@@ -42,6 +42,7 @@ export class UserComponent extends AbstractBrowser implements OnInit, OnDestroy 
               dialog: MatDialog,
               private userService: UserService) {
     super(router, translate, eventNotificationService, applicationService, dialog, screenService);
+    this.id = 'screen$User'
     this.userSettings = this.applicationService.getUserSettings();
     this.refreshing = this.applicationService.getRefreshing();
     this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {

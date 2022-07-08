@@ -46,7 +46,7 @@ export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy 
               dialog: MatDialog,
               private roleService: RoleService) {
     super(router, translate, eventNotificationService, applicationService, dialog, screenService);
-
+    this.id = 'screen$Role'
     this.userSettings = this.applicationService.getUserSettings();
     this.translate.use(this.userSettings.locale);
 

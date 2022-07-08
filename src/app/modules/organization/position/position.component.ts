@@ -47,6 +47,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
               private positionService: PositionService,
               private employeeService: EmployeeService) {
     super(router, translate, eventNotificationService, applicationService, dialog, screenService);
+    this.id = 'screen$Position'
   }
 
   ngOnInit(): void {

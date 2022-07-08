@@ -40,6 +40,8 @@ export class DepartmentComponent extends NewAbstractBrowser<Department> implemen
       departmentService,
       editor,
       screenService);
+
+    // this.id = 'screen$Department';
   }
 
   ngOnInit(): void {

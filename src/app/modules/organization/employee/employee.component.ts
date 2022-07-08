@@ -34,7 +34,7 @@ export class EmployeeComponent extends AbstractBrowser implements OnInit, OnDest
               dialog: MatDialog,
               private employeeService: EmployeeService) {
     super(router, translate, eventNotificationService, applicationService, dialog, screenService);
-
+    this.id = 'screen$Employee'
 
   }
 
