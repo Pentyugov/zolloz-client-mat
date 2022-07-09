@@ -9,7 +9,7 @@ import {ApplicationConstants} from "../../application-constants";
   styleUrls: ['./save-dialog.component.scss']
 })
 export class SaveDialogComponent {
-  constructor(private translate: TranslateService,
+  constructor(public translate: TranslateService,
               public dialogRef: MatDialogRef<SaveDialogComponent>) {
 
   }
