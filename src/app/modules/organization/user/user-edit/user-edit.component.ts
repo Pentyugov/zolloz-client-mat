@@ -1,7 +1,6 @@
 import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {UserService} from "../../../../service/user.service";
 import {User} from "../../../../model/user";
-import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Role} from "../../../../model/role";
 import {RoleService} from "../../../../service/role.service";
@@ -16,13 +15,14 @@ import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../../service/event-notification.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ApplicationConstants} from "../../../shared/application-constants";
+import {AbstractEditor} from "../../../shared/editor/abstract-editor";
 
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.scss']
 })
-export class UserEditComponent implements OnInit, OnDestroy {
+export class UserEditComponent extends AbstractEditor implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(UcWidgetComponent) widget!: UcWidgetComponent;
@@ -31,22 +31,19 @@ export class UserEditComponent implements OnInit, OnDestroy {
   public usernameTitle: string = '';
   public roles: Role[] = [];
   public rolesDataSource: MatTableDataSource<Role>;
-  public refreshing = true;
   private id: any;
-  private subscriptions: Subscription[] = [];
   private title: string = '';
-  private message: string = '';
-
   public userRoles: Role[] = [];
 
-  constructor(private activatedRouter: ActivatedRoute,
+  constructor(router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
+              dialog: MatDialog,
+              private activatedRouter: ActivatedRoute,
               private roleService: RoleService,
-              private userService: UserService,
-              private applicationService: ApplicationService,
-              private translate: TranslateService,
-              private router: Router,
-              private eventNotificationService: EventNotificationService,
-              private dialog: MatDialog) {
+              private userService: UserService) {
+    super(router, translate, eventNotificationService, applicationService, dialog)
     this.id = activatedRouter.snapshot.paramMap.get('id');
     this.rolesDataSource = new MatTableDataSource<Role>();
     this.refreshing = this.applicationService.getRefreshing();
@@ -96,6 +93,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
     data.action = action;
     const dialogRef = this.dialog.open(UserEditDialogComponent, {
       data: data,
+      panelClass: this.isDarkMode ? 'dark' : '',
       width: ApplicationConstants.DIALOG_WIDTH
     });
     dialogRef.afterClosed().subscribe((result) => {

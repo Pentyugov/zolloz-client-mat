@@ -15,14 +15,15 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {EventNotificationService} from "../../../../service/event-notification.service";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ApplicationConstants} from "../../../shared/application-constants";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {AbstractEditor} from "../../../shared/editor/abstract-editor";
 
 @Component({
   selector: 'app-user-add',
   templateUrl: './user-add.component.html',
   styleUrls: ['./user-add.component.scss']
 })
-export class UserAddComponent implements OnInit, OnDestroy {
+export class UserAddComponent extends AbstractEditor implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(UcWidgetComponent) widget!: UcWidgetComponent;
@@ -30,19 +31,18 @@ export class UserAddComponent implements OnInit, OnDestroy {
   public userToCreate: User = new User();
   public roles: Role[] = [];
   public rolesDataSource: MatTableDataSource<Role>;
-  public refreshing = true;
   public imageUploaded = false;
-  private subscriptions: Subscription[] = [];
   private title: string = '';
-  private message: string = '';
-  constructor(private applicationService: ApplicationService,
-              private userService: UserService,
-              private roleService: RoleService,
-              private translate: TranslateService,
-              private dialog: MatDialog,
-              private router: Router,
-              private eventNotificationService: EventNotificationService) {
 
+  constructor(router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
+              dialog: MatDialog,
+              private activatedRouter: ActivatedRoute,
+              private roleService: RoleService,
+              private userService: UserService) {
+    super(router, translate, eventNotificationService, applicationService, dialog)
     this.rolesDataSource = new MatTableDataSource<Role>();
     this.refreshing = this.applicationService.getRefreshing();
 

@@ -91,6 +91,7 @@ export class UserComponent extends AbstractBrowser implements OnInit, OnDestroy 
     this.userToDelete = user;
     const dialogRef = this.dialog.open(UserDeleteDialogComponent, {
       data: this.userToDelete,
+      panelClass: this.isDarkMode ? 'dark' : '',
       width: ApplicationConstants.DIALOG_WIDTH
     });
 

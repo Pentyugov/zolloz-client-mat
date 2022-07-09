@@ -2,7 +2,7 @@
 <div fxLayout="row wrap">
   <div fxFlex.gt-lg="25" fxFlex.gt-md="40" fxFlex.gt-xs="100" fxFlex="100">
 
-    <mat-card style="min-height: 450px">
+    <mat-card style="min-height: 468px">
       <mat-card-content class="text-center">
         <h4 class="card-title">{{'UserProfileImage' | translate}}</h4>
         <div class="profile-pic m-b-20 m-t-20">
@@ -40,19 +40,32 @@
         <span>
           <form #userEditForm="ngForm">
             <div fxLayout="row wrap" class="align-items-center m-b-15">
-              <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex="100">
+
+              <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="100" [ngClass.xs]="{'text-center' : true}">
                 <h3 class="m-0">
                   <div class="d-flex">
                     <span ngDefaultControl>{{'EditUser' | translate}}</span>
                   </div>
-
                 </h3>
               </div>
-              <div fxFlex.gt-md="50" class="text-right">
-                <a [routerLink]="['/organization/users']">
-                  <button mat-stroked-button color="warn" class="m-r-10">{{'Cancel' | translate}}</button>
-                </a>
-                <button mat-raised-button color="primary" (click)="openDialog('Update', editedUser)">{{'SaveUser' | translate}}</button>
+
+              <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
+
+                  <button mat-stroked-button
+                          (click)="router.navigateByUrl('/organization/users')"
+                          color="warn"
+                          style="margin: 5px"
+                  >
+                    {{'Cancel' | translate}}
+                  </button>
+                <button mat-raised-button
+                        color="primary"
+                        style="margin: 5px"
+                        (click)="openDialog('Update', editedUser)"
+                >
+                  {{'Save' | translate}}
+                </button>
+
               </div>
             </div>
 
@@ -92,21 +105,6 @@
                   <input matInput placeholder="{{'LastName' | translate}}" name="lastName" [(ngModel)]="editedUser.lastName" />
                 </mat-form-field>
               </div>
-
-<!--              <div fxFlex="100" fxFlex.gt-md="100">-->
-<!--                <mat-form-field appearance="outline" class="p-r-15 m-r-15">-->
-<!--                  <mat-label>Roles</mat-label>-->
-<!--                 <mat-select multiple-->
-<!--                             placeholder="Years"-->
-<!--                             name="year"-->
-<!--                             class="filter-select"-->
-<!--                             [(ngModel)]="editedUser.roles"-->
-<!--                             [compareWith]="equals"-->
-<!--                 >-->
-<!--                  <mat-option *ngFor="let role of roles" [value]="role">{{role.name}}</mat-option>-->
-<!--                 </mat-select>-->
-<!--                </mat-form-field>-->
-<!--              </div>-->
 
               <div fxFlex="100" fxFlex.gt-md="50">
                 <mat-checkbox color="primary"
@@ -169,7 +167,7 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
             </table>
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [pageSizeOptions]="[10, 15, 20]" [pageSize]="10"></mat-paginator>
         </div>
       </mat-card-content>
     </mat-card>
