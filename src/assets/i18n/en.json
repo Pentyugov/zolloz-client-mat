@@ -296,5 +296,6 @@
   "Calendar.Editor" : "Event editor",
   "Calendar.Title" : "Title",
   "Calendar.Description" : "Description",
-  "Calendar.ChooseColor" : "Choose color"
+  "Calendar.ChooseColor" : "Choose color",
+  "Reset" : "Reset"
 }

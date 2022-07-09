@@ -1,4 +1,4 @@
-<mat-card style="height: 400px">
+<mat-card style="height: 410px">
 
       <mat-card-content>
         <mat-card-title>{{'Profile info' | translate}}</mat-card-title>
@@ -50,14 +50,26 @@
             </div>
 
             <div fxFlex.gt-sm="100" fxFlex="100">
-              <button mat-raised-button
-                      color="primary"
-                      [disabled]="profileForm.invalid"
-                      (click)="openDialog()">{{'Update Profile' | translate}}</button>
-              <button mat-raised-button
-                      color="warn"
-                      (click)="refreshData()"
-                      style="margin-left: 15px">{{'ResetForm' | translate}}</button>
+
+              <div [ngClass.lt-md]="{'text-center' : true}" [ngClass.gt-md]="{'text-right' : true}">
+                <button mat-raised-button
+                        color="warn"
+                        (click)="refreshData()"
+                        style="margin: 5px; width: 100px; height: 40px"
+                >
+                  {{'Reset' | translate}}
+                </button>
+
+                <button mat-raised-button
+                        color="primary"
+                        [disabled]="profileForm.invalid"
+                        (click)="openDialog()"
+                        style="margin: 5px; width: 100px; height: 40px"
+                >
+                  {{'Update' | translate}}
+                </button>
+              </div>
+
             </div>
 
           </div>

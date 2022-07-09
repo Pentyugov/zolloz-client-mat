@@ -68,7 +68,7 @@
 
         </div>
 
-        <div fxFlex.gt-sm="100" fxFlex="100">
+        <div fxFlex.gt-sm="100" fxFlex="100"  [ngClass.lt-md]="{'text-center' : true}" [ngClass.gt-md]="{'text-right' : true}">
           <button mat-raised-button
                   color="primary"
                   (click)="saveUserSettings()"

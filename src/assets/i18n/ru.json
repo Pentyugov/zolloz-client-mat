@@ -296,5 +296,6 @@
   "Calendar.Editor" : "Редактирование события",
   "Calendar.Title" : "Наименование",
   "Calendar.Description" : "Описание",
-  "Calendar.ChooseColor" : "Выберите цвет"
+  "Calendar.ChooseColor" : "Выберите цвет",
+  "Reset" : "Сбросить"
 }
