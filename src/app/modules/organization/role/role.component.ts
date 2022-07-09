@@ -91,6 +91,7 @@ export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy 
     role.action = action;
     const dialogRef = this.dialog.open(RoleContentComponent, {
       data: role,
+      panelClass: this.isDarkMode ? 'dark' : '',
       width: ApplicationConstants.DIALOG_WIDTH
     });
     dialogRef.afterClosed().subscribe((result) => {

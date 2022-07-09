@@ -29,16 +29,43 @@
         </mat-form-field>
       </div>
       </div>
+    <div class="text-right">
+      <button mat-button
+              (click)="closeDialog()"
+              color="warn"
+      >
+        {{'Cancel' | translate}}
+      </button>
+      <button mat-button
+              (click)="doAction()"
+              mat-flat-button
+              color="primary"
+              [disabled]="!userForm.valid"
+      >
+        {{action | translate}}
+      </button>
 
-    <button mat-button (click)="doAction()" mat-flat-button color="warn" [disabled]="!userForm.valid">{{action | translate}}</button>
+    </div>
 
-    <button mat-button (click)="closeDialog()">{{'Cancel' | translate}}</button>
   </form>
 </mat-dialog-content>
+
 <ng-template #elseTemplate>
   <p>{{'DeleteRoleMsg' | translate}} <b>{{local_data.name}}</b> ?</p>
   <div mat-dialog-actions align="end" class="pt-3">
-    <button mat-button (click)="doAction()" mat-flat-button color="warn">{{action | translate}}</button>
-    <button mat-button (click)="closeDialog()">{{'Cancel' | translate}}</button>
+    <button mat-button
+            (click)="closeDialog()"
+            color="warn"
+    >
+      {{'Cancel' | translate}}
+    </button>
+
+    <button mat-button
+            (click)="doAction()"
+            mat-flat-button
+            color="primary"
+    >
+      {{action | translate}}
+    </button>
   </div>
 </ng-template>
