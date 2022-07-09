@@ -23,7 +23,7 @@ export class DepartmentComponent extends NewAbstractBrowser<Department> implemen
   @ViewChild(MatSort, { static: true }) override sort: MatSort = Object.create(null);
   public columnsToDisplay = ApplicationConstants.DEPARTMENT_TABLE_COLUMNS;
 
-  constructor(router: Router,
+  constructor(public override router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -41,7 +41,7 @@ export class DepartmentComponent extends NewAbstractBrowser<Department> implemen
       editor,
       screenService);
 
-    // this.id = 'screen$Department';
+    this.id = 'screen$Department';
   }
 
   ngOnInit(): void {

@@ -1,10 +1,13 @@
 <mat-progress-bar mode="indeterminate" value="40" *ngIf="refreshing"></mat-progress-bar>
+
 <div fxLayout="row wrap" >
   <div fxFlex="100">
     <mat-card>
       <mat-card-content>
+
         <div fxLayout="row wrap" class="align-items-center">
-          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="50">
+
+          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="100">
             <mat-form-field>
               <input matInput
                      placeholder="{{'SearchDepartment' | translate}}"
@@ -12,21 +15,22 @@
               />
             </mat-form-field>
           </div>
-          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="50" class="text-right">
-            <a  [routerLink]="['/organization/departments/add']"
-                *ngIf="isActionPermit(CREATE_ACTION)"
-                class="m-r-10 cursor-pointer">
-              <button mat-raised-button
-                      color="primary">
-                {{'AddDepartment' | translate}}
-              </button>
-            </a>
+
+          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
+
+            <button mat-raised-button
+                    *ngIf="isActionPermit(CREATE_ACTION)"
+                    (click)="router.navigateByUrl('/organization/departments/add')"
+                    style="margin: 5px"
+                    color="primary">
+              <i class="fa fa-plus"></i>
+            </button>
 
             <button mat-raised-button
                     *ngIf="isActionPermit(EDIT_ACTION)"
                     (click)="router.navigateByUrl('/organization/departments/edit/' + clickedRow.id)"
                     color="accent"
-                    style="margin-left: 10px"
+                    style="margin: 5px"
                     [disabled]="!clickedRow">
               <i class="fa fa-pencil"></i>
             </button>
@@ -35,7 +39,7 @@
                     *ngIf="isActionPermit(DELETE_ACTION)"
                     (click)="openDeleteDialog(clickedRow)"
                     color="warn"
-                    style="margin-left: 10px"
+                    style="margin: 5px"
                     [disabled]="!clickedRow">
               <i class="fas fa-trash"></i>
             </button>

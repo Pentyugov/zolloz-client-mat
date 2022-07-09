@@ -23,6 +23,7 @@ import {EmployeeService} from "../../../../service/employee.service";
   styleUrls: ['./department-add.component.scss']
 })
 export class DepartmentAddComponent implements OnInit, OnDestroy {
+  public isDarkMode: boolean = false;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, { static: true }) sort: MatSort = Object.create(null);
   public refreshing = true;
@@ -41,10 +42,12 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
               private translate: TranslateService,
               private employeeService: EmployeeService,
               private dialog: MatDialog,
-              private router: Router) {
+              public router: Router) {
     this.refreshing = this.applicationService.getRefreshing();
     this.subscriptions.push(this.applicationService.userSettings.subscribe(us => this.translate.use(us.locale)));
     this.subscriptions.push(this.applicationService.refreshing.subscribe(ref => this.refreshing = ref));
+    this.subscriptions.push(applicationService.darkMode.subscribe(dm => this.isDarkMode = dm));
+    this.subscriptions.push(applicationService.darkMode.subscribe(dm => this.isDarkMode = dm));
   }
 
   ngOnInit(): void {
@@ -61,6 +64,7 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
     data.isEmployeeDsChecked = this.isEmployeeDsChecked;
     const dialogRef = this.dialog.open(DepartmentSaveDialogComponent, {
       data: data,
+      panelClass: this.isDarkMode ? 'dark' : '',
       width: ApplicationConstants.DIALOG_WIDTH
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -75,6 +79,7 @@ export class DepartmentAddComponent implements OnInit, OnDestroy {
     data.employees = this.employeeDs.data;
     const dialogRef = this.dialog.open(DepartmentEmployeeAddDialogComponent, {
       data: data,
+      panelClass: this.isDarkMode ? 'dark' : '',
       width: '100%'
     });
     dialogRef.afterClosed().subscribe((result) => {
