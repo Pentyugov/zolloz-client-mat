@@ -96,6 +96,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
   public openDeleteDialog(position: Position) {
     this.dialog.open(PositionDeleteDialogComponent, {
       data: position,
+      panelClass: this.isDarkMode ? 'dark' : '',
       width: ApplicationConstants.DIALOG_WIDTH
     }).afterClosed().subscribe(response => {
       if (response.event.action === ApplicationConstants.DIALOG_ACTION_DELETE) {
@@ -125,6 +126,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
   public openPositionAddDialog() {
     const dialogRef = this.dialog.open(PositionAddDialogComponent, {
       data: {'action' : ApplicationConstants.DIALOG_ACTION_ADD},
+      panelClass: this.isDarkMode ? 'dark' : '',
       width: ApplicationConstants.DIALOG_WIDTH
     });
 
@@ -139,6 +141,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
     if (this.isActionPermit(this.EDIT_ACTION)) {
       const dialogRef = this.dialog.open(PositionEditDialogComponent, {
         data: position,
+        panelClass: this.isDarkMode ? 'dark' : '',
         width: ApplicationConstants.DIALOG_WIDTH
       });
 
