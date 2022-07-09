@@ -35,7 +35,7 @@ export class ProjectAddParticipantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.loadProjectParticipants();
   }
 
   ngOnDestroy(): void {
@@ -81,9 +81,11 @@ export class ProjectAddParticipantsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadUsers(): void {
+  private loadProjectParticipants(): void {
+    let roleNames = [ApplicationConstants.ROLE_PROJECT_MANAGER, ApplicationConstants.ROLE_PROJECT_PARTICIPANT];
+    // let roleNames = ['admin', 'apentyugov']
     this.subscriptions.push(
-      this.userService.getAll().subscribe(
+      this.userService.getAllWithAnyRole(roleNames).subscribe(
         (response: User[]) => {
           this.initDataSource(response);
         }

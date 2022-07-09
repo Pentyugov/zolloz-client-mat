@@ -54,6 +54,11 @@ export class UserService implements EntityService<User>{
     return this.httpClient.get<User[]>(`${this.host}/user/get-all-with-role/${role}`);
   }
 
+  public getAllWithAnyRole(roleNames: String[]): Observable<User[]> {
+    let names = roleNames.join(";")
+    return this.httpClient.get<User[]>(`${this.host}/user/get-all-with-any-role?roleNames=${names}`);
+  }
+
   public getAllWithPermission(permission: String): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.host}/user/get-all-with-permission/${permission}`);
   }
