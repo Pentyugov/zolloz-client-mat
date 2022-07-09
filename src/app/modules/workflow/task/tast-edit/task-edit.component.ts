@@ -296,8 +296,14 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     this.entity.executionDatePlan = this.executionDatePlan;
   }
 
+  public isExecutorMissing(): boolean {
+    return this.entity.executor == null
+  }
+
   public isStartButtonEnabled(): boolean {
-    return !this.entity.started && (this.authenticationService.isCurrentUserAdmin() || this.isCurrentUserTaskCreatorOrInitiator());
+    return !this.entity.started && !this.isExecutorMissing() &&
+      (this.authenticationService.isCurrentUserAdmin() || this.isCurrentUserTaskCreatorOrInitiator());
+
   }
 
   public isCurrentUserTaskCreatorOrInitiator(): boolean {
@@ -308,7 +314,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   public isExecuteButtonEnabled(): boolean {
     return this.entity.started &&
       (this.entity.state === Task.STATE_ASSIGNED || this.entity.state === Task.STATE_REWORK) &&
-      (this.entity.executor?.id === this.currentUser.id || this.authenticationService.isCurrentUserAdmin()) ;
+      (this.entity.executor?.id === this.currentUser.id || this.authenticationService.isCurrentUserAdmin());
   }
 
   public isReworkButtonEnabled(): boolean {

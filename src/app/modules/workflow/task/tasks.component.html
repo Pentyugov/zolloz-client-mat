@@ -46,7 +46,7 @@
     <mat-card>
       <mat-card-content>
         <div fxLayout="row wrap" class="align-items-center">
-          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex="100">
+          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="100" [ngClass.xs]="{'text-center' : true}">
             <mat-form-field>
               <input
                 matInput
@@ -55,18 +55,19 @@
               />
             </mat-form-field>
           </div>
-          <div fxFlex.gt-md="75" class="text-right">
-            <button mat-raised-button
-                    *ngIf="isActionPermit(CREATE_ACTION)"
-                    color="primary"
-                    (click)="openAddDialog(null)">
-              {{'Tasks.CreateTask' | translate}}
+          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
+          <button mat-raised-button
+                  *ngIf="isActionPermit(CREATE_ACTION)"
+                  color="primary"
+                  style="margin: 5px"
+                  (click)="openAddDialog(null)">
+            <i class="fa fa-plus"></i>
             </button>
 
             <button mat-raised-button
                     *ngIf="isActionPermit(EDIT_ACTION)"
                     color="accent"
-                    style="margin-left: 10px"
+                    style="margin: 5px"
                     (click)="openEditDialog(clickedRow)"
                     [disabled]="!clickedRow">
               <i class="fa fa-pencil"></i>
@@ -75,7 +76,7 @@
             <button mat-raised-button
                     *ngIf="isActionPermit(DELETE_ACTION)"
                     color="warn"
-                    style="margin-left: 10px"
+                    style="margin: 5px"
                     (click)="openDeleteDialog(clickedRow)"
                     [disabled]="!clickedRow">
               <i class="fas fa-trash"></i>
