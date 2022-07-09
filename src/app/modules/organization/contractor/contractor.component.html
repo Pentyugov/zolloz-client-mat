@@ -5,7 +5,8 @@
     <mat-card>
       <mat-card-content>
         <div fxLayout="row wrap" class="align-items-center">
-          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="50">
+
+          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="50" fxFlex="100">
             <mat-form-field>
               <input matInput
                      placeholder="{{'SearchDepartment' | translate}}"
@@ -13,18 +14,22 @@
               />
             </mat-form-field>
           </div>
-          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="50" class="text-right">
+
+          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="50" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
+
             <button mat-raised-button
                     *ngIf="isActionPermit(CREATE_ACTION)"
                     color="primary"
-                    (click)="openAddDialog(null)">
-              {{'Contractor.Create' | translate}}
+                    style="margin: 5px"
+                    (click)="openAddDialog(null)"
+            >
+              <i class="fa fa-plus"></i>
             </button>
 
             <button mat-raised-button
                     *ngIf="isActionPermit(EDIT_ACTION)"
                     color="accent"
-                    style="margin-left: 10px"
+                    style="margin: 5px"
                     (click)="openEditDialog(clickedRow)"
                     [disabled]="!clickedRow">
               <i class="fa fa-pencil"></i>
@@ -33,7 +38,7 @@
             <button mat-raised-button
                     *ngIf="isActionPermit(DELETE_ACTION)"
                     color="warn"
-                    style="margin-left: 10px"
+                    style="margin: 5px"
                     (click)="openDeleteDialog(clickedRow)"
                     [disabled]="!clickedRow">
               <i class="fas fa-trash"></i>
