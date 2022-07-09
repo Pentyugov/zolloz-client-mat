@@ -103,6 +103,7 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
     data.participants = this.participantsDs.data;
     const dialogRef = this.dialog.open(ProjectAddParticipantsComponent, {
       data: data,
+      panelClass: this.isDarkMode ? 'dark' : '',
       width: '100%'
     });
     dialogRef.afterClosed().subscribe((result) => {
