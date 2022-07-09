@@ -1,17 +1,34 @@
-<h2 class="font-medium" mat-dialog-title><strong>{{'Confirmation' | translate}}</strong></h2>
-<mat-dialog-content class="pb-3">
-  <div class="danger dark">
-    <p>{{'EmployeeSaveMsg' | translate}} {{data.username}} ?</p>
+<div fxLayout="row wrap">
+  <mat-card-content>
+    <span>
+      <div fxLayout="row wrap" class="align-items-center m-b-15">
 
-    <div class="text-right">
-      <button mat-raised-button
-              class="m-r-10"
-              (click)="closeDialog()"
-              color="warn">{{'Cancel' | translate}}</button>
-      <button mat-raised-button
-              class="m-r-10"
-              (click)="doAction()"
-              color="primary">{{'Save' | translate}}</button>
-    </div>
-  </div>
-</mat-dialog-content>
+        <div fxFlex="100" [ngClass.xs]="{'text-center' : true}">
+          <h3 class="m-0">
+             <p>{{'EmployeeSaveMsg' | translate}} {{data.firstName + ' ' + data.lastName}} ?</p>
+          </h3>
+        </div>
+        <div fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
+
+          <button mat-button
+                  (click)="closeDialog()"
+                  mat-flat-button color="warn"
+                  style="margin: 5px"
+          >
+            {{'Cancel' | translate}}
+          </button>
+
+          <button mat-button
+                  (click)="doAction()"
+                  mat-flat-button
+                  style="margin: 5px"
+                  color="primary"
+          >
+            {{'Save' | translate}}
+          </button>
+        </div>
+      </div>
+    </span>
+  </mat-card-content>
+</div>
+

@@ -15,7 +15,7 @@ export abstract class AbstractWindow {
   public refreshing: boolean = true;
   public subscriptions: Subscription[] = [];
 
-  protected constructor(protected router: Router,
+  protected constructor(public router: Router,
                         protected translate: TranslateService,
                         protected eventNotificationService: EventNotificationService,
                         protected applicationService: ApplicationService,

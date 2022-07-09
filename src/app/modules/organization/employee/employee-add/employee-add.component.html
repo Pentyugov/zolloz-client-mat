@@ -6,24 +6,34 @@
         <span>
           <form #employeeAddForm="ngForm">
             <div fxLayout="row wrap" class="align-items-center m-b-15">
-              <div fxFlex.gt-md="50" fxFlex.gt-lg="50" fxFlex.gt-xs="25" fxFlex="25">
+
+              <div fxFlex.gt-md="25" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass.xs]="{'text-center' : true}">
                 <h3 class="m-0">
                   <div class="d-flex">
                     <span ngDefaultControl>{{'EditEmployee' | translate}}</span>
                   </div>
-
                 </h3>
               </div>
-              <div fxFlex.gt-md="50" fxFlex.gt-xs="75" class="text-right">
-                <a [routerLink]="['/organization/employees']">
-                  <button mat-stroked-button
-                          color="warn"
-                          class="m-r-10">{{'Cancel' | translate}}</button>
-                </a>
+
+              <div fxFlex.gt-md="75" fxFlex.gt-lg="50" fxFlex.gt-xs="50" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
+
+                <button mat-stroked-button
+                        color="warn"
+                        (click)="router.navigateByUrl('/organization/employees')"
+                        style="margin: 5px"
+                >
+                  {{'Cancel' | translate}}
+                </button>
+
                 <button mat-raised-button
                         color="primary"
                         [disabled]="employeeAddForm.invalid"
-                        (click)="openSaveDialog()">{{'Save' | translate}}</button>
+                        (click)="openSaveDialog()"
+                        style="margin: 5px"
+                >
+                  {{'Save' | translate}}
+                </button>
+
               </div>
             </div>
 

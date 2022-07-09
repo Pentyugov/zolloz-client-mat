@@ -83,7 +83,7 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
   public openSaveDialog() {
     this.dialog.open(EmployeeSaveDialogComponent, {
       data: this.employeeToUpdate,
-      width: ApplicationConstants.DIALOG_WIDTH
+      panelClass: this.isDarkMode ? 'dark' : ''
     }).afterClosed().subscribe(response => {
       if (response.event.action === ApplicationConstants.DIALOG_ACTION_SAVE) {
         this.onUpdateEmployee();
@@ -96,7 +96,7 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
     if ($event.value) {
       this.dialog.open(EmployeePrefillDialogComponent, {
         data: $event.value,
-        width: ApplicationConstants.DIALOG_WIDTH
+        panelClass: this.isDarkMode ? 'dark' : ''
       }).afterClosed().subscribe(response => {
         if (response.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
           this.preFillData($event.value);
