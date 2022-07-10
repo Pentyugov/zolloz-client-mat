@@ -29,6 +29,7 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
 import {NgxPermissionsModule} from "ngx-permissions";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {CommonModule} from "@angular/common";
+import { ResetPasswordComponent } from './authentication/reset-password/reset-password.component';
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -52,6 +53,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
     VerticalSidebarComponent,
     HomeComponent,
     BreadcrumbComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     NgxMaskModule.forRoot(),

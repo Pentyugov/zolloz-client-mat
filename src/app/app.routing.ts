@@ -4,7 +4,7 @@ import {MainComponent} from "./layout/main/main.component";
 import {RegisterComponent} from "./authentication/register/register.component";
 import {AuthenticationGuard} from "./guard/authentication.guard";
 import {HomeComponent} from "./home/home.component";
-import {ApplicationsModule} from "./modules/applications/applications.module";
+import {ResetPasswordComponent} from "./authentication/reset-password/reset-password.component";
 
 export const AppRoutes: Routes = [
   {path: '',
@@ -40,6 +40,7 @@ export const AppRoutes: Routes = [
 
   {path: 'login',component: LoginComponent},
   {path: 'register',component: RegisterComponent},
+  {path: 'reset-password',component: ResetPasswordComponent},
   {path: '**', redirectTo: '/home'}
 
 ]

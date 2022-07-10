@@ -13,6 +13,7 @@ import {EventNotificationService} from "./event-notification.service";
 import {ApplicationService} from "./application.service";
 import {NgxPermissionsService, NgxRolesService} from "ngx-permissions";
 import {ScreenService} from "./screen.service";
+import {ResetPasswordRequest} from "../model/reset-password-request";
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,10 @@ export class AuthenticationService {
 
   public changePassword(formData: FormData): Observable<CustomHttpResponse> {
     return this.httpClient.post<CustomHttpResponse>(`${this.host}/auth/change-password`, formData);
+  }
+
+  public resetPassword(resetPasswordRequest: ResetPasswordRequest): Observable<CustomHttpResponse> {
+    return this.httpClient.post<CustomHttpResponse>(`${this.host}/auth/reset-password`, resetPasswordRequest);
   }
 
   public logOut(showNotification: boolean = false): void {
