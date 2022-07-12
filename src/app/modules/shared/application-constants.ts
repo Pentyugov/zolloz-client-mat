@@ -76,6 +76,12 @@ export class ApplicationConstants {
     'initiator',
     'executor'];
 
+  static readonly TASK_TABLE_COLUMNS_WIDGET = ['number',
+    'state',
+    'priority',
+    'dueDate',
+    'initiator'];
+
   static readonly PROJECT_PARTICIPANTS_TABLE_COLUMNS = ['number',
                                                         'firstName',
                                                         'lastName',

@@ -252,6 +252,7 @@
   "Tasks.FinishTaskMsg" : "Finish task?",
   "Tasks.TaskEditor" : "Task editor",
   "Tasks.TaskCreation" : "Task editor",
+  "Tasks.MyActiveTasks" : "My active tasks",
   "Task" : "Task",
   "Tasks" : "Tasks",
   "Browser" : "Browser",

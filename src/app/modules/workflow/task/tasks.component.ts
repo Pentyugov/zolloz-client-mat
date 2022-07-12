@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";
@@ -19,9 +19,11 @@ import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
   styleUrls: ['./tasks.component.scss']
 })
 export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
+  @Input() isWidget: boolean = false;
   @ViewChild(MatPaginator, {static: false}) override paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, {static: true}) override sort: MatSort = Object.create(null);
-  public columnsToDisplay = ApplicationConstants.TASK_TABLE_COLUMNS;
+
+  public columnsToDisplay: string[] = [];
 
   private readonly defaultFilterPredicate?: (data: Task, filter: string) => boolean;
   private readonly statusFilterPredicate?: (data: Task, filter: string) => boolean;
@@ -51,6 +53,7 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
       taskService,
       editor,
       screenService);
+
     this.id = 'screen$Tasks';
     this.defaultFilterPredicate = this.dataSource.filterPredicate;
     this.statusFilterPredicate = (task: Task, filter: string) => {
@@ -59,10 +62,12 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
       return false;
     };
 
+
   }
 
   ngOnInit(): void {
     this.loadEntities();
+    this.columnsToDisplay = this.isWidget ? ApplicationConstants.TASK_TABLE_COLUMNS_WIDGET : ApplicationConstants.TASK_TABLE_COLUMNS;
   }
 
   override afterLoadEntities() {

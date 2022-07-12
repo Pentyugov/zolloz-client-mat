@@ -61,7 +61,8 @@ import {TaskExecutionDialogComponent} from './task/task-execution-dialog/task-ex
   ],
 
   exports: [
-    NgxPermissionsModule
+    NgxPermissionsModule,
+    TasksComponent
   ]
 })
 export class WorkflowModule { }

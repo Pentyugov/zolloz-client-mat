@@ -20,13 +20,16 @@ import { WidgetsBrowserComponent } from './widgest-browser/widgets-browser.compo
 import {WidgetsRoutes} from "./widgets.routing";
 import { WidgetsCalendarComponent } from './widgets-calendar/widgets-calendar.component';
 import {ApplicationsModule} from "../applications/applications.module";
+import { WidgetsMyTasksComponent } from './widgets-my-tasks/widgets-my-tasks.component';
+import {WorkflowModule} from "../workflow/workflow.module";
 
 @NgModule({
   declarations: [
 
 
     WidgetsBrowserComponent,
-        WidgetsCalendarComponent
+        WidgetsCalendarComponent,
+        WidgetsMyTasksComponent
   ],
   providers: [DatePipe],
   imports: [
@@ -53,6 +56,7 @@ import {ApplicationsModule} from "../applications/applications.module";
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     ApplicationsModule,
+    WorkflowModule,
   ],
 
   exports: [

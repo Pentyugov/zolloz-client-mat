@@ -252,6 +252,7 @@
   "Tasks.FinishTaskMsg" : "Завершить задачу?",
   "Tasks.TaskEditor" : "Редактирование задачи",
   "Tasks.TaskCreation" : "Создание задачи",
+  "Tasks.MyActiveTasks" : "Мои активные задачи",
   "Task" : "Задача",
   "Tasks" : "Задачи",
   "Browser" : "Список",
