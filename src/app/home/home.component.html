@@ -1,1 +1,36 @@
-<p>home works!</p>
+<mat-card>
+  <mat-card-content>
+
+    <div fxLayout="row wrap" class="taskboard page-height" cdkDropListGroup>
+      <div fxFlex.md="100" fxFlex.lg="50" fxFlex.gt-xs="100" fxFlex.xl="50" fxFlex="100">
+          <div
+            class="widgets"
+            [cdkDropListData]="widgets_1"
+            cdkDropList
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div [ngClass]="{'calendar-box' : item.type === 'Calendar'}"
+                 *ngFor="let item of widgets_1" cdkDrag>
+              <ng-container *ngComponentOutlet="item.component"></ng-container>
+            </div>
+          </div>
+      </div>
+
+      <div fxFlex.md="100" fxFlex.lg="50" fxFlex.gt-xs="100" fxFlex.xl="50" fxFlex="100">
+          <div
+            class="widgets"
+            [cdkDropListData]="widgets_2"
+            cdkDropList
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div [ngClass]="{'calendar-box' : item.type === 'Calendar'}"
+                 *ngFor="let item of widgets_2"
+                 cdkDrag>
+              <ng-container *ngComponentOutlet="item.component"></ng-container>
+            </div>
+          </div>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

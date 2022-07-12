@@ -15,6 +15,8 @@ import {ChatMessageService} from "../../../service/chat-message.service";
 import {EventNotificationService} from "../../../service/event-notification.service";
 import {ChatMessage} from "../../../model/chat-message";
 import {HttpErrorResponse} from "@angular/common/http";
+import localeRu from '@angular/common/locales/ru';
+import {registerLocaleData} from "@angular/common";
 
 @Component({
   selector: 'app-horizontal-header',
@@ -119,6 +121,7 @@ export class HorizontalHeaderComponent implements OnInit, OnDestroy {
       if (locale.code === this.userSettings.locale) {
         this.selectedLocale = locale;
         this.translate.use(locale.code);
+        registerLocaleData(localeRu);
         return;
       }
     });

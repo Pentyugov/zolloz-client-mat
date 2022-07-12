@@ -22,6 +22,7 @@ import {CalendarModule, DateAdapter} from 'angular-calendar';
 import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-material-components/datetime-picker";
 import {CalendarEditComponent} from './calendar/calendar-edit/calendar-edit.component';
+import { CalendarHeaderComponent } from './calendar/calendar-header/calendar-header.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {CalendarEditComponent} from './calendar/calendar-edit/calendar-edit.comp
     ChatComponent,
     TestComponent,
     CalendarComponent,
-    CalendarEditComponent
+    CalendarEditComponent,
+    CalendarHeaderComponent
   ],
   providers: [DatePipe],
   imports: [
@@ -61,9 +63,10 @@ import {CalendarEditComponent} from './calendar/calendar-edit/calendar-edit.comp
     NgxMatNativeDateModule,
   ],
 
-  exports: [
-    NgxPermissionsModule
-  ],
+    exports: [
+        NgxPermissionsModule,
+        CalendarComponent
+    ],
   bootstrap:    [ TestComponent ]
 })
 

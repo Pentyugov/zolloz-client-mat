@@ -1,7 +1,7 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnDestroy, OnInit, Optional} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DOCUMENT} from "@angular/common";
-import {CalendarEvent, DAYS_OF_WEEK} from "angular-calendar";
+import {CalendarDateFormatter, CalendarEvent, DAYS_OF_WEEK} from 'angular-calendar';
 import {isSameDay, isSameMonth,} from 'date-fns';
 import {Subject} from "rxjs";
 import {CalendarService} from "../../../service/calendar.service";
@@ -16,23 +16,34 @@ import {ScreenService} from "../../../service/screen.service";
 import {CalendarEditComponent} from "./calendar-edit/calendar-edit.component";
 import {ApplicationConstants} from "../../shared/application-constants";
 import {EventNotificationCaptionEnum} from "../../../enum/event-notification-caption.enum";
-import ru from '@angular/common/locales/ru';
+import {CustomDateFormatter} from "./custom-date-formatter.provider";
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
+  providers: [
+    {
+      provide: CalendarDateFormatter,
+      useClass: CustomDateFormatter
+    }
+  ]
 })
 export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> implements OnInit, OnDestroy {
+  @Input() public isWidget: boolean = false;
   public editAction = ApplicationConstants.SCREEN_ACTION_EDIT;
   public deleteAction = ApplicationConstants.SCREEN_ACTION_DELETE;
   public updateAction = ApplicationConstants.SCREEN_ACTION_UPDATE;
-  weekStartsOn: number = DAYS_OF_WEEK.MONDAY
   dialogRef: MatDialogRef<CalendarEditComponent> = Object.create(null)
   view = 'month';
   viewDate: Date = new Date();
   activeDayIsOpen = true;
   refresh: Subject<any> = new Subject();
+  locale: string = 'ru';
+  weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
+
+
+  weekendDays: number[] = [DAYS_OF_WEEK.SATURDAY, DAYS_OF_WEEK.SUNDAY];
 
   actions: ZollozCalendarEventAction[] = [
     {
@@ -72,6 +83,11 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
       calendarService,
       editor,
       screenService);
+
+    this.subscriptions.push(this.applicationService.userSettings.subscribe(us => {
+      this.locale = us.locale;
+    }));
+
   }
 
   ngOnInit(): void {
@@ -160,6 +176,12 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
       return iEvent;
     });
     this.handleEvent(this.updateAction, event);
+  }
+
+  public updateData(update: boolean): void {
+    if (update) {
+      this.loadEntities();
+    }
   }
 
   public override loadEntities(): void {

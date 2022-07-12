@@ -30,6 +30,8 @@ import {NgxPermissionsModule} from "ngx-permissions";
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {CommonModule} from "@angular/common";
 import { ResetPasswordComponent } from './authentication/reset-password/reset-password.component';
+import {DragDropModule} from "@angular/cdk/drag-drop";
+import {ApplicationsModule} from "./modules/applications/applications.module";
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -71,7 +73,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
     SimpleNotificationsModule.forRoot(),
     NgxPermissionsModule.forRoot(),
     InfiniteScrollModule,
-    RouterModule.forRoot(AppRoutes, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(AppRoutes, {relativeLinkResolution: 'legacy'}),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -79,6 +81,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
         deps: [HttpClient],
       },
     }),
+    DragDropModule,
+    ApplicationsModule,
   ],
   providers: [
     {

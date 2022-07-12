@@ -1,19 +1,14 @@
-<mat-card>
-  <mat-card-content>
-    <div class="d-flex align-items-center">
-      <h3 class="m-t-0">{{'Calendar' | translate}}</h3>
-      <div class="ml-auto">
-        <button mat-raised-button color="primary" (click)="openAddDialog(null)">{{'Calendar.AddEvent' | translate}}</button>
-      </div>
-    </div>
-  </mat-card-content>
-</mat-card>
+<app-calendar-header
+  *ngIf="!isWidget"
+  (onAdd)="updateData($event)"
+  [isDarkMode]="isDarkMode"
+></app-calendar-header>
 
 <mat-card>
   <mat-card-content>
     <mat-toolbar color="primary" class="no-shadow">
       <mat-toolbar-row>
-        <span fxFlex fxShow="false" fxShow.gt-xs>{{viewDate | calendarDate: view + 'ViewTitle':'fr' : weekStartsOn}}</span>
+        <span fxFlex fxShow="false" fxShow.gt-xs>{{viewDate | calendarDate: view + 'ViewTitle':locale : weekStartsOn}}</span>
         <!-- ============================================================== -->
         <!-- Event View -->
         <!-- ============================================================== -->
@@ -61,6 +56,9 @@
         [viewDate]="viewDate"
         [events]="events"
         [refresh]="refresh"
+        [locale]="locale"
+        [weekStartsOn]="weekStartsOn"
+        [weekendDays]="weekendDays"
         [activeDayIsOpen]="activeDayIsOpen"
         (dayClicked)="dayClicked($event.day)"
         (eventClicked)="handleEvent(editAction, $event.event)"
