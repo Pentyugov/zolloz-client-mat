@@ -6,6 +6,7 @@ import {Observable} from "rxjs";
 import {CustomHttpResponse} from "../model/custom-http-response";
 import {CardHistory} from "../model/card-history";
 import {EntityService} from "./entity.service";
+import {TaskSignalProcRequest} from "../model/task-signal-proc-request";
 
 @Injectable({
   providedIn: 'root'
@@ -53,45 +54,12 @@ export class TaskService implements EntityService<Task>{
     return this.httpClient.get<Task[]>(`${this.host}/tasks/get-task-page-for-current-user?page=${page}`);
   }
 
-  public startTask(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.get<CustomHttpResponse>(`${this.host}/tasks/start-task/${id}`);
-  }
-
-  public cancelTask(id: string, comment: string): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/cancel-task/${id}`, comment);
-  }
-
-  public executeTask(id: string, comment: string | boolean): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/execute-task/${id}`, comment);
-  }
-
-  public reworkTask(id: string, comment: string | boolean): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/rework-task/${id}`, comment);
-  }
-
-  public finishTask(id: string, comment: string | boolean): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/finish-task/${id}`, comment);
+  public signalTaskProc(taskSignalProcRequest: TaskSignalProcRequest): Observable<CustomHttpResponse> {
+    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/signal-proc/`, taskSignalProcRequest);
   }
 
   public getTaskHistory(id: string): Observable<CardHistory[]> {
     return this.httpClient.get<CardHistory[]>(`${this.host}/tasks/get-history/${id}`);
   }
 
-  cloneTask(taskToClone: Task) {
-    let task = new Task();
-    task.id = taskToClone.id;
-    task.priority = taskToClone.priority;
-    task.number = taskToClone.number;
-    task.description = taskToClone.description;
-    task.comment = taskToClone.comment;
-    task.state = taskToClone.state;
-    task.executionDatePlan = taskToClone.executionDatePlan;
-    task.executionDateFact = taskToClone.executionDateFact;
-    task.creator = taskToClone.creator;
-    task.executor = taskToClone.executor;
-    task.initiator = taskToClone.initiator;
-    task.daysUntilDueDate = taskToClone.daysUntilDueDate;
-    task.started = taskToClone.started;
-    return task;
-  }
 }

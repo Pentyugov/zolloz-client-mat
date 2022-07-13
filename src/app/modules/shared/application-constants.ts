@@ -133,6 +133,12 @@ export class ApplicationConstants {
   static readonly PRIORITY_MEDIUM: string = 'PRIORITY$MEDIUM';
   static readonly PRIORITY_HIGH:   string = 'PRIORITY$HIGH';
 
+  static readonly TASK_ACTION_START:   string = 'START';
+  static readonly TASK_ACTION_EXECUTE: string = 'EXECUTE';
+  static readonly TASK_ACTION_REWORK:  string = 'REWORK';
+  static readonly TASK_ACTION_FINISH:  string = 'FINISH';
+  static readonly TASK_ACTION_CANCEL:  string = 'CANCEL';
+
   static readonly TASK_PRIORITIES = [
     {
       code: 'PRIORITY$LOW',

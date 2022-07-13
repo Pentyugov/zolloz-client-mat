@@ -147,7 +147,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     this.subscriptions.push(this.taskService.update(this.entity).subscribe(
       (response: Task) => {
         if (startTask) {
-          this.startTask(response.id);
+          this.signalTaskProc(response.id, ApplicationConstants.TASK_ACTION_START, '');
         }
         this.eventNotificationService
           .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Task: ${response.number} was updated successfully`);
@@ -159,12 +159,24 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
       }));
   }
 
-  private startTask(id: string) : void {
-    this.subscriptions.push(this.taskService.startTask(id).subscribe((response: CustomHttpResponse) => {
-      this.eventNotificationService.showInfoNotification("Success", response.message);
-    }, (errorResponse: HttpErrorResponse) => {
-      this.showErrorNotification(errorResponse.error.message);
+  private signalTaskProc(taskId: string, action: string, comment: string): void {
+
+    let taskSignalProcRequest = {
+      taskId: taskId,
+      action: action,
+      comment: comment
+    }
+
+    this.subscriptions.push(this.taskService.signalTaskProc(taskSignalProcRequest).subscribe((response: CustomHttpResponse) => {
+      this.eventNotificationService
+        .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
+      this.close();
+    },(errorResponse: HttpErrorResponse) => {
+      this.eventNotificationService
+        .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+      this.close();
     }));
+
   }
 
   public executeTaskBtnClick(): void {
@@ -180,22 +192,10 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
-          this.onExecuteTask(result.event.comment);
+          this.signalTaskProc(this.entity.id, ApplicationConstants.TASK_ACTION_EXECUTE, result.event.comment);
         }
       }
     });
-  }
-
-  private onExecuteTask(comment: string): void {
-    this.subscriptions.push(this.taskService.executeTask(this.entity.id, comment).subscribe((response: CustomHttpResponse) => {
-      this.eventNotificationService
-        .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
-      this.close();
-    },(errorResponse: HttpErrorResponse) => {
-      this.eventNotificationService
-        .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
-      this.close();
-    }));
   }
 
   public reworkTaskBtnClick(): void {
@@ -211,22 +211,10 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
-          this.onReworkTask(result.event.comment);
+          this.signalTaskProc(this.entity.id, ApplicationConstants.TASK_ACTION_REWORK, result.event.comment);
         }
       }
     });
-  }
-
-  private onReworkTask(comment: string): void {
-    this.subscriptions.push(this.taskService.reworkTask(this.entity.id, comment).subscribe((response: CustomHttpResponse) => {
-      this.eventNotificationService
-        .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
-      this.close();
-    },(errorResponse: HttpErrorResponse) => {
-      this.eventNotificationService
-        .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
-      this.close();
-    }));
   }
 
   public cancelTaskBtnClick(): void {
@@ -242,22 +230,10 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
-          this.onCancelTask(result.event.comment);
+          this.signalTaskProc(this.entity.id, ApplicationConstants.TASK_ACTION_CANCEL, result.event.comment);
         }
       }
     });
-  }
-
-  private onCancelTask(comment: string): void {
-    this.subscriptions.push(this.taskService.cancelTask(this.entity.id, comment).subscribe((response: CustomHttpResponse) => {
-      this.eventNotificationService
-        .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
-      this.close();
-    },(errorResponse: HttpErrorResponse) => {
-      this.eventNotificationService
-        .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
-      this.close();
-    }));
   }
 
   public finishTaskBtnClick(): void {
@@ -273,22 +249,10 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
-          this.onFinishTask(result.event.comment);
+          this.signalTaskProc(this.entity.id, ApplicationConstants.TASK_ACTION_FINISH, result.event.comment);
         }
       }
     });
-  }
-
-  private onFinishTask(comment: string): void {
-    this.subscriptions.push(this.taskService.finishTask(this.entity.id, comment).subscribe((response: CustomHttpResponse) => {
-      this.eventNotificationService
-        .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, response.message);
-      this.close();
-    },(errorResponse: HttpErrorResponse) => {
-      this.eventNotificationService
-        .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
-      this.close();
-    }));
   }
 
   public onUpdateDueDate(event: any): void {
