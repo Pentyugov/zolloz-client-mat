@@ -67,13 +67,28 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   }
 
   ngOnInit(): void {
+    this.columnsToDisplay = this.isWidget ? ApplicationConstants.TASK_TABLE_COLUMNS_WIDGET : ApplicationConstants.TASK_TABLE_COLUMNS;
+    this.loadEntities();
+  }
+
+  public override loadEntities(): void {
     if (this.isWidget) {
-      this.columnsToDisplay = ApplicationConstants.TASK_TABLE_COLUMNS_WIDGET;
       this.loadActiveTaskForExecutor();
     } else {
-      this.columnsToDisplay = ApplicationConstants.TASK_TABLE_COLUMNS
-      this.loadEntities();
+      this.subscriptions.push(
+        this.entityService.getAll().subscribe(
+          (response: Task[]) => {
+            this.entities = response;
+            this.initDataSource(response);
+            this.afterLoadEntities();
+          }, (errorResponse: HttpErrorResponse) => {
+            this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)
+          }
+        )
+      );
     }
+
+
   }
 
   private loadActiveTaskForExecutor(): void {
