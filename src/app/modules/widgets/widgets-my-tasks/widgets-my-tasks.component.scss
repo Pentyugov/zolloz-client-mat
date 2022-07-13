@@ -1,11 +1,10 @@
 .widget-box {
   color: rgba(0, 0, 0, 0.87);
   cursor: move;
-  //display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: #fff;
+  background: transparent;
   border-radius: 4px;
   position: relative;
   z-index: 1;

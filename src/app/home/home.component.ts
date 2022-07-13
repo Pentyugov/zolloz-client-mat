@@ -15,7 +15,6 @@ export class HomeComponent {
   ]
 
   public widgets_2 = [
-    {type: 'MyTasks', component: WidgetsMyTasksComponent},
     {type: 'MyTasks', component: WidgetsMyTasksComponent}
   ]
 

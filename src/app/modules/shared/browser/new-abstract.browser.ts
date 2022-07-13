@@ -102,7 +102,7 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
     );
   }
 
-  private initDataSource(entities: T[]): void {
+  protected initDataSource(entities: T[]): void {
     this.dataSource = new MatTableDataSource<T>(entities);
     if (this.dataSource) {
       this.dataSource.paginator = this.paginator;

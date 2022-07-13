@@ -12,6 +12,7 @@ import {ApplicationConstants} from "../../shared/application-constants";
 import {Task} from "../../../model/task";
 import {TaskEditComponent} from "./tast-edit/task-edit.component";
 import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-task',
@@ -66,8 +67,27 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadEntities();
-    this.columnsToDisplay = this.isWidget ? ApplicationConstants.TASK_TABLE_COLUMNS_WIDGET : ApplicationConstants.TASK_TABLE_COLUMNS;
+    if (this.isWidget) {
+      this.columnsToDisplay = ApplicationConstants.TASK_TABLE_COLUMNS_WIDGET;
+      this.loadActiveTaskForExecutor();
+    } else {
+      this.columnsToDisplay = ApplicationConstants.TASK_TABLE_COLUMNS
+      this.loadEntities();
+    }
+  }
+
+  private loadActiveTaskForExecutor(): void {
+    this.subscriptions.push(
+      this.taskService.getActiveForExecutor().subscribe(
+        (response: Task[]) => {
+          this.entities = response;
+          this.initDataSource(response);
+          this.afterLoadEntities();
+        }, (errorResponse: HttpErrorResponse) => {
+          this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)
+        }
+      )
+    );
   }
 
   override afterLoadEntities() {

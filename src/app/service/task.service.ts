@@ -18,59 +18,63 @@ export class TaskService implements EntityService<Task>{
   }
 
   public getAll(): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/task/get-all`);
+    return this.httpClient.get<Task[]>(`${this.host}/tasks`);
+  }
+
+  public getActiveForExecutor(): Observable<Task[]> {
+    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-active-for-executor`);
   }
 
   public getById(id: string): Observable<Task> {
-    return this.httpClient.get<Task>(`${this.host}/task/get-by-id/${id}`);
+    return this.httpClient.get<Task>(`${this.host}/tasks/${id}`);
   }
 
   public add(task: Task): Observable<Task> {
-    return this.httpClient.post<Task>(`${this.host}/task/add-new-task`, task);
+    return this.httpClient.post<Task>(`${this.host}/tasks`, task);
   }
 
   public update(task: Task): Observable<Task> {
-    return this.httpClient.put<Task>(`${this.host}/task/update-task`, task);
+    return this.httpClient.put<Task>(`${this.host}/tasks`, task);
   }
 
   public delete(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/task/delete-task/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/tasks/${id}`);
   }
 
   public getPriorityTaskForUser(priority: number): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/task/get-tasks-with-priority/${priority}`);
+    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-tasks-with-priority/${priority}`);
   }
 
   public getTasksWhereCurrentUserExecutor(priority: number): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/task/get-tasks-current-user-executor-by-priority/${priority}`);
+    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-tasks-current-user-executor-by-priority/${priority}`);
   }
 
   public getTasksPageForCurrentUser(page: number): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/task/get-task-page-for-current-user?page=${page}`);
+    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-task-page-for-current-user?page=${page}`);
   }
 
   public startTask(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.get<CustomHttpResponse>(`${this.host}/task/start-task/${id}`);
+    return this.httpClient.get<CustomHttpResponse>(`${this.host}/tasks/start-task/${id}`);
   }
 
   public cancelTask(id: string, comment: string): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/task/cancel-task/${id}`, comment);
+    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/cancel-task/${id}`, comment);
   }
 
   public executeTask(id: string, comment: string | boolean): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/task/execute-task/${id}`, comment);
+    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/execute-task/${id}`, comment);
   }
 
   public reworkTask(id: string, comment: string | boolean): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/task/rework-task/${id}`, comment);
+    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/rework-task/${id}`, comment);
   }
 
   public finishTask(id: string, comment: string | boolean): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/task/finish-task/${id}`, comment);
+    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/finish-task/${id}`, comment);
   }
 
   public getTaskHistory(id: string): Observable<CardHistory[]> {
-    return this.httpClient.get<CardHistory[]>(`${this.host}/task/get-history/${id}`);
+    return this.httpClient.get<CardHistory[]>(`${this.host}/tasks/get-history/${id}`);
   }
 
   cloneTask(taskToClone: Task) {
