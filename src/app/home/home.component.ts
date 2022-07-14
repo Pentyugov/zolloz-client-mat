@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {WidgetsCalendarComponent} from "../modules/widgets/widgets-calendar/widgets-calendar.component";
 import {WidgetsMyTasksComponent} from "../modules/widgets/widgets-my-tasks/widgets-my-tasks.component";
+import {
+  WidgetsMyProductivityComponent
+} from "../modules/widgets/widgets-my-productivity/widgets-my-productivity.component";
 
 @Component({
   selector: 'app-home',
@@ -15,6 +18,7 @@ export class HomeComponent {
   ]
 
   public widgets_2 = [
+    {type: 'MyProductivity', component: WidgetsMyProductivityComponent},
     {type: 'MyTasks', component: WidgetsMyTasksComponent}
   ]
 

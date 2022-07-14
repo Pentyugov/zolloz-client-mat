@@ -22,6 +22,10 @@ export class TaskService implements EntityService<Task>{
     return this.httpClient.get<Task[]>(`${this.host}/tasks`);
   }
 
+  public getProductivityData(): Observable<Task[]> {
+    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-productivity-data`);
+  }
+
   public getActiveForExecutor(): Observable<Task[]> {
     return this.httpClient.get<Task[]>(`${this.host}/tasks/get-active-for-executor`);
   }

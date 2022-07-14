@@ -37,7 +37,7 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
   dialogRef: MatDialogRef<CalendarEditComponent> = Object.create(null)
   view = 'month';
   viewDate: Date = new Date();
-  activeDayIsOpen = true;
+  activeDayIsOpen = false;
   refresh: Subject<any> = new Subject();
   locale: string = 'ru';
   weekStartsOn: number = DAYS_OF_WEEK.MONDAY;
