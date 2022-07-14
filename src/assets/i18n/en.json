@@ -298,5 +298,15 @@
   "Calendar.Title" : "Title",
   "Calendar.Description" : "Description",
   "Calendar.ChooseColor" : "Choose color",
-  "Reset" : "Reset"
+  "Reset" : "Reset",
+  "Widgets.MyProductivity" : "My productivity",
+  "Widgets.Productivity.ChartTasks": {
+    "Title": "My tasks: ",
+    "NotCompleted": "Not completed",
+    "OnTime": "Completed on time",
+    "Overdue": "Overdue"
+  },
+  "Widgets.Productivity.ChartProjects": {
+    "Title": "Project tasks: "
+  }
 }

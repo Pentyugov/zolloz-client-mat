@@ -35,7 +35,7 @@
 
                 <div fxLayout="row wrap" class="align-items-center m-t-30 m-b-15">
 
-                  <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <div fxFlex="100" fxFlex.gt-md="33.3" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
                     <mat-form-field appearance="outline" class="p-r-15 m-r-15">
                       <mat-label>{{'Number' | translate}}</mat-label>
                       <input matInput
@@ -47,7 +47,7 @@
                     </mat-form-field>
                   </div>
 
-                  <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                  <div fxFlex="100" fxFlex.gt-md="33.3" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
                     <mat-form-field appearance="outline" class="p-r-15 m-r-15">
                       <mat-label>{{'Priority' | translate}}</mat-label>
                       <mat-select placeholder="{{'Priority' | translate}}"
@@ -57,6 +57,21 @@
                                   [(ngModel)]="entity.priority">
                         <mat-option *ngFor="let priority of priorities" [value]="priority.code">
                           {{ priority.name | translate }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="100" fxFlex.gt-md="33.3" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
+                    <mat-form-field appearance="outline" class="p-r-15 m-r-15">
+                      <mat-label>{{'Project' | translate}}</mat-label>
+                      <mat-select placeholder="{{'Project' | translate}}"
+                                  name="project"
+                                  [disabled]="!isFieldsEnabled()"
+                                  [(ngModel)]="entity.project">
+                        <mat-option [value]="null">{{'None' | translate}}</mat-option>
+                        <mat-option *ngFor="let project of projects" [value]="project">
+                          {{ project.name }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -98,13 +113,32 @@
                   <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
                     <mat-form-field appearance="outline" class="p-r-15 m-r-15">
                       <mat-label>{{'DueDate' | translate}}</mat-label>
-                      <input matInput
-                             type="date"
-                             placeholder="{{'DueDate' | translate}}"
-                             name="dueDate"
-                             [disabled]="!isFieldsEnabled()"
-                             (change)="onUpdateDueDate($event)"
-                             [valueAsDate]="executionDatePlan"/>
+<!--                      <input matInput-->
+<!--                             type="date"-->
+<!--                             placeholder="{{'DueDate' | translate}}"-->
+<!--                             name="dueDate"-->
+<!--                             [disabled]="!isFieldsEnabled()"-->
+<!--                             (change)="onUpdateDueDate($event)"-->
+<!--                             [valueAsDate]="executionDatePlan"/>-->
+
+                      <input matInput [ngxMatDatetimePicker]="startDate"
+                             placeholder="{{'Calendar.StartDate' | translate}}"
+                             (dateChange)="updateExecutionDatePlan()"
+                             [formControl]="executionDatePlanForm"
+                             [min]="calendarConfig.minDate"
+                             [max]="calendarConfig.maxDate"
+                             [disabled]="!isFieldsEnabled()">
+            <mat-datepicker-toggle matSuffix [for]="startDate">
+            </mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #startDate
+                                     [showSpinners]="calendarConfig.showSpinners"
+                                     [showSeconds]="calendarConfig.showSeconds"
+                                     [stepHour]="calendarConfig.stepHour"
+                                     [stepMinute]="calendarConfig.stepMinute"
+                                     [stepSecond]="calendarConfig.stepSecond"
+                                     [touchUi]="calendarConfig.touchUi"
+                                     [color]="calendarConfig.color">
+            </ngx-mat-datetime-picker>
                     </mat-form-field>
                   </div>
 

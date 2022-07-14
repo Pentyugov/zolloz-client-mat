@@ -298,5 +298,15 @@
   "Calendar.Title" : "Наименование",
   "Calendar.Description" : "Описание",
   "Calendar.ChooseColor" : "Выберите цвет",
-  "Reset" : "Сбросить"
+  "Reset" : "Сбросить",
+  "Widgets.MyProductivity" : "Моя продуктивность",
+  "Widgets.Productivity.ChartTasks": {
+    "Title": "Мои задачи: ",
+    "NotCompleted": "Не завершенных",
+    "OnTime": "Завершенных вовремя",
+    "Overdue": "Просроченных"
+  },
+  "Widgets.Productivity.ChartProjects": {
+    "Title": "Задачи по проектам: "
+  }
 }

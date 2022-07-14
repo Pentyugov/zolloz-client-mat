@@ -1,8 +1,12 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Chart, ChartOptions} from "chart.js";
+import {Chart} from "chart.js";
 import {Task} from 'src/app/model/task';
 import {Subscription} from "rxjs";
 import {TaskService} from "../../../service/task.service";
+import {Utils} from "../../../utils/utils";
+import {TranslateService} from "@ngx-translate/core";
+import {ApplicationService} from "../../../service/application.service";
+import {Project} from "../../../model/project";
 
 
 @Component({
@@ -11,42 +15,65 @@ import {TaskService} from "../../../service/task.service";
   styleUrls: ['./widgets-my-productivity.component.scss']
 })
 export class WidgetsMyProductivityComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('chart') private chart: any;
-  pieChart: any;
+  @ViewChild('tasksChart')
+  private chart: any;
+  @ViewChild('chart_2')
+  private chart_2: any;
+
+  private tasksChart: any;
+  private projectsChart: any;
+
   private tasks: Task[] = [];
+  private projects: Project[] = [];
   private subscriptions: Subscription[] = [];
 
-  private totalCount: number = 0;
+  public taskTotalCount: number = 0;
   private onTimeCount: number = 0;
   private notCompletedCount: number = 0;
   private overdueCount: number = 0;
 
+  public projectsTotalCount: number = 0;
+  public showProjectsChart = true;
+
+  private tasksChartTitle: string = '';
+  private notCompletedLabel: string = '';
+  private onTimeLabel: string = '';
+  private overdueLabel: string = '';
+
+  constructor(private taskService: TaskService,
+              private translateService: TranslateService,
+              private applicationService: ApplicationService) {
+
+  }
+
+  ngOnInit(): void {
+    this.loadTaskProductivity();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
   ngAfterViewInit(): void {
-    this.updateChart();
+    this.applicationService.userSettings.subscribe(us => {
+      this.translateService.use(us.locale);
+      this.initLabels();
+      this.initTasksChart();
+      this.initProjectsChart();
+    });
+
   }
 
-  constructor(private taskService: TaskService) {
-
-  }
-
-  private updateChart(): void {
-    this.pieChart = new Chart(this.chart.nativeElement, {
+  private initTasksChart(): void {
+    this.tasksChart = new Chart(this.chart.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Not completed', 'On time', 'Overdue'],
+        labels: [this.notCompletedLabel, this.onTimeLabel, this.overdueLabel],
         datasets: [{
           label: '# of Votes',
           data: [this.notCompletedCount, this.onTimeCount, this.overdueCount],
-          backgroundColor: [
-            '#1976d2',
-            '#26dad2',
-            '#ee1A67'
-          ],
-          borderColor: [
-            '#1976d2',
-            '#26dad2',
-            '#ee1A67'
-          ],
+          backgroundColor: Utils.COLORS_PRIMARY,
+          borderColor: Utils.COLORS_PRIMARY,
           borderWidth: 1
         }]
       },
@@ -54,7 +81,34 @@ export class WidgetsMyProductivityComponent implements OnInit, OnDestroy, AfterV
         responsive: true,
         plugins: {
           title: {
-            display: true,
+            display: false,
+            text: this.tasksChartTitle,
+          },
+        },
+      }
+    });
+
+
+  }
+
+  private initProjectsChart(): void {
+    this.projectsChart = new Chart(this.chart_2.nativeElement, {
+      type: 'pie',
+      data: {
+        labels: ['Not completed', 'On time', 'Overdue'],
+        datasets: [{
+          label: '# of Votes',
+          data: [this.notCompletedCount, this.onTimeCount, this.overdueCount],
+          backgroundColor: Utils.COLORS_SECONDARY,
+          borderColor: Utils.COLORS_SECONDARY,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: false,
             text: 'My tasks',
           },
         },
@@ -62,16 +116,21 @@ export class WidgetsMyProductivityComponent implements OnInit, OnDestroy, AfterV
     });
   }
 
-  private updateChartData(chart:any, data: number[]): void {
-    chart.options.plugins.title.text = 'My tasks: ' + this.totalCount;
+  private updateChartData(chart:any, data: number[], title: string): void {
+    chart.options.plugins.title.text = title;
     chart.data.datasets.forEach((dataset: any) => {
       dataset.data = data;
     });
     chart.update();
   }
 
-  ngOnInit(): void {
-    this.loadTaskProductivity();
+  private updateChartLabels(chart: any, labels: string[], title: string): void {
+    if (chart && chart.data) {
+      chart.data.labels = labels;
+      chart.options.plugins.title.text = title + ' ' + this.taskTotalCount;
+      chart.update();
+    }
+
   }
 
   private loadTaskProductivity(): void {
@@ -82,8 +141,11 @@ export class WidgetsMyProductivityComponent implements OnInit, OnDestroy, AfterV
   }
 
   private filterData(): void {
-    this.totalCount = this.tasks.length;
+    this.taskTotalCount = this.tasks.length;
     this.tasks.forEach(task => {
+      if (task.project) {
+        this.addProject(task.project);
+      }
       if (!task.started && !task.overdue) {
         this.onTimeCount++;
       } else {
@@ -94,12 +156,65 @@ export class WidgetsMyProductivityComponent implements OnInit, OnDestroy, AfterV
       }
     });
 
-    let data = [this.notCompletedCount, this.onTimeCount, this.overdueCount];
-    this.updateChartData(this.pieChart, data);
+    let taskChartData = [this.notCompletedCount, this.onTimeCount, this.overdueCount];
+    let taskChartTitle = this.tasksChartTitle + ' ' + this.taskTotalCount
+    this.updateChartData(this.tasksChart, taskChartData, taskChartTitle);
+
+    let projectsData: number[] = [];
+    let projectsLabels: string[] = [];
+    for (let project of this.projects) {
+      projectsLabels.push(project.name);
+      let taskCount: number = 0;
+      this.tasks.forEach(task => {
+        if (task.project && task.project.id === project.id) {
+          taskCount++;
+        }
+      });
+
+      projectsData.push(taskCount);
+    }
+    this.projectsTotalCount = this.projects.length;
+    this.showProjectsChart = this.projectsTotalCount > 0;
+    this.updateChartLabels(this.projectsChart, projectsLabels, 'test: ' + this.projectsTotalCount);
+    this.updateChartData(this.projectsChart, projectsData, 'test: ' + this.projectsTotalCount);
+
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
+  private addProject(project: Project): void {
+    let contains = false;
+    this.projects.forEach(p => {
+      if (p.id === project.id) {
+        contains = true;
+      }
+    });
+
+    if (!contains) {
+      this.projects.push(project);
+    }
+  }
+
+  private initLabels() {
+    let labels: string[] = [];
+    this.subscriptions.push(this.translateService.get('Widgets.Productivity.ChartTasks')
+      .subscribe(m => {
+        this.tasksChartTitle = m.Title;
+        this.notCompletedLabel = m.NotCompleted;
+        this.onTimeLabel = m.OnTime;
+        this.overdueLabel = m.Overdue;
+
+        labels.push(this.notCompletedLabel);
+        labels.push(this.onTimeLabel);
+        labels.push(this.overdueLabel);
+        // if (this.notCompletedCount > 0)
+        //   labels.push(this.notCompletedLabel);
+        // if (this.onTimeCount > 0)
+        //   labels.push(this.onTimeLabel);
+        // if (this.overdueCount > 0)
+        //   labels.push(this.overdueLabel);
+
+        this.updateChartLabels(this.tasksChart, labels, this.tasksChartTitle);
+      }));
+
   }
 
 

@@ -1,6 +1,7 @@
 import {User} from "./user";
 import {Entity} from "./entity";
 import {ApplicationConstants} from "../modules/shared/application-constants";
+import {Project} from "./project";
 
 export class Task extends Entity {
   static PRIORITY_LOW:    string = 'PRIORITY$LOW';
@@ -28,7 +29,7 @@ export class Task extends Entity {
   daysUntilDueDate: number;
   started: boolean;
   overdue: boolean;
-
+  project: Project | null | undefined;
 
   constructor() {
     super(ApplicationConstants.TASK);
@@ -45,5 +46,6 @@ export class Task extends Entity {
     this.daysUntilDueDate = 0;
     this.started = false;
     this.overdue = false;
+    this.project = null;
   }
 }

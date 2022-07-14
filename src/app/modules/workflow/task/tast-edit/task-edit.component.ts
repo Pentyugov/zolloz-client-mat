@@ -19,6 +19,10 @@ import {TaskExecutionDialogComponent} from "../task-execution-dialog/task-execut
 import {CardHistory} from "../../../../model/card-history";
 import {SaveDialogComponent} from "../../../shared/dialog/save-dialog/save-dialog.component";
 import {AbstractEditor} from "../../../shared/editor/abstract-editor";
+import {Project} from "../../../../model/project";
+import {ProjectService} from "../../../../service/project.service";
+import {CalendarConfig} from "../../../shared/config/calendar.config";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-task-edit',
@@ -26,12 +30,17 @@ import {AbstractEditor} from "../../../shared/editor/abstract-editor";
   styleUrls: ['./task-edit.component.scss']
 })
 export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestroy {
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator = Object.create(null);
+  @ViewChild(MatSort, {static: true}) sort: MatSort = Object.create(null);
+  public calendarConfig: CalendarConfig = new CalendarConfig();
+  public executionDatePlanForm: FormControl = new FormControl(new Date());
+
   public currentUser: User = new User();
   public entity: Task = new Task();
   public executors: User[] = [];
   public cardHistory: CardHistory[] = [];
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator = Object.create(null);
-  @ViewChild(MatSort, {static: true}) sort: MatSort = Object.create(null);
+  public projects: Project[] = [];
+
   public executionDatePlan: Date | null = null;
   public dialog_data: any;
   public priorities: Object[] = ApplicationConstants.TASK_PRIORITIES;
@@ -42,6 +51,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
               dialog: MatDialog,
               private userService: UserService,
               private taskService: TaskService,
+              private projectService: ProjectService,
               private authenticationService: AuthenticationService,
               public dialogRef: MatDialogRef<TaskEditComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -50,20 +60,25 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
     this.dialog_data = data;
+    this.calendarConfig.stepMinute = 1;
+    this.calendarConfig.showSeconds = false;
   }
 
   ngOnInit(): void {
+
     if (!this.isNewItem()) {
       this.entity = this.data.entity;
-      this.reloadTask();
-      this.loadTaskHistory();
       if (this.entity.executionDatePlan) {
         this.executionDatePlan = new Date(this.entity.executionDatePlan);
+        this.reloadTask();
+        this.loadTaskHistory();
       }
     } else {
       this.entity.creator = this.currentUser;
+      this.prepareDate();
     }
 
+    this.loadProjects();
     this.loadExecutors();
   }
 
@@ -75,6 +90,16 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     return this.dialog_data.isNewItem;
   }
 
+  public loadProjects(): void {
+    this.subscriptions.push(this.projectService.getAvailableProjects().subscribe(
+      (response: Project[]) => {
+        this.projects = response;
+        this.entity.project = this.projects.find(d => d.id === this.entity.project?.id)
+      }, (errorResponse: HttpErrorResponse) => {
+        this.showErrorNotification(errorResponse.error.message)
+      }));
+  }
+
   public loadExecutors(): void {
     this.subscriptions.push(this.userService.getAllWithRole(ApplicationConstants.ROLE_TASK_EXECUTOR).subscribe(
       (response: User[]) => {
@@ -82,7 +107,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
         this.entity.executor = this.executors.find(d => d.id === this.entity.executor?.id)
       }, (errorResponse: HttpErrorResponse) => {
         this.showErrorNotification(errorResponse.error.message)
-      }));
+    }));
   }
 
   public loadTaskHistory(): void {
@@ -98,9 +123,18 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     this.subscriptions.push(this.taskService.getById(this.entity.id).subscribe(
       (response: Task) => {
         this.entity = response;
+        if (this.entity.executionDatePlan) {
+          this.executionDatePlanForm = new FormControl(new Date(this.entity.executionDatePlan));
+        }
+        this.loadExecutors();
+        this.loadProjects();
       }, (errorResponse: HttpErrorResponse) => {
         this.showErrorNotification(errorResponse.error.message)
       }));
+  }
+
+  public updateExecutionDatePlan(): void {
+    this.entity.executionDatePlan = this.executionDatePlanForm.value;
   }
 
   public close() {
@@ -132,6 +166,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   private onCreateTask(): void {
+    console.log(this.entity)
     this.subscriptions.push(this.taskService.add(this.entity).subscribe(
       (response: Task) => {
         this.eventNotificationService
@@ -321,6 +356,13 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
       return true;
 
     return !this.entity.started;
+  }
+
+  private prepareDate(): void {
+    const executionDatePlan = new Date();
+    executionDatePlan.setSeconds(0);
+
+    this.executionDatePlanForm = new FormControl(executionDatePlan);
   }
 
   public getCardHistoryResult(cardHistory: CardHistory): string {

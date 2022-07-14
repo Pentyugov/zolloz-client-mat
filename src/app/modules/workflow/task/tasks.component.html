@@ -91,9 +91,7 @@
 
 <mat-card>
   <mat-card-content>
-    <div class="taskboard-header text-uppercase" *ngIf="isWidget">
-      <strong>{{'Tasks.MyActiveTasks' | translate}}</strong>
-    </div>
+    <mat-card-title *ngIf="isWidget">{{'Tasks.MyActiveTasks' | translate}}</mat-card-title>
     <div class="table-responsive">
       <table mat-table matSort [dataSource]="dataSource" class="table ticket-list no-wrap">
 
@@ -120,7 +118,7 @@
 
         <ng-container matColumnDef="dueDate">
           <th mat-header-cell *matHeaderCellDef>{{'DueDate' | translate}}</th>
-          <td mat-cell *matCellDef="let element">
+          <td mat-cell *matCellDef="let element" [ngClass]="{'overdue' : element.overdue}">
             {{ element.executionDatePlan | date : 'dd.MM.yyyy HH:mm' }}
           </td>
         </ng-container>
