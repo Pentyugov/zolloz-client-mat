@@ -4,7 +4,6 @@ import {MainComponent} from "./layout/main/main.component";
 import {RegisterComponent} from "./authentication/register/register.component";
 import {AuthenticationGuard} from "./guard/authentication.guard";
 import {HomeComponent} from "./home/home.component";
-import {ApplicationsModule} from "./modules/applications/applications.module";
 
 export const AppRoutes: Routes = [
   {path: '',
@@ -13,7 +12,7 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '',
+        redirectTo: '/home',
         pathMatch: 'full'
       },
       {
