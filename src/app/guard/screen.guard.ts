@@ -27,7 +27,9 @@ export class ScreenGuard implements CanActivate {
     if (canActivate)
       return true;
     else
-      this.eventNotificationService.showErrorNotification("ERRRRORR", "NO PERMISSIONS");
+      this.router.navigateByUrl('/home').then(() => {
+        this.eventNotificationService.showErrorNotification("ERRRRORR", "NO PERMISSIONS");
+      })
     return false;
   }
 

@@ -300,6 +300,8 @@
   "Calendar.ChooseColor" : "Choose color",
   "Reset" : "Reset",
   "Widgets.MyProductivity" : "My productivity",
+  "Widgets.Productivity.Tab.Tasks" : "By tasks",
+  "Widgets.Productivity.Tab.Projects" : "By projects",
   "Widgets.Productivity.ChartTasks": {
     "Title": "My tasks: ",
     "NotCompleted": "Not completed",

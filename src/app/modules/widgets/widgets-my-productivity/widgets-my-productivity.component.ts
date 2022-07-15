@@ -66,26 +66,39 @@ export class WidgetsMyProductivityComponent implements OnInit, OnDestroy, AfterV
 
   private initTasksChart(): void {
     this.tasksChart = new Chart(this.chart.nativeElement, {
-      type: 'doughnut',
+      type: 'bar',
       data: {
         labels: [this.notCompletedLabel, this.onTimeLabel, this.overdueLabel],
-        datasets: [{
-          label: '# of Votes',
-          data: [this.notCompletedCount, this.onTimeCount, this.overdueCount],
-          backgroundColor: Utils.COLORS_PRIMARY,
-          borderColor: Utils.COLORS_PRIMARY,
-          borderWidth: 1
-        }]
+        datasets: [
+          {
+            label: ' ',
+            data: [this.notCompletedCount, this.onTimeCount, this.overdueCount],
+            backgroundColor: Utils.COLORS_PRIMARY_TRANSPARENCY,
+            borderColor: Utils.COLORS_PRIMARY,
+            borderWidth: 1
+          }
+        ]
       },
       options: {
         responsive: true,
         plugins: {
+          legend: {
+            display: false
+          },
           title: {
             display: false,
             text: this.tasksChartTitle,
           },
         },
-      }
+        scales: {
+          y: {
+            ticks: {
+              stepSize: 1
+            }
+          }
+        }
+      },
+
     });
 
 
@@ -93,13 +106,13 @@ export class WidgetsMyProductivityComponent implements OnInit, OnDestroy, AfterV
 
   private initProjectsChart(): void {
     this.projectsChart = new Chart(this.chart_2.nativeElement, {
-      type: 'pie',
+      type: 'bar',
       data: {
         labels: ['Not completed', 'On time', 'Overdue'],
         datasets: [{
-          label: '# of Votes',
+          label: ' ',
           data: [this.notCompletedCount, this.onTimeCount, this.overdueCount],
-          backgroundColor: Utils.COLORS_SECONDARY,
+          backgroundColor: Utils.COLORS_SECONDARY_TRANSPARENCY,
           borderColor: Utils.COLORS_SECONDARY,
           borderWidth: 1
         }]
@@ -107,12 +120,22 @@ export class WidgetsMyProductivityComponent implements OnInit, OnDestroy, AfterV
       options: {
         responsive: true,
         plugins: {
+          legend: {
+            display: false
+          },
           title: {
             display: false,
-            text: 'My tasks',
+            text: this.tasksChartTitle,
           },
         },
-      }
+        scales: {
+          y: {
+            ticks: {
+              stepSize: 1
+            }
+          }
+        }
+      },
     });
   }
 

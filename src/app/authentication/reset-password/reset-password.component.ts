@@ -25,7 +25,7 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/home').then(()=> {});
+      this.router.navigateByUrl('/').then(()=> {});
     } else {
       this.router.navigateByUrl('/reset-password').then(()=> {});
       this.resetPasswordForm = this.formBuilder.group({

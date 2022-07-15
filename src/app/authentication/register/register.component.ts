@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/home').then(()=> {});
+      this.router.navigateByUrl('/').then(()=> {});
     } else {
       this.registerForm = this.fb.group({
         username: [null, Validators.compose([Validators.required])],

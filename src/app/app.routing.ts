@@ -13,7 +13,7 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '',
+        redirectTo: '/home',
         pathMatch: 'full'
       },
       {

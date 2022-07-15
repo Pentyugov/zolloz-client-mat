@@ -113,21 +113,13 @@
                   <div fxFlex="100" fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100">
                     <mat-form-field appearance="outline" class="p-r-15 m-r-15">
                       <mat-label>{{'DueDate' | translate}}</mat-label>
-<!--                      <input matInput-->
-<!--                             type="date"-->
-<!--                             placeholder="{{'DueDate' | translate}}"-->
-<!--                             name="dueDate"-->
-<!--                             [disabled]="!isFieldsEnabled()"-->
-<!--                             (change)="onUpdateDueDate($event)"-->
-<!--                             [valueAsDate]="executionDatePlan"/>-->
-
                       <input matInput [ngxMatDatetimePicker]="startDate"
                              placeholder="{{'Calendar.StartDate' | translate}}"
                              (dateChange)="updateExecutionDatePlan()"
                              [formControl]="executionDatePlanForm"
                              [min]="calendarConfig.minDate"
                              [max]="calendarConfig.maxDate"
-                             [disabled]="!isFieldsEnabled()">
+                             [disabled]="!isExecutionDatePlanFieldEnabled()">
             <mat-datepicker-toggle matSuffix [for]="startDate">
             </mat-datepicker-toggle>
             <ngx-mat-datetime-picker #startDate

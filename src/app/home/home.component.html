@@ -6,11 +6,11 @@
       <div fxFlex.md="100" fxFlex.lg="50" fxFlex.gt-xs="100" fxFlex.xl="50" fxFlex="100">
           <div
             class="widgets"
-            [cdkDropListData]="widgets_1"
+            [cdkDropListData]="bucket_0"
             cdkDropList
             (cdkDropListDropped)="drop($event)"
           >
-            <div *ngFor="let item of widgets_1" cdkDrag>
+            <div *ngFor="let item of bucket_0" cdkDrag>
               <ng-container *ngComponentOutlet="item.component"></ng-container>
             </div>
           </div>
@@ -19,11 +19,11 @@
       <div fxFlex.md="100" fxFlex.lg="50" fxFlex.gt-xs="100" fxFlex.xl="50" fxFlex="100">
           <div
             class="widgets"
-            [cdkDropListData]="widgets_2"
+            [cdkDropListData]="bucket_1"
             cdkDropList
             (cdkDropListDropped)="drop($event)"
           >
-            <div *ngFor="let item of widgets_2" cdkDrag>
+            <div *ngFor="let item of bucket_1" cdkDrag>
               <ng-container *ngComponentOutlet="item.component"></ng-container>
             </div>
           </div>

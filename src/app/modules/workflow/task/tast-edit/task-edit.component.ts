@@ -33,7 +33,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, {static: true}) sort: MatSort = Object.create(null);
   public calendarConfig: CalendarConfig = new CalendarConfig();
-  public executionDatePlanForm: FormControl = new FormControl(new Date());
+  public executionDatePlanForm: FormControl = new FormControl(null);
 
   public currentUser: User = new User();
   public entity: Task = new Task();
@@ -68,10 +68,10 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
 
     if (!this.isNewItem()) {
       this.entity = this.data.entity;
+      this.reloadTask();
+      this.loadTaskHistory();
       if (this.entity.executionDatePlan) {
         this.executionDatePlan = new Date(this.entity.executionDatePlan);
-        this.reloadTask();
-        this.loadTaskHistory();
       }
     } else {
       this.entity.creator = this.currentUser;
@@ -351,6 +351,13 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     return false;
   }
 
+  public isExecutionDatePlanFieldEnabled(): boolean {
+    if (this.entity.state !== Task.STATE_ASSIGNED && this.entity.state !== Task.STATE_REWORK) {
+      return this.isCurrentUserTaskCreatorOrInitiator();
+    }
+    return false;
+  }
+
   public isExecutorFieldEnabled(): boolean {
     if (this.isNewItem())
       return true;
@@ -360,6 +367,8 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
 
   private prepareDate(): void {
     const executionDatePlan = new Date();
+    executionDatePlan.setHours(executionDatePlan.getHours() + 1);
+    executionDatePlan.setMinutes(0);
     executionDatePlan.setSeconds(0);
 
     this.executionDatePlanForm = new FormControl(executionDatePlan);

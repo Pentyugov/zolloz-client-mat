@@ -80,6 +80,8 @@ export class MainComponent implements OnDestroy {
       (response: UserSettings) => {
         this.applicationService.changeSettings(response);
         this.userSettings = this.applicationService.getUserSettings();
+      }, (error: any) => {
+        console.log('error while loading user settings');
       }
     );
   }

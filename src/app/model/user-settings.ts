@@ -1,3 +1,5 @@
+import {WidgetSettings} from "./widget-settings";
+
 export class UserSettings {
   id: string;
   locale: string;
@@ -5,6 +7,7 @@ export class UserSettings {
   themeColor: number;
   miniSidebar: boolean;
   darkTheme: boolean;
+  widgetSettings: WidgetSettings[];
 
   constructor() {
     this.id = '';
@@ -13,5 +16,6 @@ export class UserSettings {
     this.themeColor = 10;
     this.miniSidebar = false;
     this.darkTheme = false;
+    this.widgetSettings = [];
   }
 }

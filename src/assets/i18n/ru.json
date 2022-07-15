@@ -300,6 +300,8 @@
   "Calendar.ChooseColor" : "Выберите цвет",
   "Reset" : "Сбросить",
   "Widgets.MyProductivity" : "Моя продуктивность",
+  "Widgets.Productivity.Tab.Tasks" : "По задачам",
+  "Widgets.Productivity.Tab.Projects" : "По проектам",
   "Widgets.Productivity.ChartTasks": {
     "Title": "Мои задачи: ",
     "NotCompleted": "Не завершенных",
