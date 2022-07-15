@@ -30,8 +30,8 @@ import {BrowserModule} from "@angular/platform-browser";
 
 
     WidgetsBrowserComponent,
-        WidgetsCalendarComponent,
-        WidgetsMyTasksComponent,
+    WidgetsCalendarComponent,
+    WidgetsMyTasksComponent,
     WidgetsMyProductivityComponent
   ],
   providers: [DatePipe],

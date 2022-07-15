@@ -32,6 +32,8 @@ import {CommonModule} from "@angular/common";
 import { ResetPasswordComponent } from './authentication/reset-password/reset-password.component';
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {ApplicationsModule} from "./modules/applications/applications.module";
+import {CalendarModule, DateAdapter} from "angular-calendar";
+import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -81,8 +83,11 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
         deps: [HttpClient],
       },
     }),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
     DragDropModule,
-    ApplicationsModule,
   ],
   providers: [
     {
