@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {AbstractWindow} from "../../shared/window/abstract-window";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
@@ -16,12 +16,13 @@ export class TestComponent extends AbstractWindow implements OnInit {
     console.log('test started');
   }
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
               dialog: MatDialog) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
 
   }
 }

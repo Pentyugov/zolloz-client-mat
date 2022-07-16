@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {User} from "../../../../model/user";
 import {ApplicationConstants} from "../../../shared/application-constants";
 import {MatPaginator} from "@angular/material/paginator";
@@ -44,7 +44,8 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   public executionDatePlan: Date | null = null;
   public dialog_data: any;
   public priorities: Object[] = ApplicationConstants.TASK_PRIORITIES;
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -55,7 +56,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
               private authenticationService: AuthenticationService,
               public dialogRef: MatDialogRef<TaskEditComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
     this.currentUser = this.authenticationService.getUserFromLocalCache();
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
@@ -166,7 +167,6 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   private onCreateTask(): void {
-    console.log(this.entity)
     this.subscriptions.push(this.taskService.add(this.entity).subscribe(
       (response: Task) => {
         this.eventNotificationService
@@ -178,7 +178,13 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     this.close();
   }
 
-  public onUpdateTask(startTask: boolean = false): void {
+  public updateTask(startTask: boolean = false): void {
+    if (this.validate()) {
+      this.onUpdateTask(startTask);
+    }
+  }
+
+  private onUpdateTask(startTask: boolean = false): void {
     this.subscriptions.push(this.taskService.update(this.entity).subscribe(
       (response: Task) => {
         if (startTask) {
@@ -194,8 +200,25 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
       }));
   }
 
-  private signalTaskProc(taskId: string, action: string, comment: string): void {
+  private validate(): boolean {
+    let valid: boolean = false
+    if (this.entity.executionDatePlan) {
+      if (this.entity.executionDatePlan < new Date()) {
+        this.getMessage('Tasks.InvalidExecutionDatePlan.Msg').then(message => {
+          // this.showErrorNotification(result);
+          // this._snackBar.open(result, 'close');
+          this.showErrorSnackBar(message);
+        });
+        valid = false;
+      } else {
+        valid = true;
+      }
+    }
 
+    return valid;
+  }
+
+  private signalTaskProc(taskId: string, action: string, comment: string): void {
     let taskSignalProcRequest = {
       taskId: taskId,
       action: action,

@@ -253,6 +253,7 @@
   "Tasks.TaskEditor" : "Редактирование задачи",
   "Tasks.TaskCreation" : "Создание задачи",
   "Tasks.MyActiveTasks" : "Мои активные задачи",
+  "Tasks.InvalidExecutionDatePlan.Msg" : "Срок исполнения не может быть раньше текущей даты",
   "Task" : "Задача",
   "Tasks" : "Задачи",
   "Browser" : "Список",

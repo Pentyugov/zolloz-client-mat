@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";
@@ -23,15 +23,17 @@ export class ContractorComponent extends NewAbstractBrowser<Contractor> implemen
   @ViewChild(MatSort, { static: true }) override sort: MatSort = Object.create(null);
   public columnsToDisplay = ApplicationConstants.CONTRACTOR_TABLE_COLUMNS;
 
-  constructor(router: Router,
-                        translate: TranslateService,
-                        eventNotificationService: EventNotificationService,
-                        applicationService: ApplicationService,
-                        dialog: MatDialog,
-                        editor: MatDialog,
-                        screenService: ScreenService,
-                        private contractorService: ContractorService) {
-    super(router,
+  constructor(injector: Injector,
+              router: Router,
+              translate: TranslateService,
+              eventNotificationService: EventNotificationService,
+              applicationService: ApplicationService,
+              dialog: MatDialog,
+              editor: MatDialog,
+              screenService: ScreenService,
+              private contractorService: ContractorService) {
+    super(injector,
+      router,
       translate,
       eventNotificationService,
       applicationService,

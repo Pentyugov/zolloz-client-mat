@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {CalendarConfig} from "../../../shared/config/calendar.config";
 import {FormControl} from "@angular/forms";
 import {ZollozCalendarEvent} from "../../../../model/event";
@@ -31,7 +31,8 @@ export class CalendarEditComponent extends AbstractEditor implements OnInit, OnD
   public entity: ZollozCalendarEvent = new ZollozCalendarEvent();
   public _data: any;
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -39,7 +40,7 @@ export class CalendarEditComponent extends AbstractEditor implements OnInit, OnD
               private calendarService: CalendarService,
               public dialogRef: MatDialogRef<CalendarEditComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
     this._data = data;

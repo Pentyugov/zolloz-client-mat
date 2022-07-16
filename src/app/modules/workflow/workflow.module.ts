@@ -25,6 +25,7 @@ import {TasksComponent} from './task/tasks.component';
 import {TaskEditComponent} from './task/tast-edit/task-edit.component';
 import {TaskExecutionDialogComponent} from './task/task-execution-dialog/task-execution-dialog.component';
 import {NgxMatDatetimePickerModule} from "@angular-material-components/datetime-picker";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -40,26 +41,27 @@ import {NgxMatDatetimePickerModule} from "@angular-material-components/datetime-
   ],
   providers: [DatePipe],
     imports: [
-        CommonModule,
-        RouterModule.forChild(WorkflowRoutes),
-        FormsModule,
-        MaterialModule,
-        PerfectScrollbarModule,
-        FlexLayoutModule,
-        UcWidgetModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        NgMultiSelectDropDownModule.forRoot(),
-        NgxMaskModule.forRoot(),
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient],
-            },
-        }),
-        NgxPermissionsRestrictStubModule,
-        NgxMatDatetimePickerModule,
+      CommonModule,
+      RouterModule.forChild(WorkflowRoutes),
+      FormsModule,
+      MaterialModule,
+      PerfectScrollbarModule,
+      FlexLayoutModule,
+      UcWidgetModule,
+      ReactiveFormsModule,
+      MatInputModule,
+      NgMultiSelectDropDownModule.forRoot(),
+      NgxMaskModule.forRoot(),
+      TranslateModule.forRoot({
+          loader: {
+              provide: TranslateLoader,
+              useFactory: HttpLoaderFactory,
+              deps: [HttpClient],
+          },
+      }),
+      NgxPermissionsRestrictStubModule,
+      NgxMatDatetimePickerModule,
+      MatSnackBarModule,
     ],
 
   exports: [

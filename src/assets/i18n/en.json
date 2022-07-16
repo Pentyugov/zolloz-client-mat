@@ -253,6 +253,7 @@
   "Tasks.TaskEditor" : "Task editor",
   "Tasks.TaskCreation" : "Task editor",
   "Tasks.MyActiveTasks" : "My active tasks",
+  "Tasks.InvalidExecutionDatePlan.Msg" : "Due date cannot be before current date ",
   "Task" : "Task",
   "Tasks" : "Tasks",
   "Browser" : "Browser",

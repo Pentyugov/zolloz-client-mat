@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {EventNotificationService} from '../../../service/event-notification.service';
@@ -38,7 +38,8 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
   public positions: Position[] = [];
   public employees: Employee[] = [];
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -46,7 +47,7 @@ export class PositionComponent extends AbstractBrowser implements OnInit, OnDest
               dialog: MatDialog,
               private positionService: PositionService,
               private employeeService: EmployeeService) {
-    super(router, translate, eventNotificationService, applicationService, dialog, screenService);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog, screenService);
     this.id = 'screen$Position'
   }
 

@@ -6,6 +6,8 @@ import {ScreenService} from "../../../service/screen.service";
 import {AbstractWindow} from "../window/abstract-window";
 import {MatDialog} from "@angular/material/dialog";
 import {ApplicationConstants} from "../application-constants";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Injector} from "@angular/core";
 
 export abstract class AbstractBrowser extends AbstractWindow {
 
@@ -17,13 +19,14 @@ export abstract class AbstractBrowser extends AbstractWindow {
   public readonly EDIT_ACTION =ApplicationConstants.SCREEN_ACTION_EDIT;
   public readonly DELETE_ACTION =ApplicationConstants.SCREEN_ACTION_DELETE;
 
-  protected constructor(router: Router,
+  protected constructor(injector: Injector,
+                        router: Router,
                         translate: TranslateService,
                         eventNotificationService: EventNotificationService,
                         applicationService: ApplicationService,
                         dialog: MatDialog,
                         protected screenService: ScreenService) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
     this.initId();
   }
 

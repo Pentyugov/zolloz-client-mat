@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {UserService} from "../../../service/user.service";
 import {User} from "../../../model/user";
 import {MatTableDataSource} from "@angular/material/table";
@@ -15,6 +15,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {ScreenService} from "../../../service/screen.service";
 import {AbstractBrowser} from "../../shared/browser/AbstractBrowser";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-user',
@@ -34,14 +35,15 @@ export class UserComponent extends AbstractBrowser implements OnInit, OnDestroy 
   private userToDelete: User = new User();
   private title: string = '';
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
               screenService: ScreenService,
               dialog: MatDialog,
               private userService: UserService) {
-    super(router, translate, eventNotificationService, applicationService, dialog, screenService);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog, screenService);
     this.id = 'screen$User'
     this.userSettings = this.applicationService.getUserSettings();
     this.refreshing = this.applicationService.getRefreshing();

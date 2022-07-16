@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Department} from "../../../model/department";
 import {DepartmentService} from "../../../service/department.service";
 import {ApplicationService} from "../../../service/application.service";
@@ -23,7 +23,8 @@ export class DepartmentComponent extends NewAbstractBrowser<Department> implemen
   @ViewChild(MatSort, { static: true }) override sort: MatSort = Object.create(null);
   public columnsToDisplay = ApplicationConstants.DEPARTMENT_TABLE_COLUMNS;
 
-  constructor(public override router: Router,
+  constructor(injector: Injector,
+              public override router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -31,7 +32,8 @@ export class DepartmentComponent extends NewAbstractBrowser<Department> implemen
               editor: MatDialog,
               screenService: ScreenService,
               private departmentService: DepartmentService) {
-    super(router,
+    super(injector,
+      router,
       translate,
       eventNotificationService,
       applicationService,

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {Component, ElementRef, Injector, OnDestroy, ViewChild} from '@angular/core';
 import {ChatMessage} from "../../../model/chat-message";
 import {ApplicationService} from "../../../service/application.service";
 import {AuthenticationService} from "../../../service/authentication.service";
@@ -51,7 +51,8 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
   throttle = 300;
 
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -59,7 +60,7 @@ export class ChatComponent extends AbstractWindow implements OnDestroy {
               private authenticationService: AuthenticationService,
               private userService: UserService,
               private chatMessageService: ChatMessageService) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
 
     this.getUsers();
     this.currentUser = this.authenticationService.getUserFromLocalCache();

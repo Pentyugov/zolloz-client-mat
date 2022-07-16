@@ -14,6 +14,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ComponentType} from "@angular/cdk/portal";
 import {DeleteDialogComponent} from "../dialog/delete-dialog/delete-dialog.component";
 import {ApplicationConstants} from "../application-constants";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Injector} from "@angular/core";
 
 
 export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindow {
@@ -30,7 +32,8 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
   public readonly EDIT_ACTION =ApplicationConstants.SCREEN_ACTION_EDIT;
   public readonly DELETE_ACTION =ApplicationConstants.SCREEN_ACTION_DELETE;
 
-  protected constructor(router: Router,
+  protected constructor(injector: Injector,
+                        router: Router,
                         translate: TranslateService,
                         eventNotificationService: EventNotificationService,
                         applicationService: ApplicationService,
@@ -39,8 +42,8 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
                         public entityService: EntityService<T>,
                         public editor: MatDialog,
                         public screenService: ScreenService) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
-    // this.initId();
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
+    //
   }
 
   protected afterCommit(message: string): void {

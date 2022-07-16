@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnDestroy, OnInit, Optional} from '@angular/core';
+import {Component, Inject, Injector, Input, OnDestroy, OnInit, Optional} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DOCUMENT} from "@angular/common";
 import {CalendarDateFormatter, CalendarEvent, DAYS_OF_WEEK} from 'angular-calendar';
@@ -65,7 +65,8 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
 
   public events: ZollozCalendarEvent[] = [];
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -74,7 +75,8 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
               screenService: ScreenService,
               public calendarService: CalendarService,
               @Inject(DOCUMENT) doc: any) {
-    super(router,
+    super(injector,
+      router,
       translate,
       eventNotificationService,
       applicationService,

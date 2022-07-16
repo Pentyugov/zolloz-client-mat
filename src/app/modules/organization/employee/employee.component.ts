@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { ApplicationService } from '../../../service/application.service';
 import { EmployeeService } from '../../../service/employee.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,14 +26,15 @@ export class EmployeeComponent extends AbstractBrowser implements OnInit, OnDest
   public columnsToDisplay = ApplicationConstants.EMPLOYEES_TABLE_COLUMNS;
   public dataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>([]);
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
               screenService: ScreenService,
               dialog: MatDialog,
               private employeeService: EmployeeService) {
-    super(router, translate, eventNotificationService, applicationService, dialog, screenService);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog, screenService);
     this.id = 'screen$Employee'
 
   }

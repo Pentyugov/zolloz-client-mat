@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {AbstractEditor} from "../../../shared/editor/abstract-editor";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
@@ -19,6 +19,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {ProjectAddParticipantsComponent} from "./addparticipants/project-add-participants.component";
 import {SaveDialogComponent} from "../../../shared/dialog/save-dialog/save-dialog.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   templateUrl: './project-edit.component.html',
@@ -38,7 +39,8 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
 
   public statuses: Object[];
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -48,7 +50,7 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
               private contractorService: ContractorService,
               public dialogRef: MatDialogRef<ProjectEditComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
 
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
@@ -108,7 +110,6 @@ export class ProjectEditComponent extends AbstractEditor implements OnInit, OnDe
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.event.action === ApplicationConstants.DIALOG_ACTION_SAVE) {
-        console.log(result.event.data);
         this.initDataSource(result.event.data);
       }
     });

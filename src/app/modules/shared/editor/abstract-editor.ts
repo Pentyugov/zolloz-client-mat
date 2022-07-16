@@ -4,15 +4,18 @@ import {EventNotificationService} from '../../../service/event-notification.serv
 import {ApplicationService} from '../../../service/application.service';
 import {MatDialog} from "@angular/material/dialog";
 import {AbstractWindow} from "../window/abstract-window";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Injector} from "@angular/core";
 
 export abstract class AbstractEditor extends AbstractWindow {
 
-  protected constructor(router: Router,
+  protected constructor(injector: Injector,
+                        router: Router,
                         translate: TranslateService,
                         eventNotificationService: EventNotificationService,
                         applicationService: ApplicationService,
                         dialog: MatDialog) {
-    super(router, translate, eventNotificationService, applicationService, dialog)
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
   }
 
   protected afterCommit(message: string, path: string): void {

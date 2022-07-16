@@ -6,6 +6,8 @@ import {ApplicationService} from "../../../service/application.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ApplicationConstants} from "../application-constants";
 import {User} from "../../../model/user";
+import {Injector} from "@angular/core";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 export abstract class AbstractWindow {
 
@@ -15,12 +17,16 @@ export abstract class AbstractWindow {
   public refreshing: boolean = true;
   public subscriptions: Subscription[] = [];
 
-  protected constructor(public router: Router,
+  private _snackBar: MatSnackBar;
+
+  protected constructor(public injector: Injector,
+                        public router: Router,
                         protected translate: TranslateService,
                         protected eventNotificationService: EventNotificationService,
                         protected applicationService: ApplicationService,
                         protected dialog: MatDialog) {
     this.refreshing = applicationService.getRefreshing();
+    this._snackBar = this.injector.get(MatSnackBar);
     this.subscriptions.push(applicationService.refreshing.subscribe(r => this.refreshing = r));
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
     this.subscriptions.push(applicationService.darkMode.subscribe(dm => this.isDarkMode = dm));
@@ -32,6 +38,17 @@ export abstract class AbstractWindow {
       this.translate.get(ApplicationConstants.NOTIFICATION_TITLE_ERROR).subscribe(m => this.messageTitle = m)
     );
     this.eventNotificationService.showErrorNotification(this.messageTitle, errorMessage);
+  }
+
+  protected showSuccessNotification(errorMessage: string): void {
+    this.subscriptions.push(
+      this.translate.get(ApplicationConstants.NOTIFICATION_TITLE_SUCCESS).subscribe(m => this.messageTitle = m)
+    );
+    this.eventNotificationService.showErrorNotification(this.messageTitle, errorMessage);
+  }
+
+  protected showErrorSnackBar(message: string): void {
+    this._snackBar.open(message, 'OK');
   }
 
   public getUserName(user: User): string {
@@ -49,6 +66,15 @@ export abstract class AbstractWindow {
     );
 
     return result;
+  }
+
+  public async getMessage(key: string): Promise<string> {
+    return new Promise((resolve) => {
+      this.subscriptions.push(
+        this.translate.get(key).subscribe(msg => {
+          resolve(msg);
+        }));
+    });
   }
 
 }

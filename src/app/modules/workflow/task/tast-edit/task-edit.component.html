@@ -179,7 +179,7 @@
                             class="startTaskBtn"
                             *ngIf="isStartButtonEnabled()"
                             [disabled]="taskEditForm.invalid"
-                            (click)="onUpdateTask(true)"
+                            (click)="updateTask(true)"
                     >{{'Tasks.StartTask' | translate}}</button>
 
                     <button mat-raised-button

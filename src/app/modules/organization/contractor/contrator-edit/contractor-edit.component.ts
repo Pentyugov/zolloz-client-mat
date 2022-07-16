@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, Optional} from '@angular/core';
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../../service/event-notification.service";
@@ -20,7 +20,8 @@ import {AbstractEditor} from "../../../shared/editor/abstract-editor";
 export class ContractorEditComponent extends AbstractEditor implements OnInit, OnDestroy {
   public dialog_data: any;
   public entity: Contractor = new Contractor();
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -28,7 +29,7 @@ export class ContractorEditComponent extends AbstractEditor implements OnInit, O
               public contractorService: ContractorService,
               public dialogRef: MatDialogRef<ContractorEditComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
     this.dialog_data = data;

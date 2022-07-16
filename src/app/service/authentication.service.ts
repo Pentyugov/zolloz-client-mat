@@ -148,8 +148,8 @@ export class AuthenticationService {
 
   public hasAccessToScreen(screen: string): boolean {
     this.screenService.hasScreenAccess(screen).subscribe((response: boolean) => {
-      console.log(response);
-    })
+
+    });
     return false;
   }
 

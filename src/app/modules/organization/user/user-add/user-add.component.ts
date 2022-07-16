@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {ApplicationService} from "../../../../service/application.service";
 import {UserService} from "../../../../service/user.service";
 import {TranslateService} from "@ngx-translate/core";
@@ -34,7 +34,8 @@ export class UserAddComponent extends AbstractEditor implements OnInit, OnDestro
   public imageUploaded = false;
   private title: string = '';
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -42,7 +43,7 @@ export class UserAddComponent extends AbstractEditor implements OnInit, OnDestro
               private activatedRouter: ActivatedRoute,
               private roleService: RoleService,
               private userService: UserService) {
-    super(router, translate, eventNotificationService, applicationService, dialog)
+    super(injector, router, translate, eventNotificationService, applicationService, dialog)
     this.rolesDataSource = new MatTableDataSource<Role>();
     this.refreshing = this.applicationService.getRefreshing();
 

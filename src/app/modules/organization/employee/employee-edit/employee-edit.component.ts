@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import {Employee} from '../../../../model/employee';
 import {User} from '../../../../model/user';
 import {Department} from '../../../../model/department';
@@ -33,7 +33,8 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
   public positions: Position[] = [];
   private id: any;
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -44,7 +45,7 @@ export class EmployeeEditComponent extends AbstractEditor implements OnInit, OnD
               private departmentService: DepartmentService,
               private positionService: PositionService,
               ) {
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
 
       this.id = this.activatedRouter.snapshot.paramMap.get('id');
       this.refreshing = applicationService.getRefreshing();

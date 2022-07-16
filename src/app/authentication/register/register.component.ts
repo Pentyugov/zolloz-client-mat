@@ -52,7 +52,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl('/login').then(()=> {});
         },
         (errorResponse: HttpErrorResponse) => {
-          console.log(errorResponse.error.message);
           this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message);
           this.showLoading = false;
         }

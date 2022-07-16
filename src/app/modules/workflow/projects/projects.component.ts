@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";
@@ -15,6 +15,7 @@ import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {ProjectDeleteDialogComponent} from "./project-delete-dialog/project-delete-dialog.component";
 import {ScreenService} from "../../../service/screen.service";
 import {AbstractBrowser} from "../../shared/browser/AbstractBrowser";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-projects',
@@ -35,7 +36,8 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
   InProgress = 0;
   Open = 0;
 
-  public constructor(router: Router,
+  public constructor(injector: Injector,
+                     router: Router,
                      translate: TranslateService,
                      eventNotificationService: EventNotificationService,
                      applicationService: ApplicationService,
@@ -44,7 +46,7 @@ export class ProjectsComponent extends AbstractBrowser implements OnInit, OnDest
                      protected projectService: ProjectService,
                      protected projectEditor: MatDialog) {
 
-    super(router, translate, eventNotificationService, applicationService, dialog, screenService);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog, screenService);
     this.id = 'screen$Projects'
     this.defaultFilterPredicate = this.dataSource.filterPredicate;
     this.statusFilterPredicate = (project: Project, filter: string) => {

@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {UserService} from "../../../../service/user.service";
 import {User} from "../../../../model/user";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -16,6 +16,7 @@ import {EventNotificationService} from "../../../../service/event-notification.s
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ApplicationConstants} from "../../../shared/application-constants";
 import {AbstractEditor} from "../../../shared/editor/abstract-editor";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-user-edit',
@@ -35,7 +36,8 @@ export class UserEditComponent extends AbstractEditor implements OnInit, OnDestr
   private title: string = '';
   public userRoles: Role[] = [];
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -43,7 +45,7 @@ export class UserEditComponent extends AbstractEditor implements OnInit, OnDestr
               private activatedRouter: ActivatedRoute,
               private roleService: RoleService,
               private userService: UserService) {
-    super(router, translate, eventNotificationService, applicationService, dialog)
+    super(injector, router, translate, eventNotificationService, applicationService, dialog)
     this.id = activatedRouter.snapshot.paramMap.get('id');
     this.rolesDataSource = new MatTableDataSource<Role>();
     this.refreshing = this.applicationService.getRefreshing();

@@ -83,7 +83,6 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public async onChangeImage($event: any) {
-    console.log($event.files);
     $event.value;
     const files = $event.srcElement.files;
     if (files != null) {
@@ -118,7 +117,6 @@ export class UserInfoComponent implements OnInit, OnDestroy, AfterViewInit {
         if (file.cdnUrl != null) {
           url = file.cdnUrl;
         }
-        console.log(file.cdnUrl)
       });
     }
     return url;

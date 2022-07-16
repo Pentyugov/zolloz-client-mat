@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Injector, Input, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../service/event-notification.service";
@@ -13,6 +13,7 @@ import {Task} from "../../../model/task";
 import {TaskEditComponent} from "./tast-edit/task-edit.component";
 import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
 import {HttpErrorResponse} from "@angular/common/http";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-task',
@@ -37,7 +38,8 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   public readonly MEDIUM = Task.PRIORITY_MEDIUM;
   public readonly HIGH = Task.PRIORITY_HIGH;
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -45,7 +47,8 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
               editor: MatDialog,
               screenService: ScreenService,
               private taskService: TaskService,) {
-    super(router,
+    super(injector,
+      router,
       translate,
       eventNotificationService,
       applicationService,

@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
+import {Component, Inject, Injector, OnDestroy, OnInit, Optional, ViewChild} from '@angular/core';
 import {Role} from "../../../model/role";
 import {RoleService} from "../../../service/role.service";
 import {EventNotificationService} from "../../../service/event-notification.service";
@@ -38,14 +38,15 @@ export class RoleComponent extends AbstractBrowser implements OnInit, OnDestroy 
 
   private userSettings: UserSettings;
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               applicationService: ApplicationService,
               eventNotificationService: EventNotificationService,
               translate: TranslateService,
               screenService: ScreenService,
               dialog: MatDialog,
               private roleService: RoleService) {
-    super(router, translate, eventNotificationService, applicationService, dialog, screenService);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog, screenService);
     this.id = 'screen$Role'
     this.userSettings = this.applicationService.getUserSettings();
     this.translate.use(this.userSettings.locale);

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import {ApplicationService} from '../../../../service/application.service';
 import {EmployeeService} from '../../../../service/employee.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -32,7 +32,8 @@ export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDe
   public positions: Position[] = [];
 
 
-  constructor(router: Router,
+  constructor(injector: Injector,
+              router: Router,
               translate: TranslateService,
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
@@ -43,7 +44,7 @@ export class EmployeeAddComponent extends AbstractEditor implements OnInit, OnDe
               private positionService: PositionService,
               ) {
 
-    super(router, translate, eventNotificationService, applicationService, dialog);
+    super(injector, router, translate, eventNotificationService, applicationService, dialog);
 
     this.refreshing = applicationService.getRefreshing();
     this.subscriptions.push(applicationService.userSettings.subscribe(us => translate.use(us.locale)));
