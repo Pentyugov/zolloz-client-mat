@@ -1,5 +1,14 @@
 
 export class Utils {
+
+  static readonly BASIC_COLORS = [
+    { colorName: 'info' },
+    { colorName: 'primary' },
+    { colorName: 'warning' },
+    { colorName: 'danger' },
+    { colorName: 'success' },
+  ]
+
   static readonly COLORS_PRIMARY = [
     '#1976d2',
     '#26dad2',

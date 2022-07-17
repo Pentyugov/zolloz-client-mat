@@ -11,7 +11,8 @@ export class ApplicationConstants {
   static readonly PROJECT = 'Project';
   static readonly ROLE = 'Role';
   static readonly USER = 'User';
-  static readonly CALENDAR_EVENT = 'CalendarEvent'
+  static readonly CALENDAR_EVENT = 'CalendarEvent';
+  static readonly NOTE = 'Note'
 
 //    ==============================================================
 //    =                        Dialog params                       =

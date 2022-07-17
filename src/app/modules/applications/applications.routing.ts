@@ -2,6 +2,7 @@ import {Routes} from "@angular/router";
 import {ChatComponent} from "./chat/chat.component";
 import {TestComponent} from "./test/test.component";
 import {CalendarComponent} from "./calendar/calendar.component";
+import {NotesComponent} from "./notes/notes.component";
 
 export const ApplicationsRoutes: Routes = [
 
@@ -26,6 +27,11 @@ export const ApplicationsRoutes: Routes = [
       {
         path: 'test',
         component: TestComponent,
+      },
+
+      {
+        path: 'notes',
+        component: NotesComponent,
       }
 
     ]

@@ -128,7 +128,6 @@
   "Mailbox": "Mailbox",
   "Mail": "Mail",
   "Taskboard": "Taskboard",
-  "Notes": "Notes",
   "Courses": "Courses",
   "Contact": "Contact",
   "Ticket List": "Ticket List",
@@ -311,5 +310,12 @@
   },
   "Widgets.Productivity.ChartProjects": {
     "Title": "Project tasks: "
-  }
+  },
+  "Notes": "Notes",
+  "Notes.NewNoteTitle": "New note",
+  "Notes.Search": "Search note",
+  "Notes.ChangeColor": "Change color",
+  "Notes.AddNote": "Add note",
+  "Notes.UpdateNote": "Update note",
+  "Notes.AddFirstNoteMsg": "Add your first note"
 }

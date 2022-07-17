@@ -129,7 +129,6 @@
   "Mailbox": "Mailbox",
   "Mail": "Mail",
   "Taskboard": "Taskboard",
-  "Notes": "Notes",
   "Courses": "Courses",
   "Contact": "Contact",
   "Ticket List": "Ticket List",
@@ -311,5 +310,12 @@
   },
   "Widgets.Productivity.ChartProjects": {
     "Title": "Задачи по проектам: "
-  }
+  },
+  "Notes": "Заметки",
+  "Notes.NewNoteTitle": "Новая заметка",
+  "Notes.Search": "Поиск по заметкам",
+  "Notes.ChangeColor": "Изменить цвет",
+  "Notes.AddNote": "Добавить заметку",
+  "Notes.UpdateNote": "Изменить заметку",
+  "Notes.AddFirstNoteMsg": "Добавьте вашу первую заметку"
 }

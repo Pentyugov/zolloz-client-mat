@@ -14,7 +14,6 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ComponentType} from "@angular/cdk/portal";
 import {DeleteDialogComponent} from "../dialog/delete-dialog/delete-dialog.component";
 import {ApplicationConstants} from "../application-constants";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {Injector} from "@angular/core";
 
 
@@ -23,7 +22,7 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
   public paginator: MatPaginator | null = null;
   public sort: MatSort | null = null;
   public dataSource: MatTableDataSource<T> = new MatTableDataSource<T>([]);
-  public entities: Entity[] = [];
+  public entities: Entity[] = [] as T[];
   public selectedRow: any;
   public clickedRow: any;
   public id: string = '';
@@ -38,7 +37,7 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
                         eventNotificationService: EventNotificationService,
                         applicationService: ApplicationService,
                         dialog: MatDialog,
-                        public editorComponent: ComponentType<any>,
+                        public editorComponent: ComponentType<any> | null,
                         public entityService: EntityService<T>,
                         public editor: MatDialog,
                         public screenService: ScreenService) {
@@ -128,23 +127,26 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
   }
 
   public openDialog(action: string, entity: T | null): void {
-    let isNewItem = false;
-    if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
-      isNewItem = true;
-    }
-    const editor = this.editor.open(this.editorComponent, {
-      width: "100%",
-      height: "800px",
-      panelClass: this.isDarkMode ? 'dark' : '',
-      data: {
-        entity: entity,
-        isNewItem: isNewItem
+    if (this.editorComponent) {
+      let isNewItem = false;
+      if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
+        isNewItem = true;
       }
-    });
+      const editor = this.editor.open(this.editorComponent, {
+        width: "100%",
+        height: "800px",
+        panelClass: this.isDarkMode ? 'dark' : '',
+        data: {
+          entity: entity,
+          isNewItem: isNewItem
+        }
+      });
 
-    editor.afterClosed().subscribe(() => {
-      this.loadEntities();
-    });
+      editor.afterClosed().subscribe(() => {
+        this.loadEntities();
+      });
+    }
+
   }
 
   public openDeleteDialog(entity: T) {
@@ -184,7 +186,7 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
           this.eventNotificationService.showErrorNotification(this.messageTitle, errorResponse.error.message);
         }
       )
-    )
+    );
   }
 
   public applyFilter(value: any) {

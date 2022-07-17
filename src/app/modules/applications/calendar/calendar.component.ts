@@ -1,4 +1,4 @@
-import {Component, Inject, Injector, Input, OnDestroy, OnInit, Optional} from '@angular/core';
+import {Component, Inject, Injector, Input, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DOCUMENT} from "@angular/common";
 import {CalendarDateFormatter, CalendarEvent, DAYS_OF_WEEK} from 'angular-calendar';
@@ -135,21 +135,24 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
   }
 
   public override openDialog(action: string, entity: ZollozCalendarEvent | null): void {
-    let isNewItem = false;
-    if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
-      isNewItem = true;
-    }
-    const editor = this.editor.open(this.editorComponent, {
-      panelClass: this.isDarkMode ? 'dark' : 'calendar-form-dialog',
-      data: {
-        entity: entity,
-        isNewItem: isNewItem
+    if (this.editorComponent) {
+      let isNewItem = false;
+      if (action === ApplicationConstants.DIALOG_ACTION_ADD) {
+        isNewItem = true;
       }
-    });
+      const editor = this.editor.open(this.editorComponent, {
+        panelClass: this.isDarkMode ? 'dark' : 'calendar-form-dialog',
+        data: {
+          entity: entity,
+          isNewItem: isNewItem
+        }
+      });
 
-    editor.afterClosed().subscribe(() => {
+      editor.afterClosed().subscribe(() => {
         this.loadEntities();
-    });
+      });
+    }
+
   }
 
   private onUpdateEvent(event: ZollozCalendarEvent): void {

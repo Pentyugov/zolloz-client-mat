@@ -61,11 +61,7 @@ const MENUITEMS = [
     screen: '',
     children: [
       { state: 'projects', name: 'Projects', type: 'link', screen: 'screen$Projects.Browse' },
-      { state: 'tasks', name: 'Tasks', type: 'link' },
-      { state: 'tickets', name: 'Tickets', type: 'link' },
-      { state: 'taskboard', name: 'Taskboard', type: 'link' },
-      { state: 'notes', name: 'Notes', type: 'link' },
-      { state: 'todo', name: 'Todo', type: 'link' },
+      { state: 'tasks', name: 'Tasks', type: 'link' }
     ],
   },
 
@@ -78,7 +74,7 @@ const MENUITEMS = [
     children: [
       { state: 'chat', name: 'Chat', type: 'link', screen: 'screen$Chat.Browse' },
       { state: 'calendar', name: 'Calendar', type: 'link', screen: 'screen$Calendar.Browse' },
-      { state: 'test', name: 'Test', type: 'link', screen: 'screen$Test.Browse' },
+      { state: 'notes', name: 'Notes', type: 'link', screen: 'screen$Notes.Browse' }
     ],
   },
 ];
