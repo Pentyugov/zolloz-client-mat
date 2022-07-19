@@ -28,8 +28,6 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
               public applicationService: ApplicationService,
   ) {
     this.currentUser = this.userService.getCurrentUser();
-    console.log(this.currentUser);
-
   }
 
   ngOnInit(): void {
@@ -58,8 +56,6 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
   public onUpdateUser(): void {
     this.applicationService.changeRefreshing(true);
-    console.log('on update')
-    console.log(this.currentUser.nonLocked)
     this.userService.update(this.currentUser).subscribe(
       (response: User) => {
         this.userService.changeCurrentUser(response);

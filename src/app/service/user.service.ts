@@ -129,8 +129,8 @@ export class UserService implements EntityService<User>{
     formData.append('firstName', user.firstName);
     formData.append('lastName', user.lastName);
     formData.append('roles', JSON.stringify(user.roles));
-    formData.append('isActive', JSON.stringify(user.active));
-    formData.append('isNotLocked', JSON.stringify(user.nonLocked));
+    formData.append('active', JSON.stringify(user.active));
+    formData.append('nonLocked', JSON.stringify(user.nonLocked));
     if (profileImage) {
       formData.append('profileImage', profileImage);
     }
