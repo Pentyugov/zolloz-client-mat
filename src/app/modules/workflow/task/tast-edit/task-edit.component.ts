@@ -23,6 +23,8 @@ import {Project} from "../../../../model/project";
 import {ProjectService} from "../../../../service/project.service";
 import {CalendarConfig} from "../../../shared/config/calendar.config";
 import {FormControl} from "@angular/forms";
+import {NumeratorService} from "../../../../service/numerator.service";
+import {NumeratorResponse} from "../../../../model/numerator-response";
 
 @Component({
   selector: 'app-task-edit',
@@ -52,6 +54,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
               dialog: MatDialog,
               public userService: UserService,
               private taskService: TaskService,
+              private numeratorService: NumeratorService,
               private projectService: ProjectService,
               private authenticationService: AuthenticationService,
               public dialogRef: MatDialogRef<TaskEditComponent>,
@@ -76,6 +79,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
       }
     } else {
       this.entity.creator = this.currentUser;
+      this.getNextNumber();
       this.prepareDate();
     }
 
@@ -108,6 +112,13 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
         this.entity.executor = this.executors.find(d => d.id === this.entity.executor?.id)
       }, (errorResponse: HttpErrorResponse) => {
         this.showErrorNotification(errorResponse.error.message)
+    }));
+  }
+
+  public getNextNumber(): void {
+    this.subscriptions.push(this.numeratorService.getNumber('next', 'task')
+      .subscribe((response: NumeratorResponse) => {
+        this.entity.number = response.number;
     }));
   }
 
