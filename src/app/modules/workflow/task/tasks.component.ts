@@ -12,13 +12,20 @@ import {ApplicationConstants} from "../../shared/application-constants";
 import {Task} from "../../../model/task";
 import {TaskEditComponent} from "./tast-edit/task-edit.component";
 import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
-import {HttpErrorResponse} from "@angular/common/http";
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {HttpErrorResponse} from "@angular/common/http"
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-task',
   templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss']
+  styleUrls: ['./tasks.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   @Input() isWidget: boolean = false;
@@ -37,6 +44,8 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   public readonly LOW = Task.PRIORITY_LOW;
   public readonly MEDIUM = Task.PRIORITY_MEDIUM;
   public readonly HIGH = Task.PRIORITY_HIGH;
+
+  public expandedElement: Task | null = null
 
   constructor(injector: Injector,
               router: Router,

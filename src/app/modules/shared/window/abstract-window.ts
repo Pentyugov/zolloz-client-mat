@@ -77,4 +77,11 @@ export abstract class AbstractWindow {
     });
   }
 
+  public getMaxTextLength(text: string, limit: number): string {
+    if (text) {
+      return text.length > 40 ? text.slice(0, limit) + '...' : text;
+    }
+    return '';
+  }
+
 }

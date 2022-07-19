@@ -384,8 +384,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   public isExecutorFieldEnabled(): boolean {
     if (this.isNewItem())
       return true;
-
-    return !this.entity.started;
+    return !this.entity.started && this.entity.creator?.id === this.currentUser.id;
   }
 
   private prepareDate(): void {

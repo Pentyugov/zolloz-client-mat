@@ -42,13 +42,6 @@ export abstract class AbstractBrowser extends AbstractWindow {
     this.applicationService.changeRefreshing(false);
   }
 
-  public getMaxTextLength(text: string, limit: number): string {
-    if (text) {
-      return text.length > 40 ? text.slice(0, limit) + '...' : text;
-    }
-    return '';
-  }
-
   public isActionPermit(action: string): boolean {
     return this.screenService.isActionPermit(this.id, action);
   }
