@@ -50,7 +50,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
               eventNotificationService: EventNotificationService,
               applicationService: ApplicationService,
               dialog: MatDialog,
-              private userService: UserService,
+              public userService: UserService,
               private taskService: TaskService,
               private projectService: ProjectService,
               private authenticationService: AuthenticationService,

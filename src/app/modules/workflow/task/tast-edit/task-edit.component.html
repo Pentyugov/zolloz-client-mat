@@ -143,7 +143,7 @@
                                   [(ngModel)]="entity.executor">
                         <mat-option [value]="null">{{'None' | translate}}</mat-option>
                         <mat-option *ngFor="let executor of executors" [value]="executor">
-                          {{ executor.lastName + ' ' + executor.firstName }}
+                          {{ userService.getUserName(executor) }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>

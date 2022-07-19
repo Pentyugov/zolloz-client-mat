@@ -11,7 +11,6 @@ import {EventNotificationService} from "../../../../service/event-notification.s
 import {EventNotificationCaptionEnum} from "../../../../enum/event-notification-caption.enum";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UcWidgetComponent} from "ngx-uploadcare-widget";
-import {UserSettings} from "../../../../model/user-settings";
 
 @Component({
   selector: 'app-user-info',

@@ -154,4 +154,10 @@ export class UserService implements EntityService<User>{
     return clone;
   }
 
+  public getUserName(user: User): string {
+    if (user.firstName && user.lastName)
+      return user.firstName + ' ' + user.lastName;
+    else return user.username;
+  }
+
 }
