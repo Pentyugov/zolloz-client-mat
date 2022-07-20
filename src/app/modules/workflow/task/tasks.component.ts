@@ -14,6 +14,7 @@ import {TaskEditComponent} from "./tast-edit/task-edit.component";
 import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
 import {HttpErrorResponse} from "@angular/common/http"
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-task',
@@ -34,18 +35,16 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
 
   public columnsToDisplay: string[] = [];
 
-  private readonly defaultFilterPredicate?: (data: Task, filter: string) => boolean;
-  private readonly statusFilterPredicate?: (data: Task, filter: string) => boolean;
-  private isDefaultPredicate: boolean = true;
   public totalCount = 0;
   public lowPriority = 0;
   public mediumPriority = 0;
   public highPriority = 0;
+  public readonly ALL = 'ALL';
   public readonly LOW = Task.PRIORITY_LOW;
   public readonly MEDIUM = Task.PRIORITY_MEDIUM;
   public readonly HIGH = Task.PRIORITY_HIGH;
 
-  public expandedElement: Task | null = null
+  public expandedElement: Task | null = null;
 
   constructor(injector: Injector,
               router: Router,
@@ -68,13 +67,6 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
       screenService);
 
     this.id = 'screen$Tasks';
-    this.defaultFilterPredicate = this.dataSource.filterPredicate;
-    this.statusFilterPredicate = (task: Task, filter: string) => {
-      if (task.priority)
-        return task.priority.toString().trim().toLowerCase() == filter;
-      return false;
-    };
-
 
   }
 
@@ -91,6 +83,10 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
         this.entityService.getAll().subscribe(
           (response: Task[]) => {
             this.entities = response;
+            this.totalCount = response.length;
+            this.lowPriority = this.filterByPriority(this.LOW).length;
+            this.mediumPriority = this.filterByPriority(this.MEDIUM).length;
+            this.highPriority = this.filterByPriority(this.HIGH).length;
             this.initDataSource(response);
             this.afterLoadEntities();
           }, (errorResponse: HttpErrorResponse) => {
@@ -99,8 +95,6 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
         )
       );
     }
-
-
   }
 
   private loadActiveTaskForExecutor(): void {
@@ -117,41 +111,69 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
     );
   }
 
+  private filterByPriority(priority: string, initDs: boolean = false): Task[] {
+    let sorted: Task[] = [];
+
+    if (priority === this.ALL) {
+      sorted = this.entities as Task[];
+    } else {
+      this.entities.forEach(tmp => {
+        const task = tmp as Task;
+        if (task.priority === priority)
+          sorted.push(task);
+      });
+    }
+
+    if (initDs) {
+      this.initDataSource(sorted);
+    }
+
+
+    return sorted;
+  }
+
   override afterLoadEntities() {
     super.afterLoadEntities();
     this.initFilters();
   }
 
+  protected override initDataSource(tasks: Task[]): void {
+    this.dataSource = new MatTableDataSource<Task>(tasks);
+    this.dataSource.filterPredicate = (task: Task, filter: string) => {
+
+      return task.number.toLocaleLowerCase().includes(filter)
+        || task.state.toLocaleLowerCase().includes(filter)
+        || this.projectFilter(task, filter)
+        || this.executorFilter(task, filter)
+        || this.initiatorFilter(task, filter)
+    }
+
+    if (this.dataSource) {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
+  }
+
+  private projectFilter(task: Task, filter: string): boolean {
+    if (task.project)
+      return task.project.name.includes(filter);
+    return false;
+  }
+
+  private executorFilter(task: Task, filter: string): boolean {
+    if (task.executor)
+      return task.executor.username.includes(filter);
+    return false;
+  }
+
+  private initiatorFilter(task: Task, filter: string): boolean {
+    if (task.initiator)
+      return task.initiator.username.includes(filter);
+    return false;
+  }
+
   private initFilters(): void {
-    this.totalCount = this.dataSource.data.length;
-    this.lowPriority = this.btnCategoryClick(this.LOW);
-    this.mediumPriority = this.btnCategoryClick(this.MEDIUM);
-    this.highPriority = this.btnCategoryClick(this.HIGH);
-    this.btnCategoryClick('');
-  }
 
-  public btnCategoryClick(val: string): number {
-    if (this.isDefaultPredicate) {
-      this.changePredicate(this.statusFilterPredicate);
-    }
-    this.clickedRow = null;
-    if (val !== '') {
-      this.dataSource.filter = val.toString().trim().toLowerCase();
-      return this.dataSource.filteredData.length;
-    } else {
-      this.clearFilters();
-      return this.totalCount;
-    }
-  }
-
-  private changePredicate(filterPredicate: any): void {
-    this.clearFilters();
-    this.dataSource.filterPredicate = filterPredicate;
-    this.isDefaultPredicate = !this.isDefaultPredicate;
-  }
-
-  public clearFilters(){
-    this.dataSource.filter = '';
   }
 
 

@@ -15,7 +15,6 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {ScreenService} from "../../../service/screen.service";
 import {AbstractBrowser} from "../../shared/browser/AbstractBrowser";
-import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-user',

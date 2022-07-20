@@ -2,7 +2,7 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div class="box p-20 bg-info text-center cursor-pointer" (click)="btnCategoryClick('')">
+      <div class="box p-20 bg-info text-center cursor-pointer" (click)="filterByPriority(ALL, true)">
         <h1 class="font-light text-white m-0">{{ totalCount }}</h1>
         <h6 class="text-white m-0">{{'TotalTasks' | translate}}</h6>
       </div>
@@ -11,8 +11,7 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div
-        class="box p-20 bg-success text-center cursor-pointer" (click)="btnCategoryClick(LOW)">
+      <div class="box p-20 bg-success text-center cursor-pointer" (click)="filterByPriority(LOW, true)">
         <h1 class="font-light text-white m-0">{{ lowPriority }}</h1>
         <h6 class="text-white m-0">{{'Tasks.Priority.Low' | translate}}</h6>
       </div>
@@ -21,8 +20,7 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div
-        class="box p-20 bg-warning text-center cursor-pointer" (click)="btnCategoryClick(MEDIUM)">
+      <div class="box p-20 bg-warning text-center cursor-pointer" (click)="filterByPriority(MEDIUM, true)">
         <h1 class="font-light text-white m-0">{{ mediumPriority }}</h1>
         <h6 class="text-white m-0">{{'Tasks.Priority.Middle' | translate}}</h6>
       </div>
@@ -31,8 +29,7 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div
-        class="box p-20 bg-danger text-center cursor-pointer" (click)="btnCategoryClick(HIGH)">
+      <div class="box p-20 bg-danger text-center cursor-pointer" (click)="filterByPriority(HIGH, true)">
         <h1 class="font-light text-white m-0">{{ highPriority }}</h1>
         <h6 class="text-white m-0">{{'Tasks.Priority.High' | translate}}</h6>
       </div>
@@ -56,12 +53,12 @@
             </mat-form-field>
           </div>
           <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
-          <button mat-raised-button
-                  *ngIf="isActionPermit(CREATE_ACTION)"
-                  color="primary"
-                  style="margin: 5px"
-                  (click)="openAddDialog(null)">
-            <i class="fa fa-plus"></i>
+            <button mat-raised-button
+                    *ngIf="isActionPermit(CREATE_ACTION)"
+                    color="primary"
+                    style="margin: 5px"
+                    (click)="openAddDialog(null)">
+              <i class="fa fa-plus"></i>
             </button>
 
             <button mat-raised-button
@@ -96,23 +93,30 @@
       <table mat-table matSort multiTemplateDataRows [dataSource]="dataSource" class="mat-elevation-z8 table ticket-list no-wrap">
 
         <ng-container matColumnDef="number">
-          <th mat-header-cell *matHeaderCellDef >{{'Number' | translate}}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Number' | translate}}</th>
           <td mat-cell *matCellDef="let element">
             {{ element.number}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="state">
-          <th mat-header-cell *matHeaderCellDef>{{'State' | translate}}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'State' | translate}}</th>
           <td mat-cell *matCellDef="let element">
             {{ element.state | translate}}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="priority">
-          <th mat-header-cell *matHeaderCellDef>{{'Priority' | translate}}</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'Priority' | translate}}</th>
           <td mat-cell *matCellDef="let element">
             {{ getPriority(element.priority) | translate }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="project">
+          <th mat-header-cell *matHeaderCellDef>{{'Project' | translate}}</th>
+          <td mat-cell *matCellDef="let element">
+            {{element.project?.name}}
           </td>
         </ng-container>
 
@@ -151,7 +155,7 @@
               class="element-detail"
               [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
             >
-<!--              <div class="truncate-cell">{{getMaxTextLength(element.description, 50)}}</div>-->
+              <!--              <div class="truncate-cell">{{getMaxTextLength(element.description, 50)}}</div>-->
               <div fxLayout="row wrap">
                 <div fxFlex="100">
                   <div class="element-description">
@@ -196,7 +200,7 @@
           class="example-detail-row"
         ></tr>
       </table>
-      <mat-paginator *ngIf="!isWidget" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+      <mat-paginator *ngIf="!isWidget" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
       <mat-paginator *ngIf="isWidget" [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-card-content>
