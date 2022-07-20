@@ -72,6 +72,7 @@ export class ApplicationConstants {
   static readonly TASK_TABLE_COLUMNS = ['number',
     'state',
     'priority',
+    'description',
     'project',
     'dueDate',
     'executionDateFact',
