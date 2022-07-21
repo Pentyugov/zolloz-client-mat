@@ -277,7 +277,19 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (result.event.action === ApplicationConstants.DIALOG_ACTION_APPLY) {
-          this.signalTaskProc(this.entity.id, ApplicationConstants.TASK_ACTION_REWORK, result.event.comment);
+          this.subscriptions.push(this.taskService.update(this.entity).subscribe(
+            (response: Task) => {
+              this.signalTaskProc(this.entity.id, ApplicationConstants.TASK_ACTION_REWORK, result.event.comment);
+              this.eventNotificationService
+                .showSuccessNotification(EventNotificationCaptionEnum.SUCCESS, `Task: ${response.number} was updated successfully`);
+              this.close();
+            }, (errorResponse: HttpErrorResponse) => {
+              this.eventNotificationService
+                .showErrorNotification(EventNotificationCaptionEnum.ERROR, errorResponse.error.message);
+              this.close();
+            }));
+
+
         }
       }
     });

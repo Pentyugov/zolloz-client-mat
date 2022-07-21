@@ -317,5 +317,10 @@
   "Notes.ChangeColor": "Изменить цвет",
   "Notes.AddNote": "Добавить заметку",
   "Notes.UpdateNote": "Изменить заметку",
-  "Notes.AddFirstNoteMsg": "Добавьте вашу первую заметку"
+  "Notes.AddFirstNoteMsg": "Добавьте вашу первую заметку",
+  "Kanban": "Канбан",
+  "Kanban.New": "Новые",
+  "Kanban.InProgress": "В работе",
+  "Kanban.OnHold": "В ожидании",
+  "Kanban.Completed": "Завершены"
 }

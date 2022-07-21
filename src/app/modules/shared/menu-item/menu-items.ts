@@ -61,7 +61,8 @@ const MENUITEMS = [
     screen: '',
     children: [
       { state: 'projects', name: 'Projects', type: 'link', screen: 'screen$Projects.Browse' },
-      { state: 'tasks', name: 'Tasks', type: 'link' }
+      { state: 'tasks', name: 'Tasks', type: 'link' },
+      { state: 'kanban', name: 'Kanban', type: 'link' }
     ],
   },
 

@@ -7,6 +7,7 @@ import {CustomHttpResponse} from "../model/custom-http-response";
 import {CardHistory} from "../model/card-history";
 import {EntityService} from "./entity.service";
 import {TaskSignalProcRequest} from "../model/task-signal-proc-request";
+import {ChangeKanbanRequest} from "../modules/workflow/kanban/kanban.component";
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +61,10 @@ export class TaskService implements EntityService<Task>{
 
   public signalTaskProc(taskSignalProcRequest: TaskSignalProcRequest): Observable<CustomHttpResponse> {
     return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/signal-proc/`, taskSignalProcRequest);
+  }
+
+  public changeKanbanState(request: ChangeKanbanRequest): Observable<CustomHttpResponse> {
+    return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/kanban/`, request);
   }
 
   public getTaskHistory(id: string): Observable<CardHistory[]> {

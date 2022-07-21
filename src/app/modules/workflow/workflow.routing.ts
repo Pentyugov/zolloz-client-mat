@@ -5,6 +5,7 @@ import {TicketComponent} from "./ticket/ticket.component";
 import {ScreenGuard} from "../../guard/screen.guard";
 import {TasksComponent} from "./task/tasks.component";
 import {ApplicationConstants} from "../shared/application-constants";
+import {KanbanComponent} from "./kanban/kanban.component";
 
 export const WorkflowRoutes: Routes = [
   {path: '',
@@ -57,8 +58,19 @@ export const WorkflowRoutes: Routes = [
         data: {
           title: 'Tickets',
           urls: [
-            { title: 'Project', url: '/projects/project'},
+            { title: 'Tickets', url: '/workflow/tickets'},
             {title: 'Add'}
+          ],
+        }
+      },
+
+      {
+        path: 'kanban',
+        component: KanbanComponent,
+        data: {
+          title: 'Kanban',
+          urls: [
+            { title: 'Kanban', url: '/workflow/kanban'}
           ],
         }
       },

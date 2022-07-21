@@ -1,0 +1,114 @@
+<mat-card>
+  <mat-card-content>
+
+    <div fxLayout="row wrap" class="taskboard page-height" cdkDropListGroup>
+      <!-- Column-->
+      <div fxFlex.gt-md="25" fxFlex-md="50" fxFlex.gt-xs="100" fxFlex="100">
+        <div class="taskboard-wrapper">
+          <div class="taskboard-list todos">
+            <div class="taskboard-header text-uppercase">
+              <strong>{{'Kanban.New' | translate}}</strong>
+            </div>
+            <div
+              class="taskboard-cards"
+              [cdkDropListData]="new"
+              cdkDropList
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="taskboard-task" cdkDrag *ngFor="let task of new">
+                <div class="taskboard-task-title">{{ task.number }} {{task.project?.name}}</div>
+                <span class="task-decription">{{ task.description }}</span>
+                <div>
+                  <a mat-icon-button>
+                    <mat-icon (click)="openDialog('Edit', task)">remove_red_eye</mat-icon>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Column-->
+      <div fxFlex.gt-md="25" fxFlex-md="50" fxFlex.gt-xs="100" fxFlex="100">
+        <div class="taskboard-wrapper">
+          <div class="taskboard-list inprogress">
+            <div class="taskboard-header text-uppercase">
+              <strong>{{'Kanban.InProgress' | translate}}</strong>
+            </div>
+            <div
+              class="taskboard-cards"
+              [cdkDropListData]="inProgress"
+              cdkDropList
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="taskboard-task" cdkDrag *ngFor="let task of inProgress">
+                <div class="taskboard-task-title">{{ task.number }} {{task.project?.name}}</div>
+                <span class="task-decription">{{ task.description }}</span>
+                <div>
+                  <a mat-icon-button>
+                    <mat-icon (click)="openDialog('Edit', task)">remove_red_eye</mat-icon>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Column-->
+      <div fxFlex.gt-md="25" fxFlex-md="50" fxFlex.gt-xs="100" fxFlex="100">
+        <div class="taskboard-wrapper">
+          <div class="taskboard-list onhold">
+            <div class="taskboard-header text-uppercase">
+              <strong>{{'Kanban.OnHold' | translate}}</strong>
+            </div>
+            <div
+              class="taskboard-cards"
+              [cdkDropListData]="onHold"
+              cdkDropList
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="taskboard-task" cdkDrag *ngFor="let task of onHold">
+                <div class="taskboard-task-title">{{ task.number }} {{task.project?.name}}</div>
+                <span class="task-decription">{{ task.description }}</span>
+                <div>
+                  <a mat-icon-button>
+                    <mat-icon (click)="openDialog('Edit', task)">remove_red_eye</mat-icon>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Column-->
+      <div fxFlex.gt-md="25" fxFlex-md="50" fxFlex.gt-xs="100" fxFlex="100">
+        <div class="taskboard-wrapper">
+          <div class="taskboard-list completed">
+            <div class="taskboard-header text-uppercase">
+              <strong>{{'Kanban.Completed' | translate}}</strong>
+            </div>
+            <div
+              class="taskboard-cards"
+              [cdkDropListData]="completed"
+              cdkDropList
+              (cdkDropListDropped)="drop($event)"
+            >
+              <div class="taskboard-task" cdkDrag *ngFor="let task of completed">
+                <div class="taskboard-task-title">{{ task.number }} {{task.project?.name}}</div>
+                <span class="task-decription">{{ task.description }}</span>
+                <div>
+                  <a mat-icon-button>
+                    <mat-icon (click)="openDialog('Edit', task)">remove_red_eye</mat-icon>
+                  </a>
+<!--                  <button mat-icon-button color="warn" (click)="deleteTask(task)">-->
+<!--                    <mat-icon>delete_outline</mat-icon>-->
+<!--                  </button>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -317,5 +317,10 @@
   "Notes.ChangeColor": "Change color",
   "Notes.AddNote": "Add note",
   "Notes.UpdateNote": "Update note",
-  "Notes.AddFirstNoteMsg": "Add your first note"
+  "Notes.AddFirstNoteMsg": "Add your first note",
+  "Kanban": "Kanban",
+  "Kanban.New": "New",
+  "Kanban.InProgress": "In progress",
+  "Kanban.OnHold": "On hold",
+  "Kanban.Completed": "Completed"
 }
