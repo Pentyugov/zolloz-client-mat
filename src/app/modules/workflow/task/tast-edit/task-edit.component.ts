@@ -190,6 +190,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   public updateTask(startTask: boolean = false): void {
+    this.entity.executionDatePlan = this.executionDatePlanForm.value;
     if (this.validate()) {
       this.onUpdateTask(startTask);
     }
@@ -212,17 +213,13 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   private validate(): boolean {
-    let valid: boolean = false
+    let valid: boolean = true;
     if (this.entity.executionDatePlan) {
       if (this.entity.executionDatePlan < new Date()) {
+        valid = false;
         this.getMessage('Tasks.InvalidExecutionDatePlan.Msg').then(message => {
-          // this.showErrorNotification(result);
-          // this._snackBar.open(result, 'close');
           this.showErrorSnackBar(message);
         });
-        valid = false;
-      } else {
-        valid = true;
       }
     }
 
