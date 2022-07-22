@@ -8,6 +8,7 @@ import {CardHistory} from "../model/card-history";
 import {EntityService} from "./entity.service";
 import {TaskSignalProcRequest} from "../model/task-signal-proc-request";
 import {ChangeKanbanRequest} from "../modules/workflow/kanban/kanban.component";
+import {TaskFilterRequest} from "../web/payload/request/task-filter-request";
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +70,10 @@ export class TaskService implements EntityService<Task>{
 
   public getTaskHistory(id: string): Observable<CardHistory[]> {
     return this.httpClient.get<CardHistory[]>(`${this.host}/tasks/get-history/${id}`);
+  }
+
+  public applyTaskFilters(taskFilterRequest: TaskFilterRequest): Observable<Task[]> {
+    return this.httpClient.post<Task[]>(`${this.host}/tasks/filter`, taskFilterRequest);
   }
 
 }

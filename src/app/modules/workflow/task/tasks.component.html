@@ -43,7 +43,8 @@
     <mat-card>
       <mat-card-content>
         <div fxLayout="row wrap" class="align-items-center">
-          <div fxFlex.gt-md="25" fxFlex.gt-lg="25" fxFlex.gt-xs="25" fxFlex="100" [ngClass.xs]="{'text-center' : true}">
+
+          <div fxFlex.gt-md="20" fxFlex.gt-lg="20" fxFlex.gt-xs="20" fxFlex="100" [ngClass.xs]="{'text-center' : true}">
             <mat-form-field>
               <input
                 matInput
@@ -52,7 +53,8 @@
               />
             </mat-form-field>
           </div>
-          <div fxFlex.gt-md="75" fxFlex.gt-lg="75" fxFlex.gt-xs="75" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
+
+          <div fxFlex.gt-md="80" fxFlex.gt-lg="80" fxFlex.gt-xs="80" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
             <button mat-raised-button
                     *ngIf="isActionPermit(CREATE_ACTION)"
                     color="primary"
@@ -80,6 +82,54 @@
             </button>
           </div>
         </div>
+
+        <div fxLayout="row wrap" class="align-items-center">
+          <div fxFlex="20">
+            <mat-form-field appearance="outline">
+              <mat-label>{{'AddFilter' | translate}}</mat-label>
+              <mat-select placeholder="{{'AddFilter' | translate}}"
+                          [formControl]="filterControl"
+                          (selectionChange)="addFilter(($event))">
+                <mat-option [value]="null">{{'None' | translate}}</mat-option>
+                <mat-option *ngFor="let filter of filtersList"
+                            [disabled]="isFilterInList(filter)"
+                            [value]="filter">
+                  {{capitalize(filter.name) | translate}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" class="align-items-center">
+          <div fxFlex="20" *ngFor="let filter of appliedFilters"  class="m-r-15">
+            <mat-form-field appearance="outline">
+              <mat-label>{{capitalize(filter.property) | translate}}</mat-label>
+              <mat-select placeholder="{{capitalize(filter.property) | translate}}" [(ngModel)]="filter.condition">
+                <mat-option [value]="null">{{'None' | translate}}</mat-option>
+                <mat-option *ngFor="let option of filter.options" [value]="option.id">
+                  {{ option.name | translate }}
+                </mat-option>
+
+              </mat-select>
+              <mat-hint class="hint" (click)="removeFilter(filter)" *ngIf="filter.property !== 'state'">
+                {{'Delete' | translate}}
+              </mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxLayout="row wrap" class="align-items-center" *ngIf="appliedFilters.length > 0">
+          <div fxFlex="25" class="text-left">
+            <button mat-raised-button
+                    color="primary"
+                    style="margin: 5px"
+                    (click)="onApplyFilters()">
+              {{'ApplyFilter' | translate}}
+            </button>
+          </div>
+        </div>
+
       </mat-card-content>
     </mat-card>
   </div>

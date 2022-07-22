@@ -15,6 +15,26 @@ import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
 import {HttpErrorResponse} from "@angular/common/http"
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import {MatTableDataSource} from "@angular/material/table";
+import {ProjectService} from "../../../service/project.service";
+import {Project} from "../../../model/project";
+import {FormControl} from "@angular/forms";
+import {TaskFilterRequest} from "../../../web/payload/request/task-filter-request";
+import {TaskFilter} from "../../../utils/filters/task-filter";
+
+interface Filter {
+  name: string;
+}
+
+interface FilterOption {
+  id: string;
+  name: string;
+}
+
+interface AppliedFilter {
+  property: string;
+  condition: string;
+  options: FilterOption[];
+}
 
 @Component({
   selector: 'app-task',
@@ -29,9 +49,59 @@ import {MatTableDataSource} from "@angular/material/table";
   ],
 })
 export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
+
+  public filtersList: Filter[] = [
+    {
+      name: 'executor'
+    },
+    {
+      name: 'priority'
+    },
+    {
+      name: 'project'
+    }
+  ];
+
+  public appliedFilters: AppliedFilter[] = [{
+    property: 'state',
+    condition: Task.STATE_ASSIGNED,
+    options: [
+      {
+        id: Task.STATE_ASSIGNED,
+        name: Task.STATE_ASSIGNED
+      },
+      {
+        id: Task.STATE_REWORK,
+        name: Task.STATE_REWORK
+      },
+      {
+        id: Task.STATE_EXECUTED,
+        name: Task.STATE_EXECUTED
+      },
+      {
+        id: Task.STATE_CREATED,
+        name: Task.STATE_CREATED
+      },
+      {
+        id: Task.STATE_FINISHED,
+        name: Task.STATE_FINISHED
+      },
+      {
+        id: Task.STATE_CANCELED,
+        name: Task.STATE_CANCELED
+      },
+      {
+        id: Task.STATE_CLOSED,
+        name: Task.STATE_CLOSED
+      }
+    ]
+  }];
+
   @Input() isWidget: boolean = false;
   @ViewChild(MatPaginator, {static: false}) override paginator: MatPaginator = Object.create(null);
   @ViewChild(MatSort, {static: true}) override sort: MatSort = Object.create(null);
+
+  filterControl = new FormControl('', []);
 
   public columnsToDisplay: string[] = [];
 
@@ -54,7 +124,8 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
               dialog: MatDialog,
               editor: MatDialog,
               screenService: ScreenService,
-              private taskService: TaskService,) {
+              private taskService: TaskService,
+              private projectService: ProjectService) {
     super(injector,
       router,
       translate,
@@ -142,6 +213,7 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
     this.dataSource.filterPredicate = (task: Task, filter: string) => {
 
       return task.number.toLocaleLowerCase().includes(filter)
+        || task.description.toLocaleLowerCase().includes(filter)
         || task.state.toLocaleLowerCase().includes(filter)
         || this.projectFilter(task, filter)
         || this.executorFilter(task, filter)
@@ -179,6 +251,113 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
 
   public getPriority(priority: string): string {
     return priority === this.LOW ? 'Priority.Low' : priority === this.MEDIUM ? 'Priority.Medium' : 'Priority.High';
+  }
+
+  public addFilter($event: any): void {
+    const filter: AppliedFilter = {
+      property: $event.value.name,
+      condition: '',
+      options: []
+    }
+
+    if ($event.value.name === 'project') {
+      this.subscriptions.push(this.projectService.getAvailableProjects().subscribe((response: Project[]) => {
+        response.forEach(project => filter.options.push(TasksComponent.createFilterOption(project.id, project.name)))
+      }));
+    } else if ($event.value.name === 'executor') {
+      filter.options = this.fillExecutorsOptions();
+    } else if ($event.value.name === 'priority') {
+      filter.options = [
+        {
+          id: Task.PRIORITY_LOW,
+          name: Task.PRIORITY_LOW
+        },
+        {
+          id: Task.PRIORITY_MEDIUM,
+          name: Task.PRIORITY_MEDIUM
+        },
+        {
+          id: Task.PRIORITY_HIGH,
+          name: Task.PRIORITY_HIGH
+        },
+      ]
+    }
+
+    this.appliedFilters.push(filter);
+    this.filterControl.setValue(null);
+  }
+
+  private fillExecutorsOptions(): FilterOption[] {
+    let options: FilterOption[] = [];
+
+    this.entities.forEach(entity => {
+      const task = entity as Task;
+
+      if (task.executor) {
+        const tmp = options.find(d => d.id === task.executor?.id);
+        if (!tmp) {
+          const option: FilterOption = {
+            id: task.executor.id,
+            name: task.executor.username
+          }
+
+          options.push(option);
+        }
+      }
+
+    });
+
+    return options;
+  }
+
+  private static createFilterOption(id: string, name: string): FilterOption {
+    return {
+      id: id,
+      name: name
+    }
+  }
+
+  public isFilterInList(filter: Filter): boolean {
+    let isPresent: boolean = false;
+    this.appliedFilters.forEach(f => {
+      if (f.property === filter.name)
+        isPresent = true;
+    });
+
+    return isPresent;
+  }
+
+  public removeFilter(filter: AppliedFilter): void {
+    const index = this.appliedFilters.indexOf(filter);
+    if (index > -1)
+      this.appliedFilters.splice(index, 1);
+  }
+
+  public onApplyFilters(): void {
+    const taskFilterRequest: TaskFilterRequest = new TaskFilterRequest();
+
+    // this.dataSource.data.forEach(task => {
+    //   taskFilterRequest.ids.push(task.id);
+    // });
+
+    this.appliedFilters.forEach(t => {
+      const taskFilter: TaskFilter = {
+        property: t.property,
+        condition: t.condition
+      }
+      taskFilterRequest.taskFilters.push(taskFilter);
+    });
+
+    this.subscriptions.push(this.taskService.applyTaskFilters(taskFilterRequest).subscribe((response: Task[]) => {
+      this.initDataSource(response);
+    }, (errorResponse: HttpErrorResponse) => {
+      this.log(errorResponse.error.messages)
+    }));
+  }
+
+
+  public log(message: any): void {
+    console.log(message);
   }
 
 }

@@ -322,5 +322,7 @@
   "Kanban.New": "New",
   "Kanban.InProgress": "In progress",
   "Kanban.OnHold": "On hold",
-  "Kanban.Completed": "Completed"
+  "Kanban.Completed": "Completed",
+  "AddFilter": "Add filter",
+  "ApplyFilter": "Apply filter"
 }
