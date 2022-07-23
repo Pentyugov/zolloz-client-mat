@@ -3,7 +3,13 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div class="box p-20 bg-info text-center cursor-pointer" (click)="filterByPriority(ALL, true)">
+      <div class="box p-20 bg-info text-center cursor-pointer"
+           [ngClass]="{
+           'priority-box-active' : activeBoxId === ALL && isDarkMode,
+           'priority-box-active-dark' : activeBoxId === ALL && !isDarkMode
+           }"
+           matRipple
+           (click)="filterByPriority(ALL, true)">
         <h1 class="font-light text-white m-0">{{ totalCount }}</h1>
         <h6 class="text-white m-0">{{'TotalTasks' | translate}}</h6>
       </div>
@@ -12,7 +18,13 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div class="box p-20 bg-success text-center cursor-pointer" (click)="filterByPriority(LOW, true)">
+      <div class="box p-20 bg-success text-center cursor-pointer"
+           [ngClass]="{
+           'priority-box-active' : activeBoxId === LOW && isDarkMode,
+           'priority-box-active-dark' : activeBoxId === LOW && !isDarkMode
+           }"
+           matRipple
+           (click)="filterByPriority(LOW, true)">
         <h1 class="font-light text-white m-0">{{ lowPriority }}</h1>
         <h6 class="text-white m-0">{{'Tasks.Priority.Low' | translate}}</h6>
       </div>
@@ -21,7 +33,13 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div class="box p-20 bg-warning text-center cursor-pointer" (click)="filterByPriority(MEDIUM, true)">
+      <div class="box p-20 bg-warning text-center cursor-pointer"
+           [ngClass]="{
+           'priority-box-active' : activeBoxId === MEDIUM && isDarkMode,
+           'priority-box-active-dark' : activeBoxId === MEDIUM && !isDarkMode
+           }"
+           matRipple
+           (click)="filterByPriority(MEDIUM, true)">
         <h1 class="font-light text-white m-0">{{ mediumPriority }}</h1>
         <h6 class="text-white m-0">{{'Tasks.Priority.Middle' | translate}}</h6>
       </div>
@@ -30,12 +48,20 @@
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
     <mat-card>
-      <div class="box p-20 bg-danger text-center cursor-pointer" (click)="filterByPriority(HIGH, true)">
+      <div class="box p-20 bg-danger text-center cursor-pointer"
+           [ngClass]="{
+           'priority-box-active' : activeBoxId === HIGH && isDarkMode,
+           'priority-box-active-dark' : activeBoxId === HIGH && !isDarkMode
+           }"
+           matRipple
+           (click)="filterByPriority(HIGH, true)">
         <h1 class="font-light text-white m-0">{{ highPriority }}</h1>
         <h6 class="text-white m-0">{{'Tasks.Priority.High' | translate}}</h6>
       </div>
     </mat-card>
   </div>
+
+
 
 </div>
 
@@ -264,7 +290,7 @@
         ></tr>
       </table>
       <mat-paginator *ngIf="!isWidget" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
-      <mat-paginator *ngIf="isWidget" [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
+      <mat-paginator *ngIf="isWidget" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>

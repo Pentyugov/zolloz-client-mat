@@ -123,6 +123,8 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   public readonly MEDIUM = Task.PRIORITY_MEDIUM;
   public readonly HIGH = Task.PRIORITY_HIGH;
 
+  public activeBoxId: string = this.ALL;
+
   public expandedElement: Task | null = null;
 
   constructor(injector: Injector,
@@ -160,23 +162,7 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
     if (this.isWidget) {
       this.loadActiveTaskForExecutor();
     } else {
-      this.subscriptions.push(
-        this.entityService.getAll().subscribe(
-          (response: Task[]) => {
-            this.entities = response;
-            this.totalCount = response.length;
-            this.lowPriority = this.filterByPriority(this.LOW).length;
-            this.mediumPriority = this.filterByPriority(this.MEDIUM).length;
-            this.highPriority = this.filterByPriority(this.HIGH).length;
-            this.initDataSource(response);
-            this.afterLoadEntities();
-            this.applicationService.changeRefreshing(false);
-          }, (errorResponse: HttpErrorResponse) => {
-            this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message);
-            this.applicationService.changeRefreshing(false);
-          }
-        )
-      );
+      this.onApplyFilters();
     }
   }
 
@@ -197,6 +183,8 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   }
 
   private filterByPriority(priority: string, initDs: boolean = false): Task[] {
+    this.setPriorityBoxActive(priority);
+
     let sorted: Task[] = [];
 
     if (priority === this.ALL) {
@@ -353,14 +341,21 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
     this.appliedFilters.forEach(t => {
       const taskFilter: TaskFilter = {
         property: t.property,
-        condition: t.property === 'state' && t.condition === Task.STATE_ACTIVE ? Task.STATE_ASSIGNED + ";" + Task.STATE_REWORK : t.condition
+        condition: t.property === 'state' && t.condition === Task.STATE_ACTIVE ?
+          Task.STATE_ASSIGNED + ";" + Task.STATE_REWORK : t.condition
       }
       taskFilterRequest.filters.push(taskFilter);
     });
     this.applicationService.changeRefreshing(true);
     this.subscriptions.push(
       this.taskService.applyTaskFilters(taskFilterRequest).subscribe((response: Task[]) => {
-      this.initDataSource(response);
+        this.entities = response;
+        this.totalCount = response.length;
+        this.lowPriority = this.filterByPriority(this.LOW).length;
+        this.mediumPriority = this.filterByPriority(this.MEDIUM).length;
+        this.highPriority = this.filterByPriority(this.HIGH).length;
+        this.activeBoxId = this.ALL;
+        this.initDataSource(response);
         this.applicationService.changeRefreshing(false);
     }, (errorResponse: HttpErrorResponse) => {
         this.applicationService.changeRefreshing(false);
@@ -371,6 +366,10 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
 
   public log(message: any): void {
     console.log(message);
+  }
+
+  public setPriorityBoxActive(boxId: string): void {
+    this.activeBoxId = boxId;
   }
 
 }
