@@ -84,14 +84,17 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
   }
 
   public loadEntities(): void {
+    this.applicationService.changeRefreshing(true);
     this.subscriptions.push(
       this.entityService.getAll().subscribe(
         (response: T[]) => {
           this.entities = response;
           this.initDataSource(response);
           this.afterLoadEntities();
+          this.applicationService.changeRefreshing(false);
         }, (errorResponse: HttpErrorResponse) => {
-          this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)
+          this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message);
+          this.applicationService.changeRefreshing(false);
         }
       )
     );

@@ -52,6 +52,9 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
 
   public filtersList: Filter[] = [
     {
+      name: 'state'
+    },
+    {
       name: 'executor'
     },
     {
@@ -62,40 +65,46 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
     }
   ];
 
-  public appliedFilters: AppliedFilter[] = [{
-    property: 'state',
-    condition: Task.STATE_ASSIGNED,
-    options: [
-      {
-        id: Task.STATE_ASSIGNED,
-        name: Task.STATE_ASSIGNED
-      },
-      {
-        id: Task.STATE_REWORK,
-        name: Task.STATE_REWORK
-      },
-      {
-        id: Task.STATE_EXECUTED,
-        name: Task.STATE_EXECUTED
-      },
-      {
-        id: Task.STATE_CREATED,
-        name: Task.STATE_CREATED
-      },
-      {
-        id: Task.STATE_FINISHED,
-        name: Task.STATE_FINISHED
-      },
-      {
-        id: Task.STATE_CANCELED,
-        name: Task.STATE_CANCELED
-      },
-      {
-        id: Task.STATE_CLOSED,
-        name: Task.STATE_CLOSED
-      }
-    ]
-  }];
+  public appliedFilters: AppliedFilter[] = [
+    {
+      property: 'state',
+      condition: Task.STATE_ACTIVE,
+      options: [
+        {
+          id: Task.STATE_ACTIVE,
+          name: Task.STATE_ACTIVE
+        },
+        {
+          id: Task.STATE_ASSIGNED,
+          name: Task.STATE_ASSIGNED
+        },
+        {
+          id: Task.STATE_REWORK,
+          name: Task.STATE_REWORK
+        },
+        {
+          id: Task.STATE_EXECUTED,
+          name: Task.STATE_EXECUTED
+        },
+        {
+          id: Task.STATE_CREATED,
+          name: Task.STATE_CREATED
+        },
+        {
+          id: Task.STATE_FINISHED,
+          name: Task.STATE_FINISHED
+        },
+        {
+          id: Task.STATE_CANCELED,
+          name: Task.STATE_CANCELED
+        },
+        {
+          id: Task.STATE_CLOSED,
+          name: Task.STATE_CLOSED
+        }
+      ]
+    }
+  ];
 
   @Input() isWidget: boolean = false;
   @ViewChild(MatPaginator, {static: false}) override paginator: MatPaginator = Object.create(null);
@@ -147,6 +156,7 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   }
 
   public override loadEntities(): void {
+    this.applicationService.changeRefreshing(true);
     if (this.isWidget) {
       this.loadActiveTaskForExecutor();
     } else {
@@ -160,8 +170,10 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
             this.highPriority = this.filterByPriority(this.HIGH).length;
             this.initDataSource(response);
             this.afterLoadEntities();
+            this.applicationService.changeRefreshing(false);
           }, (errorResponse: HttpErrorResponse) => {
-            this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)
+            this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message);
+            this.applicationService.changeRefreshing(false);
           }
         )
       );
@@ -175,8 +187,10 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
           this.entities = response;
           this.initDataSource(response);
           this.afterLoadEntities();
+          this.applicationService.changeRefreshing(false);
         }, (errorResponse: HttpErrorResponse) => {
-          this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)
+          this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message);
+          this.applicationService.changeRefreshing(false);
         }
       )
     );
@@ -270,15 +284,15 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
       filter.options = [
         {
           id: Task.PRIORITY_LOW,
-          name: Task.PRIORITY_LOW
+          name: "Priority.Low"
         },
         {
           id: Task.PRIORITY_MEDIUM,
-          name: Task.PRIORITY_MEDIUM
+          name: "Priority.Medium"
         },
         {
           id: Task.PRIORITY_HIGH,
-          name: Task.PRIORITY_HIGH
+          name: "Priority.High"
         },
       ]
     }
@@ -336,22 +350,21 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
   public onApplyFilters(): void {
     const taskFilterRequest: TaskFilterRequest = new TaskFilterRequest();
 
-    // this.dataSource.data.forEach(task => {
-    //   taskFilterRequest.ids.push(task.id);
-    // });
-
     this.appliedFilters.forEach(t => {
       const taskFilter: TaskFilter = {
         property: t.property,
-        condition: t.condition
+        condition: t.property === 'state' && t.condition === Task.STATE_ACTIVE ? Task.STATE_ASSIGNED + ";" + Task.STATE_REWORK : t.condition
       }
-      taskFilterRequest.taskFilters.push(taskFilter);
+      taskFilterRequest.filters.push(taskFilter);
     });
-
-    this.subscriptions.push(this.taskService.applyTaskFilters(taskFilterRequest).subscribe((response: Task[]) => {
+    this.applicationService.changeRefreshing(true);
+    this.subscriptions.push(
+      this.taskService.applyTaskFilters(taskFilterRequest).subscribe((response: Task[]) => {
       this.initDataSource(response);
+        this.applicationService.changeRefreshing(false);
     }, (errorResponse: HttpErrorResponse) => {
-      this.log(errorResponse.error.messages)
+        this.applicationService.changeRefreshing(false);
+        this.log(errorResponse.error.messages)
     }));
   }
 

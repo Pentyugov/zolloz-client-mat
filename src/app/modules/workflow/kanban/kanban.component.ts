@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, Injector, OnDestroy, OnInit} from '@angular/core';
 import {NewAbstractBrowser} from "../../shared/browser/new-abstract.browser";
 import {Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
@@ -23,7 +23,7 @@ export interface ChangeKanbanRequest {
   templateUrl: './kanban.component.html',
   styleUrls: ['./kanban.component.scss']
 })
-export class KanbanComponent extends NewAbstractBrowser<Task> implements OnInit {
+export class KanbanComponent extends NewAbstractBrowser<Task> implements OnInit, OnDestroy {
 
   public new: Task [] = [];
   public inProgress: Task [] = [];
@@ -56,6 +56,10 @@ export class KanbanComponent extends NewAbstractBrowser<Task> implements OnInit 
 
   ngOnInit(): void {
     this.loadActiveTaskForExecutor();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   private loadActiveTaskForExecutor(): void {

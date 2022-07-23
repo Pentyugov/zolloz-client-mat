@@ -1,3 +1,4 @@
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="refreshing"></mat-progress-bar>
 <div fxLayout="row wrap" *ngIf="!isWidget">
 
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="100">
@@ -44,7 +45,7 @@
       <mat-card-content>
         <div fxLayout="row wrap" class="align-items-center">
 
-          <div fxFlex.gt-md="20" fxFlex.gt-lg="20" fxFlex.gt-xs="20" fxFlex="100" [ngClass.xs]="{'text-center' : true}">
+          <div fxFlex.gt-md="30" fxFlex.gt-lg="20" fxFlex.gt-xs="50" fxFlex="100" [ngClass.xs]="{'text-center' : true}">
             <mat-form-field>
               <input
                 matInput
@@ -54,7 +55,7 @@
             </mat-form-field>
           </div>
 
-          <div fxFlex.gt-md="80" fxFlex.gt-lg="80" fxFlex.gt-xs="80" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
+          <div fxFlex.gt-md="70" fxFlex.gt-lg="80" fxFlex.gt-xs="50" fxFlex="100" [ngClass.xs]="{'text-center' : true}" [ngClass.gt-xs]="{'text-right' : true}">
             <button mat-raised-button
                     *ngIf="isActionPermit(CREATE_ACTION)"
                     color="primary"
@@ -84,7 +85,8 @@
         </div>
 
         <div fxLayout="row wrap" class="align-items-center">
-          <div fxFlex="20">
+
+          <div fxFlex.gt-md="30" fxFlex.gt-lg="15" fxFlex.gt-xs="100" fxFlex="100" class="m-r-15">
             <mat-form-field appearance="outline">
               <mat-label>{{'AddFilter' | translate}}</mat-label>
               <mat-select placeholder="{{'AddFilter' | translate}}"
@@ -99,10 +101,8 @@
               </mat-select>
             </mat-form-field>
           </div>
-        </div>
 
-        <div fxLayout="row wrap" class="align-items-center">
-          <div fxFlex="20" *ngFor="let filter of appliedFilters"  class="m-r-15">
+          <div fxFlex.gt-md="30" fxFlex.gt-lg="15" fxFlex.gt-xs="100" fxFlex="100" *ngFor="let filter of appliedFilters"  class="m-r-15">
             <mat-form-field appearance="outline">
               <mat-label>{{capitalize(filter.property) | translate}}</mat-label>
               <mat-select placeholder="{{capitalize(filter.property) | translate}}" [(ngModel)]="filter.condition">
@@ -117,7 +117,13 @@
               </mat-hint>
             </mat-form-field>
           </div>
+
+
         </div>
+
+<!--        <div fxLayout="row wrap" class="align-items-center">-->
+
+<!--        </div>-->
 
         <div fxLayout="row wrap" class="align-items-center" *ngIf="appliedFilters.length > 0">
           <div fxFlex="25" class="text-left">

@@ -8,6 +8,7 @@ export class Task extends Entity {
   static readonly PRIORITY_MEDIUM: string = 'PRIORITY$MEDIUM';
   static readonly PRIORITY_HIGH:   string = 'PRIORITY$HIGH';
 
+  static readonly STATE_ACTIVE  = "TS$ACTIVE";
   static readonly STATE_CREATED  = "TS$CREATED";
   static readonly STATE_ASSIGNED = "TS$ASSIGNED";
   static readonly STATE_FINISHED = "TS$FINISHED";

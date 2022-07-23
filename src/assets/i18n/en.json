@@ -261,6 +261,7 @@
   "Result" : "Result",
   "Tab.Details" : "Details",
   "Tab.History" : "History",
+  "TS$ACTIVE": "Активна",
   "TS$CREATED" : "Created",
   "TS$ASSIGNED" : "Assigned",
   "TS$FINISHED" : "Finished",
