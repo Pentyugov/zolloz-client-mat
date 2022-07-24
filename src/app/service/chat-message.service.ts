@@ -30,7 +30,6 @@ export class ChatMessageService {
     const _this = this;
     _this.horizontalHeaderComponent = horizontalHeaderComponent;
     _this.topic = `/user/${_this.authenticationService.getUserFromLocalCache().id}/chat/new-messages-count`
-    console.log("Initialize New Chat Messages WS Connection");
     let ws = new SockJS(_this.webSocketEndPoint);
     _this.stompNewChatMessagesClient = Stomp.over(ws);
     _this.stompNewChatMessagesClient.debug = function(str: string) {

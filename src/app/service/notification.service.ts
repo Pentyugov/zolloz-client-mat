@@ -30,7 +30,6 @@ export class NotificationService {
     const _this = this;
     _this.horizontalHeaderComponent = horizontalHeaderComponent;
     _this.topic = `/user/${_this.authenticationService.getUserFromLocalCache().id}/notifications`
-    console.log("Initialize Notification WS Connection");
     let ws = new SockJS(_this.webSocketEndPoint);
     _this.stompNotificationClient = Stomp.over(ws);
     _this.stompNotificationClient.debug = function(str: string) {

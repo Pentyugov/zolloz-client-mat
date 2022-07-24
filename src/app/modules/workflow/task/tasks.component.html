@@ -138,7 +138,7 @@
                 </mat-option>
 
               </mat-select>
-              <mat-hint class="hint" (click)="removeFilter(filter)" *ngIf="filter.property !== 'state'">
+              <mat-hint class="hint" (click)="removeFilter(filter)">
                 {{'Delete' | translate}}
               </mat-hint>
             </mat-form-field>
@@ -147,11 +147,7 @@
 
         </div>
 
-<!--        <div fxLayout="row wrap" class="align-items-center">-->
-
-<!--        </div>-->
-
-        <div fxLayout="row wrap" class="align-items-center" *ngIf="appliedFilters.length > 0">
+        <div fxLayout="row wrap" class="align-items-center">
           <div fxFlex="25" class="text-left">
             <button mat-raised-button
                     color="primary"

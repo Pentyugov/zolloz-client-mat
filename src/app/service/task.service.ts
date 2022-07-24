@@ -64,7 +64,7 @@ export class TaskService implements EntityService<Task>{
     return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/signal-proc/`, taskSignalProcRequest);
   }
 
-  public changeKanbanState(request: ChangeKanbanRequest): Observable<CustomHttpResponse> {
+  public changeKanbanState(request: ChangeKanbanRequest[]): Observable<CustomHttpResponse> {
     return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/kanban/`, request);
   }
 

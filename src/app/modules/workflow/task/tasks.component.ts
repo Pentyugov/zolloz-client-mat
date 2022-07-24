@@ -65,44 +65,46 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
     }
   ];
 
+  public stateOptions: FilterOption[] = [
+    {
+      id: Task.STATE_ACTIVE,
+      name: Task.STATE_ACTIVE
+    },
+    {
+      id: Task.STATE_ASSIGNED,
+      name: Task.STATE_ASSIGNED
+    },
+    {
+      id: Task.STATE_REWORK,
+      name: Task.STATE_REWORK
+    },
+    {
+      id: Task.STATE_EXECUTED,
+      name: Task.STATE_EXECUTED
+    },
+    {
+      id: Task.STATE_CREATED,
+      name: Task.STATE_CREATED
+    },
+    {
+      id: Task.STATE_FINISHED,
+      name: Task.STATE_FINISHED
+    },
+    {
+      id: Task.STATE_CANCELED,
+      name: Task.STATE_CANCELED
+    },
+    {
+      id: Task.STATE_CLOSED,
+      name: Task.STATE_CLOSED
+    }
+  ]
+
   public appliedFilters: AppliedFilter[] = [
     {
       property: 'state',
       condition: Task.STATE_ACTIVE,
-      options: [
-        {
-          id: Task.STATE_ACTIVE,
-          name: Task.STATE_ACTIVE
-        },
-        {
-          id: Task.STATE_ASSIGNED,
-          name: Task.STATE_ASSIGNED
-        },
-        {
-          id: Task.STATE_REWORK,
-          name: Task.STATE_REWORK
-        },
-        {
-          id: Task.STATE_EXECUTED,
-          name: Task.STATE_EXECUTED
-        },
-        {
-          id: Task.STATE_CREATED,
-          name: Task.STATE_CREATED
-        },
-        {
-          id: Task.STATE_FINISHED,
-          name: Task.STATE_FINISHED
-        },
-        {
-          id: Task.STATE_CANCELED,
-          name: Task.STATE_CANCELED
-        },
-        {
-          id: Task.STATE_CLOSED,
-          name: Task.STATE_CLOSED
-        }
-      ]
+      options: this.stateOptions
     }
   ];
 
@@ -283,6 +285,8 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
           name: "Priority.High"
         },
       ]
+    } else if ($event.value.name === 'state') {
+      filter.options = this.stateOptions;
     }
 
     this.appliedFilters.push(filter);

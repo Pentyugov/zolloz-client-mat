@@ -16,6 +16,7 @@ import {ApplicationConstants} from "../../shared/application-constants";
 export interface ChangeKanbanRequest {
   taskId: string;
   state: string;
+  order: number;
 }
 
 @Component({
@@ -50,8 +51,18 @@ export class KanbanComponent extends NewAbstractBrowser<Task> implements OnInit,
       editor,
       screenService);
 
+    this.reloadPage();
     this.id = 'screen$Kanban';
 
+  }
+
+  public reloadPage(): void {
+    if (!localStorage.getItem('reloadKanbanPage')) {
+      localStorage.setItem('reloadKanbanPage', 'no-reload');
+      location.reload();
+    } else {
+      localStorage.removeItem('reloadKanbanPage');
+    }
   }
 
   ngOnInit(): void {
@@ -132,41 +143,53 @@ export class KanbanComponent extends NewAbstractBrowser<Task> implements OnInit,
         event.previousIndex,
         event.currentIndex,
       );
-      let item: any = event.container.data[event.currentIndex];
-      this.onChangeState(item.id, KanbanComponent.getState(event.container.id))
     }
+
+    this.onChangeState();
   }
 
-  private onChangeState(taskId: string, state: string): void {
-    const request: ChangeKanbanRequest = {
-      taskId: taskId,
-      state: state
-    }
-    this.subscriptions.push(this.taskService.changeKanbanState(request).subscribe(() => {
+  private onChangeState(): void {
+    const requests: ChangeKanbanRequest[] = [];
+
+    this.new.forEach(task => {
+      const request: ChangeKanbanRequest = {
+        taskId: task.id,
+        state: Task.KANBAN_STATE_NEW,
+        order: this.new.indexOf(task)
+      }
+
+      requests.push(request);
+    });
+
+    this.inProgress.forEach(task => {
+      const request: ChangeKanbanRequest = {
+        taskId: task.id,
+        state: Task.KANBAN_STATE_IN_PROGRESS,
+        order: this.inProgress.indexOf(task)
+      }
+      requests.push(request);
+    });
+
+    this.onHold.forEach(task => {
+      const request: ChangeKanbanRequest = {
+        taskId: task.id,
+        state: Task.KANBAN_STATE_ON_HOLD,
+        order: this.onHold.indexOf(task)
+      }
+      requests.push(request);
+    });
+
+    this.completed.forEach(task => {
+      const request: ChangeKanbanRequest = {
+        taskId: task.id,
+        state: Task.KANBAN_STATE_COMPLETED,
+        order: this.completed.indexOf(task)
+      }
+      requests.push(request);
+    });
+
+    this.subscriptions.push(this.taskService.changeKanbanState(requests).subscribe(() => {
     }));
-  }
-
-  private static getState(containerId: string): string {
-
-    const containerNumber = Number(containerId.charAt(containerId.length -1));
-    if (containerNumber === 0 || containerNumber % 4 === 0)
-      return Task.KANBAN_STATE_NEW;
-    if (containerNumber === 1 || containerNumber % 5 === 0)
-      return Task.KANBAN_STATE_IN_PROGRESS;
-    if (containerNumber === 2 || containerNumber % 6 === 0)
-      return Task.KANBAN_STATE_ON_HOLD;
-    if (containerNumber === 3 || containerNumber % 7 === 0)
-      return Task.KANBAN_STATE_COMPLETED;
-
-    return Task.KANBAN_STATE_NEW;
-
-    // switch (containerId) {
-    //   case 'cdk-drop-list-0' : return Task.KANBAN_STATE_NEW;
-    //   case 'cdk-drop-list-1' : return Task.KANBAN_STATE_IN_PROGRESS;
-    //   case 'cdk-drop-list-2' : return Task.KANBAN_STATE_ON_HOLD;
-    //   case 'cdk-drop-list-3' : return Task.KANBAN_STATE_COMPLETED;
-    //   default: return Task.KANBAN_STATE_NEW;
-    // }
   }
 
 }

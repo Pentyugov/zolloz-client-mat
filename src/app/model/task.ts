@@ -28,6 +28,7 @@ export class Task extends Entity {
   comment: string;
   state: string;
   kanbanState: string;
+  kanbanOrder: number;
   executionDatePlan: Date | null;
   executionDateFact: Date | null;
   creator: User | null;
@@ -46,6 +47,7 @@ export class Task extends Entity {
     this.comment = '';
     this.state = '';
     this.kanbanState = '';
+    this.kanbanOrder = 0;
     this.executionDatePlan = null;
     this.executionDateFact = null;
     this.creator = null;
