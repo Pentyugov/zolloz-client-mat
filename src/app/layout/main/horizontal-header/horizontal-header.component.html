@@ -25,16 +25,23 @@
         <div class="message-center">
           <perfect-scrollbar [config]="config">
             <!-- Message -->
-            <a href="javascript:void(0);" *ngFor="let notification of notifications" (click)="deleteNotification(notification)">
+            <a href="javascript:void(0);" *ngFor="let notification of notifications">
                 <div class="round {{ getRoundClass(notification) }}">
                   <i class="{{ getIconClass(notification) }}"></i>
                 </div>
                 <div class="mail-content">
-                  <h5>{{ notification.title }}</h5>
+
+                  <div class="notification-header">
+                    <h5>{{ notification.title }}</h5>
+                    <mat-icon>close</mat-icon>
+                  </div>
+
                   <span class="mail-desc">{{ notification.message }}</span>
                   <span class="time">{{ notification.createDate | date : "dd.MM.yyyy HH:mm" }}</span>
+                  <span class="remove" (click)="deleteNotification(notification)">{{ 'Delete' | translate }}</span>
                 </div>
             </a>
+
           </perfect-scrollbar>
         </div>
       </li>

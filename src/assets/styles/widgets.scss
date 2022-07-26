@@ -80,6 +80,7 @@
           margin: 5px 0px 0;
         }
         .mail-desc,
+        .remove,
         .time {
           font-size: 12px;
           display: block;
@@ -88,6 +89,9 @@
           overflow: hidden;
           color: $bodytext;
           white-space: nowrap;
+        }
+        .remove:hover {
+          color: #3b5998;
         }
       }
     }

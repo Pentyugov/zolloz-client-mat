@@ -3,7 +3,7 @@ import {User} from "../../../../model/user";
 import {ApplicationConstants} from "../../../shared/application-constants";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TranslateService} from "@ngx-translate/core";
 import {EventNotificationService} from "../../../../service/event-notification.service";
 import {ApplicationService} from "../../../../service/application.service";
@@ -37,6 +37,8 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   public calendarConfig: CalendarConfig = new CalendarConfig();
   public executionDatePlanForm: FormControl = new FormControl(null);
 
+  public dialogMode: boolean = false;
+
   public currentUser: User = new User();
   public entity: Task = new Task();
   public executors: User[] = [];
@@ -46,6 +48,8 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   public executionDatePlan: Date | null = null;
   public dialog_data: any;
   public priorities: Object[] = ApplicationConstants.TASK_PRIORITIES;
+
+  private entityId: string = '';
   constructor(injector: Injector,
               router: Router,
               translate: TranslateService,
@@ -57,7 +61,8 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
               private numeratorService: NumeratorService,
               private projectService: ProjectService,
               private authenticationService: AuthenticationService,
-              public dialogRef: MatDialogRef<TaskEditComponent>,
+              private activatedRouter: ActivatedRoute,
+              @Optional() public dialogRef: MatDialogRef<TaskEditComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
     super(injector, router, translate, eventNotificationService, applicationService, dialog);
     this.currentUser = this.authenticationService.getUserFromLocalCache();
@@ -69,9 +74,14 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   ngOnInit(): void {
-
+    if (this.data) {
+      this.dialogMode = this.data.dialogMode;
+      this.entityId = this.data.entity ? this.data.entity.id : ''
+    } else {
+      const tmp = this.activatedRouter.snapshot.paramMap.get('id')
+      this.entityId =  tmp ? tmp : '';
+    }
     if (!this.isNewItem()) {
-      this.entity = this.data.entity;
       this.reloadTask();
       this.loadTaskHistory();
       if (this.entity.executionDatePlan) {
@@ -92,7 +102,12 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   public isNewItem(): boolean {
-    return this.dialog_data.isNewItem;
+    if (this.dialog_data) {
+      return this.dialog_data.isNewItem;
+    } else {
+      return this.entityId === '' || this.entityId === null;
+    }
+
   }
 
   public loadProjects(): void {
@@ -123,7 +138,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   public loadTaskHistory(): void {
-    this.subscriptions.push(this.taskService.getTaskHistory(this.entity.id).subscribe(
+    this.subscriptions.push(this.taskService.getTaskHistory(this.entityId).subscribe(
       (response: CardHistory[]) => {
         this.cardHistory = response;
       }, (errorResponse: HttpErrorResponse) => {
@@ -132,7 +147,7 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   public reloadTask(): void {
-    this.subscriptions.push(this.taskService.getById(this.entity.id).subscribe(
+    this.subscriptions.push(this.taskService.getById(this.entityId).subscribe(
       (response: Task) => {
         this.entity = response;
         if (this.entity.executionDatePlan) {
@@ -150,11 +165,16 @@ export class TaskEditComponent extends AbstractEditor implements OnInit, OnDestr
   }
 
   public close() {
-    this.dialogRef.close({
-      event: {
-        action: ApplicationConstants.DIALOG_ACTION_SAVE
-      }
-    });
+    if (this.dialogMode) {
+      this.dialogRef.close({
+        event: {
+          action: ApplicationConstants.DIALOG_ACTION_SAVE
+        }
+      });
+    } else {
+      this.router.navigateByUrl('/workflow/tasks')
+    }
+
   }
 
   public openSaveDialog() {

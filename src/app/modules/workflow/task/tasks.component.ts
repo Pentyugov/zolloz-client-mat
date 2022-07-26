@@ -341,7 +341,7 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
 
   public onApplyFilters(): void {
     const taskFilterRequest: TaskFilterRequest = new TaskFilterRequest();
-
+    this.filterString = '';
     this.appliedFilters.forEach(t => {
       const taskFilter: TaskFilter = {
         property: t.property,
@@ -374,6 +374,14 @@ export class TasksComponent extends NewAbstractBrowser<Task> implements OnInit {
 
   public setPriorityBoxActive(boxId: string): void {
     this.activeBoxId = boxId;
+  }
+
+  public openEditor(): void {
+    if (this.isWidget) {
+      this.openEditDialog(this.clickedRow)
+    } else {
+      this.openEditorByUrl('/workflow/tasks/edit/' + this.clickedRow.id)
+    }
   }
 
 }

@@ -73,10 +73,10 @@
 
           <div fxFlex.gt-md="30" fxFlex.gt-lg="20" fxFlex.gt-xs="50" fxFlex="100" [ngClass.xs]="{'text-center' : true}">
             <mat-form-field>
-              <input
-                matInput
-                (keyup)="applyFilter($event.target.value)"
-                placeholder="{{'Tasks.Search' | translate}}"
+              <input matInput
+                     [(ngModel)]="filterString"
+                     (keyup)="applyFilter($event.target.value)"
+                     placeholder="{{'Tasks.Search' | translate}}"
               />
             </mat-form-field>
           </div>
@@ -94,7 +94,7 @@
                     *ngIf="isActionPermit(EDIT_ACTION)"
                     color="accent"
                     style="margin: 5px"
-                    (click)="openEditDialog(clickedRow)"
+                    (click)="openEditor()"
                     [disabled]="!clickedRow">
               <i class="fa fa-pencil"></i>
             </button>
@@ -269,7 +269,7 @@
           (click)="expandedElement = expandedElement === element ? null : element"
           (mouseenter)="onEnterRow(element)"
           (mouseleave)="onLeaveRow()"
-          (dblclick)="openEditDialog(element)"
+          (dblclick)="openEditor()"
           (click)="onClickRow(element)"
           [ngClass]="{
                   'highlight-selected-dark' : element.id === clickedRow?.id && isDarkMode,

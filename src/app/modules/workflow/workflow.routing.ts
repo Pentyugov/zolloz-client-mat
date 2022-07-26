@@ -6,6 +6,8 @@ import {ScreenGuard} from "../../guard/screen.guard";
 import {TasksComponent} from "./task/tasks.component";
 import {ApplicationConstants} from "../shared/application-constants";
 import {KanbanComponent} from "./kanban/kanban.component";
+import {EmployeeEditComponent} from "../organization/employee/employee-edit/employee-edit.component";
+import {TaskEditComponent} from "./task/tast-edit/task-edit.component";
 
 export const WorkflowRoutes: Routes = [
   {path: '',
@@ -48,6 +50,21 @@ export const WorkflowRoutes: Routes = [
           urls: [
             { title: 'Tasks', url: '/workflow/tasks'},
             {title: 'Browser'}
+          ],
+        }
+      },
+
+      {
+        path: 'tasks/edit/:id',
+        component: TaskEditComponent,
+        canActivate: [ScreenGuard],
+        data: {
+          screen: ApplicationConstants.SCREEN_TASKS + '.' + ApplicationConstants.SCREEN_ACTION_EDIT,
+          title: 'Employees',
+          urls: [
+            { title: 'Tasks', url: '/workflow/tasks'},
+            { title: 'Edit'},
+            // {title: 'Edit'}
           ],
         }
       },

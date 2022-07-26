@@ -26,6 +26,7 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
   public selectedRow: any;
   public clickedRow: any;
   public id: string = '';
+  public filterString: any;
   public readonly CREATE_ACTION =ApplicationConstants.SCREEN_ACTION_CREATE;
   public readonly BROWSE_ACTION =ApplicationConstants.SCREEN_ACTION_BROWSE;
   public readonly EDIT_ACTION =ApplicationConstants.SCREEN_ACTION_EDIT;
@@ -134,7 +135,8 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
         panelClass: this.isDarkMode ? 'dark' : '',
         data: {
           entity: entity,
-          isNewItem: isNewItem
+          isNewItem: isNewItem,
+          dialogMode: true
         }
       });
 
@@ -186,8 +188,9 @@ export abstract class NewAbstractBrowser<T extends Entity> extends AbstractWindo
   }
 
   public applyFilter(value: any) {
+    this.filterString = value;
     if (this.dataSource) {
-      this.dataSource.filter = value.trim().toLowerCase();
+      this.dataSource.filter = this.filterString.trim().toLowerCase();
     }
   }
 

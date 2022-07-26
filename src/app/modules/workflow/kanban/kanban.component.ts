@@ -50,23 +50,23 @@ export class KanbanComponent extends NewAbstractBrowser<Task> implements OnInit,
       taskService,
       editor,
       screenService);
-
-    this.reloadPage();
     this.id = 'screen$Kanban';
 
   }
 
   public reloadPage(): void {
+
+  }
+
+  ngOnInit(): void {
     if (!localStorage.getItem('reloadKanbanPage')) {
       localStorage.setItem('reloadKanbanPage', 'no-reload');
       location.reload();
     } else {
       localStorage.removeItem('reloadKanbanPage');
+      this.loadActiveTaskForExecutor();
     }
-  }
 
-  ngOnInit(): void {
-    this.loadActiveTaskForExecutor();
   }
 
   ngOnDestroy() {
@@ -122,15 +122,24 @@ export class KanbanComponent extends NewAbstractBrowser<Task> implements OnInit,
     this.entities.forEach(entity => {
       const task = entity as Task;
       if (task.kanbanState === Task.KANBAN_STATE_NEW) {
-        this.new.push(task);
+        KanbanComponent.filterContainer(this.new, task);
       } else if (task.kanbanState === Task.KANBAN_STATE_IN_PROGRESS) {
-        this.inProgress.push(task);
+        KanbanComponent.filterContainer(this.inProgress, task);
       } else if (task.kanbanState === Task.KANBAN_STATE_ON_HOLD) {
-        this.onHold.push(task);
+        KanbanComponent.filterContainer(this.onHold, task);
       } else if (task.kanbanState === Task.KANBAN_STATE_COMPLETED) {
-        this.completed.push(task);
+        KanbanComponent.filterContainer(this.completed, task);
       }
     });
+  }
+
+  private static filterContainer(container: Task[], task: Task): void {
+    let orderIndex = task.kanbanOrder;
+    while (container[orderIndex]) {
+      orderIndex++;
+    }
+    task.kanbanOrder = orderIndex;
+    container[orderIndex] = task;
   }
 
   public drop(event: CdkDragDrop<string[]>): void {
@@ -157,7 +166,6 @@ export class KanbanComponent extends NewAbstractBrowser<Task> implements OnInit,
         state: Task.KANBAN_STATE_NEW,
         order: this.new.indexOf(task)
       }
-
       requests.push(request);
     });
 

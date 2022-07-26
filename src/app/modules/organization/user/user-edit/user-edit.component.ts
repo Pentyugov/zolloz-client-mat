@@ -16,7 +16,6 @@ import {EventNotificationService} from "../../../../service/event-notification.s
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ApplicationConstants} from "../../../shared/application-constants";
 import {AbstractEditor} from "../../../shared/editor/abstract-editor";
-import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-user-edit',

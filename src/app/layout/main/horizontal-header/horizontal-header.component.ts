@@ -21,7 +21,7 @@ import {registerLocaleData} from "@angular/common";
 @Component({
   selector: 'app-horizontal-header',
   templateUrl: './horizontal-header.component.html',
-  styleUrls: [],
+  styleUrls: ['./horizontal-header.component.scss'],
 })
 export class HorizontalHeaderComponent implements OnInit, OnDestroy {
   public config: PerfectScrollbarConfigInterface = {};

@@ -120,17 +120,17 @@
                              [min]="calendarConfig.minDate"
                              [max]="calendarConfig.maxDate"
                              [disabled]="!isExecutionDatePlanFieldEnabled()">
-            <mat-datepicker-toggle matSuffix [for]="startDate">
-            </mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #startDate
-                                     [showSpinners]="calendarConfig.showSpinners"
-                                     [showSeconds]="calendarConfig.showSeconds"
-                                     [stepHour]="calendarConfig.stepHour"
-                                     [stepMinute]="calendarConfig.stepMinute"
-                                     [stepSecond]="calendarConfig.stepSecond"
-                                     [touchUi]="calendarConfig.touchUi"
-                                     [color]="calendarConfig.color">
-            </ngx-mat-datetime-picker>
+                      <mat-datepicker-toggle matSuffix [for]="startDate">
+                      </mat-datepicker-toggle>
+                      <ngx-mat-datetime-picker #startDate
+                                               [showSpinners]="calendarConfig.showSpinners"
+                                               [showSeconds]="calendarConfig.showSeconds"
+                                               [stepHour]="calendarConfig.stepHour"
+                                               [stepMinute]="calendarConfig.stepMinute"
+                                               [stepSecond]="calendarConfig.stepSecond"
+                                               [touchUi]="calendarConfig.touchUi"
+                                               [color]="calendarConfig.color">
+                      </ngx-mat-datetime-picker>
                     </mat-form-field>
                   </div>
 
