@@ -17,27 +17,27 @@ export class DepartmentService implements EntityService<Department>{
   }
 
   public getAll(): Observable<Department[]> {
-    return this.httpClient.get<Department[]>(`${this.host}/department/get-all-departments`);
+    return this.httpClient.get<Department[]>(`${this.host}/departments/`);
   }
 
   public getById(id: string): Observable<Department> {
-    return this.httpClient.get<Department>(`${this.host}/department/get-department-by-id/${id}`);
+    return this.httpClient.get<Department>(`${this.host}/departments/${id}`);
   }
 
   public add(department: Department): Observable<Department> {
-    return this.httpClient.post<Department>(`${this.host}/department/add-new-department`, department);
+    return this.httpClient.post<Department>(`${this.host}/departments/`, department);
   }
 
   public update(department: Department): Observable<Department> {
-    return this.httpClient.put<Department>(`${this.host}/department/update-department`, department);
+    return this.httpClient.put<Department>(`${this.host}/departments/`, department);
   }
 
   public delete(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/department/delete-department/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/departments/${id}`);
   }
 
   public getPossibleParentDepartments(id: string): Observable<Department[]> {
-    return this.httpClient.get<Department[]>(`${this.host}/department/get-possible-parent/${id}`);
+    return this.httpClient.get<Department[]>(`${this.host}/departments/${id}/possible-parent/`);
   }
 
   public addDepartmentsToLocalCache(departments: Department[]): void {
