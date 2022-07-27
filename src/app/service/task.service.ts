@@ -24,16 +24,20 @@ export class TaskService implements EntityService<Task>{
     return this.httpClient.get<Task[]>(`${this.host}/tasks`);
   }
 
-  public getProductivityData(): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-productivity-data`);
+  public getById(id: string): Observable<Task> {
+    return this.httpClient.get<Task>(`${this.host}/tasks/${id}`);
   }
 
   public getActiveForExecutor(): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-active-for-executor`);
+    return this.httpClient.get<Task[]>(`${this.host}/tasks/active`);
   }
 
-  public getById(id: string): Observable<Task> {
-    return this.httpClient.get<Task>(`${this.host}/tasks/${id}`);
+  public getProductivityData(): Observable<Task[]> {
+    return this.httpClient.get<Task[]>(`${this.host}/tasks/productivity-data`);
+  }
+
+  public getTaskHistory(id: string): Observable<CardHistory[]> {
+    return this.httpClient.get<CardHistory[]>(`${this.host}/tasks/${id}/history`);
   }
 
   public add(task: Task): Observable<Task> {
@@ -48,28 +52,12 @@ export class TaskService implements EntityService<Task>{
     return this.httpClient.delete<CustomHttpResponse>(`${this.host}/tasks/${id}`);
   }
 
-  public getPriorityTaskForUser(priority: number): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-tasks-with-priority/${priority}`);
-  }
-
-  public getTasksWhereCurrentUserExecutor(priority: number): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-tasks-current-user-executor-by-priority/${priority}`);
-  }
-
-  public getTasksPageForCurrentUser(page: number): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(`${this.host}/tasks/get-task-page-for-current-user?page=${page}`);
-  }
-
   public signalTaskProc(taskSignalProcRequest: TaskSignalProcRequest): Observable<CustomHttpResponse> {
     return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/signal-proc/`, taskSignalProcRequest);
   }
 
   public changeKanbanState(request: ChangeKanbanRequest[]): Observable<CustomHttpResponse> {
     return this.httpClient.post<CustomHttpResponse>(`${this.host}/tasks/kanban/`, request);
-  }
-
-  public getTaskHistory(id: string): Observable<CardHistory[]> {
-    return this.httpClient.get<CardHistory[]>(`${this.host}/tasks/get-history/${id}`);
   }
 
   public applyTaskFilters(taskFilterRequest: TaskFilterRequest): Observable<Task[]> {
