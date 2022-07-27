@@ -18,30 +18,27 @@ export class ProjectService implements EntityService<Project>{
   }
 
   public getAll(): Observable<Project[]> {
-    return this.httpClient.get<Project[]>(`${this.host}/projects/get-all-projects`);
+    return this.httpClient.get<Project[]>(`${this.host}/projects/`);
   }
 
   public getById(id: string): Observable<Project> {
-    return this.httpClient.get<Project>(`${this.host}/projects/get-by-id/${id}`);
+    return this.httpClient.get<Project>(`${this.host}/projects/${id}`);
   }
 
   public getAvailableProjects(): Observable<Project[]> {
-    return this.httpClient.get<Project[]>(`${this.host}/projects/get-available`);
+    return this.httpClient.get<Project[]>(`${this.host}/projects/available`);
   }
 
   public add(project: Project): Observable<Project> {
-    return this.httpClient.post<Project>(`${this.host}/projects/add-project`, project);
+    return this.httpClient.post<Project>(`${this.host}/projects/`, project);
   }
 
   public update(project: Project): Observable<Project> {
-    return this.httpClient.put<Project>(`${this.host}/projects/update-project`, project);
+    return this.httpClient.put<Project>(`${this.host}/projects/`, project);
   }
 
   public delete(id: String): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/projects/delete-project/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/projects/${id}`);
   }
 
-  public getProjectParticipants(projectId: string): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.host}/projects/get-participants-by-project/`);
-  }
 }
