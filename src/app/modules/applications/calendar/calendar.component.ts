@@ -191,7 +191,7 @@ export class CalendarComponent extends NewAbstractBrowser<ZollozCalendarEvent> i
 
   public override loadEntities(): void {
     this.subscriptions.push(
-      this.calendarService.getAllForCurrentUser().subscribe((response: ZollozCalendarEvent[]) => {
+      this.calendarService.getAll().subscribe((response: ZollozCalendarEvent[]) => {
         this.events = this.convertEvents(response);
       }, (errorResponse: HttpErrorResponse) => {
         this.eventNotificationService.showErrorNotification('Error', errorResponse.error.message)

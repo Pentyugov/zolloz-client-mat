@@ -17,27 +17,23 @@ export class CalendarService implements EntityService<ZollozCalendarEvent>{
   }
 
   public getAll(): Observable<ZollozCalendarEvent[]> {
-    return this.httpClient.get<ZollozCalendarEvent[]>(`${this.host}/calendar/get-all`);
+    return this.httpClient.get<ZollozCalendarEvent[]>(`${this.host}/calendar/`);
   }
 
   public getById(id: String): Observable<ZollozCalendarEvent> {
-    return this.httpClient.get<ZollozCalendarEvent>(`${this.host}/calendar/get-by-id/${id}`);
+    return this.httpClient.get<ZollozCalendarEvent>(`${this.host}/calendar/${id}`);
   }
 
   public add(calendarEvent: ZollozCalendarEvent): Observable<ZollozCalendarEvent> {
-    return this.httpClient.post<ZollozCalendarEvent>(`${this.host}/calendar/add-event`, calendarEvent);
+    return this.httpClient.post<ZollozCalendarEvent>(`${this.host}/calendar/`, calendarEvent);
   }
 
   public update(calendarEvent: ZollozCalendarEvent): Observable<ZollozCalendarEvent> {
-    return this.httpClient.put<ZollozCalendarEvent>(`${this.host}/calendar/update-event`, calendarEvent);
+    return this.httpClient.put<ZollozCalendarEvent>(`${this.host}/calendar/`, calendarEvent);
   }
 
   public delete(id: String): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/calendar/delete-event/${id}`);
-  }
-
-  public getAllForCurrentUser(): Observable<ZollozCalendarEvent[]> {
-    return this.httpClient.get<ZollozCalendarEvent[]>(`${this.host}/calendar/get-all-for-current-user`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/calendar/${id}`);
   }
 
 }
