@@ -68,16 +68,12 @@ export class NotificationService {
     this.notifier.showNotification(type, caption, description);
   }
 
-  public getNotificationPageForCurrentUser(page: number = 0): Observable<Notification[]> {
-    return this.httpClient.get<Notification[]>(`${this.host}/notification/get-notification-page-for-receiver?page=${page}`);
-  }
-
   public getAllNotificationsForCurrentUser(): Observable<Notification[]> {
-    return this.httpClient.get<Notification[]>(`${this.host}/notification/get-all`);
+    return this.httpClient.get<Notification[]>(`${this.host}/notifications/`);
   }
 
   public deleteNotification(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/notification/delete-notification/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/notifications/${id}`);
   }
 
 }
