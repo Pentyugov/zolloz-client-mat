@@ -17,23 +17,23 @@ export class ContractorService implements EntityService<Contractor> {
   }
 
   getAll(): Observable<Contractor[]> {
-    return this.httpClient.get<Contractor[]>(`${this.host}/contractors/get-all`);
+    return this.httpClient.get<Contractor[]>(`${this.host}/contractors`);
   }
 
   getById(id: String): Observable<Contractor> {
-    return this.httpClient.get<Contractor>(`${this.host}/contractors/get-by-id/${id}`);
+    return this.httpClient.get<Contractor>(`${this.host}/contractors/${id}`);
   }
 
   add(entity: Contractor): Observable<Contractor> {
-    return this.httpClient.post<Contractor>(`${this.host}/contractors/add`, entity);
+    return this.httpClient.post<Contractor>(`${this.host}/contractors/`, entity);
   }
 
   update(entity: Contractor): Observable<Contractor> {
-    return this.httpClient.put<Contractor>(`${this.host}/contractors/update`, entity);
+    return this.httpClient.put<Contractor>(`${this.host}/contractors/`, entity);
   }
 
   delete(id: String): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/contractors/delete/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/contractors/${id}`);
   }
 
 }
