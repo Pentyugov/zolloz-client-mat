@@ -17,31 +17,31 @@ export class EmployeeService implements EntityService<Employee>{
   }
 
   public getAll(): Observable<Employee[]> {
-    return this.httpClient.get<Employee[]>(`${this.host}/employee/get-all-employees`);
+    return this.httpClient.get<Employee[]>(`${this.host}/employees/`);
   }
 
   public getById(id: string): Observable<Employee> {
-    return this.httpClient.get<Employee>(`${this.host}/employee/get-employee-by-id/${id}`);
+    return this.httpClient.get<Employee>(`${this.host}/employees/${id}`);
   }
 
   public add(employee: Employee): Observable<Employee> {
-    return this.httpClient.post<Employee>(`${this.host}/employee/add-new-employee`, employee);
+    return this.httpClient.post<Employee>(`${this.host}/employees/`, employee);
   }
 
   public update(employee: Employee): Observable<Employee> {
-    return this.httpClient.put<Employee>(`${this.host}/employee/update-employee`, employee);
+    return this.httpClient.put<Employee>(`${this.host}/employees/`, employee);
   }
 
   public updateAllEmployees(employees: Employee[]): Observable<Employee[]> {
-    return this.httpClient.put<Employee[]>(`${this.host}/employee/update-all-employees`, employees);
+    return this.httpClient.put<Employee[]>(`${this.host}/employees/all`, employees);
   }
 
   public delete(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/employee/delete-employee/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/employees/${id}`);
   }
 
   public getEmployeesByDepartments(departmentId: string): Observable<Employee[]> {
-    return this.httpClient.get<Employee[]>(`${this.host}/employee/get-employees-by-department/${departmentId}`);
+    return this.httpClient.get<Employee[]>(`${this.host}/employees/department/${departmentId}`);
   }
 
 }
