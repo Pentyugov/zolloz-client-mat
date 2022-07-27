@@ -20,23 +20,23 @@ export class RoleService implements EntityService<Role>{
   }
 
   public getAll(): Observable<Role[]> {
-    return this.httpClient.get<Role[]>(`${this.host}/role/get-all-roles`);
+    return this.httpClient.get<Role[]>(`${this.host}/roles/`);
   }
 
   public getById(id: string): Observable<Role> {
-    return this.httpClient.get<Role>(`${this.host}/role/get-by-id/${id}`);
+    return this.httpClient.get<Role>(`${this.host}/roles/${id}`);
   }
 
   public add(role: Role): Observable<Role> {
-    return this.httpClient.post<Role>(`${this.host}/role/add-new-role`, role);
+    return this.httpClient.post<Role>(`${this.host}/roles/`, role);
   }
 
   public update(role: Role): Observable<Role> {
-    return this.httpClient.put<Role>(`${this.host}/role/update-role`, role);
+    return this.httpClient.put<Role>(`${this.host}/roles/`, role);
   }
 
   public delete(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/role/delete-role/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/roles/${id}`);
   }
 
 }
