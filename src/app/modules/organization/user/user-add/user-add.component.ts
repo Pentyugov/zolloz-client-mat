@@ -8,7 +8,6 @@ import {UcWidgetComponent} from "ngx-uploadcare-widget";
 import {User} from "../../../../model/user";
 import {Role} from "../../../../model/role";
 import {MatTableDataSource} from "@angular/material/table";
-import {Subscription} from "rxjs";
 import {RoleService} from "../../../../service/role.service";
 import {EventNotificationCaptionEnum} from "../../../../enum/event-notification-caption.enum";
 import {HttpErrorResponse} from "@angular/common/http";

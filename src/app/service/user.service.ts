@@ -47,79 +47,49 @@ export class UserService implements EntityService<User>{
   }
 
   public getAll(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.host}/user/get-all-users`);
+    return this.httpClient.get<User[]>(`${this.host}/users/`);
+  }
+
+  public getById(id: String): Observable<User> {
+    return this.httpClient.get<User>(`${this.host}/users/${id}`);
   }
 
   public getAllWithRole(role: String): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.host}/user/get-all-with-role/${role}`);
+    return this.httpClient.get<User[]>(`${this.host}/users/role/${role}`);
   }
 
   public getAllWithAnyRole(roleNames: String[]): Observable<User[]> {
     let names = roleNames.join(";")
-    return this.httpClient.get<User[]>(`${this.host}/user/get-all-with-any-role?roleNames=${names}`);
-  }
-
-  public getAllWithPermission(permission: String): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.host}/user/get-all-with-permission/${permission}`);
+    return this.httpClient.get<User[]>(`${this.host}/users/any-role?roleNames=${names}`);
   }
 
   public getUsersWithoutEmployee(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${this.host}/user/get-users-without-employee`)
+    return this.httpClient.get<User[]>(`${this.host}/users/without-employee`)
   }
 
   public addUser(formData: FormData): Observable<User> {
-    return this.httpClient.post<User>(`${this.host}/user/add-new-user`, formData);
-  }
-
-  public updateUser(formData: FormData): Observable<User> {
-    return this.httpClient.put<User>(`${this.host}/user/update-user`, formData);
+    return this.httpClient.post<User>(`${this.host}/users/`, formData);
   }
 
   public update(user: User): Observable<User> {
-    return this.httpClient.put<User>(`${this.host}/user/update-user`, user);
-  }
-
-  public getById(id: String): Observable<User> {
-    return this.httpClient.get<User>(`${this.host}/user/get-by-id/${id}`);
-  }
-
-  public resetPassword(email: string): Observable<CustomHttpResponse> {
-    return this.httpClient.get<CustomHttpResponse>(`${this.host}/user/reset-password/${email}`,);
-  }
-
-  public changePassword(formData: FormData): Observable<CustomHttpResponse> {
-    return this.httpClient.post<CustomHttpResponse>(`${this.host}/user/change-password`, formData);
+    return this.httpClient.put<User>(`${this.host}/users/`, user);
   }
 
   public delete(id: string): Observable<CustomHttpResponse> {
-    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/user/delete-user/${id}`);
+    return this.httpClient.delete<CustomHttpResponse>(`${this.host}/users/${id}`);
   }
 
   public deleteProfileImage(id: string): Observable<User> {
-    return this.httpClient.delete<User>(`${this.host}/user/delete-profile-image/${id}`);
-  }
-
-  public addUsersToLocalCache(users: User[]): void {
-    localStorage.setItem('users', JSON.stringify(users));
-  }
-
-
-  public getUsersFromLocalCache(): User[] {
-    if (localStorage.getItem('users')) {
-      return JSON.parse(localStorage.getItem('users') as string) as User[];
-    }
-
-    return [];
+    return this.httpClient.delete<User>(`${this.host}/users/profile-image/${id}`);
   }
 
   public updateUserProfileImage(formData: FormData): Observable<User> {
-    return this.httpClient.post<User>(`${this.host}/user/update-profile-image`,formData);
+    return this.httpClient.post<User>(`${this.host}/users/profile-image`,formData);
   }
 
   public add(user: User): Observable<User> {
-    return this.httpClient.post<User>(`${this.host}/user/add-new-user`, user);
+    return this.httpClient.post<User>(`${this.host}/users/add-new-user`, user);
   }
-
 
   public createUserFormData(user: User, profileImage: File | string | null): FormData {
     const formData = new FormData();
@@ -136,22 +106,6 @@ export class UserService implements EntityService<User>{
     }
 
     return formData;
-  }
-
-  public cloneUser(user: User): User {
-    const clone = new User();
-    clone.id = user.id;
-    clone.username = user.username;
-    clone.firstName = user.firstName;
-    clone.lastName = user.lastName;
-    clone.email = user.email;
-    clone.roles = user.roles;
-    clone.active = user.active;
-    clone.nonLocked = user.nonLocked;
-    clone.lastLoginDate = user.lastLoginDate;
-    clone.lastLoginDateDisplay = user.lastLoginDateDisplay;
-    clone.joinDate = user.joinDate;
-    return clone;
   }
 
   public getUserName(user: User): string {
