@@ -6,6 +6,7 @@ export class Notification {
   type: number;
   accessoryType: number;
   read: boolean;
+  cardId: string;
 
   constructor() {
     this.id = '';
@@ -15,6 +16,7 @@ export class Notification {
     this.type = 0;
     this.accessoryType = 0;
     this.read = false;
+    this.cardId = '';
   }
 
 }

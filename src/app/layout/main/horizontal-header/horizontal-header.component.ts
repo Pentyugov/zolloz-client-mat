@@ -92,6 +92,8 @@ export class HorizontalHeaderComponent implements OnInit, OnDestroy {
   }
 
   public deleteNotification(notification: Notification): void {
+    // notification.
+
     this.subscriptions.push(this.notificationService.deleteNotification(notification.id).subscribe(() => {
         this.loadNotifications();
       }

@@ -30,15 +30,9 @@
                   <i class="{{ getIconClass(notification) }}"></i>
                 </div>
                 <div class="mail-content">
-
-                  <div class="notification-header">
-                    <h5>{{ notification.title }}</h5>
-                    <mat-icon>close</mat-icon>
-                  </div>
-
+                  <h5>{{ notification.title }}</h5>
                   <span class="mail-desc">{{ notification.message }}</span>
                   <span class="time">{{ notification.createDate | date : "dd.MM.yyyy HH:mm" }}</span>
-                  <span class="remove">{{ 'Delete' | translate }}</span>
                 </div>
             </a>
 
