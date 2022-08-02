@@ -81,7 +81,7 @@ export class ApplicationService {
   }
 
   public loadScreenPermission(): Observable<ScreenPermissions[]> {
-    return this.httpClient.get<ScreenPermissions[]>(`${this.host}/screen-permissions/get-all-for-user`);
+    return this.httpClient.get<ScreenPermissions[]>(`${this.host}/screen-permissions/`);
   }
 
   public saveUserSettings(userSettings: UserSettings): Observable<UserSettings> {
